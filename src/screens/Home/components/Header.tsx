@@ -1,7 +1,18 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from 'react-native-vector-icons/Feather'
+
 
 const Header:React.FC = () => {
+  const navigation = useNavigation();
+
+  const openDrawer = () => {
+    navigation.dispatch({
+      type: 'OPEN_DRAWER'
+    });
+  };
+
   return (
      <ImageBackground
             source={require('../../../assets/images/sport.jpg')}
@@ -13,6 +24,9 @@ const Header:React.FC = () => {
     
             <View style={styles.overlay}>
               <Text style={styles.headerText}>SportZone</Text>
+              <TouchableOpacity onPress={openDrawer}>
+                <Icon name="menu" size={24} color="#fff" />
+              </TouchableOpacity>
             </View>
     
             <View style={styles.bottomTextContainer}>
@@ -38,6 +52,9 @@ const styles = StyleSheet.create({
   },
   overlay: {
     padding: 20,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
   },
   headerText: {
     color: '#00c951',

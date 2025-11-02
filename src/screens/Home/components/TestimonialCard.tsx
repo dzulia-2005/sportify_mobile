@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 
 const TestimonialCard = () => {
   return (
@@ -22,7 +24,7 @@ const TestimonialCard = () => {
 
             <View style={styles.userContainer}>
                 <View style={styles.avatar}>
-                {/* <UserOutlined style={{ color: '#9CA3AF', fontSize: 22 }} /> */}
+                  <Icon name="user" size={24} color="#9CA3AF" />
                 </View>
                 <Text style={styles.userName}>John Doe</Text>
             </View>
@@ -36,7 +38,7 @@ const TestimonialCard = () => {
             </Text>
             <View style={styles.userContainer}>
                 <View style={styles.avatar}>
-                {/* <UserOutlined style={{ color: '#9CA3AF', fontSize: 22 }} /> */}
+                <Icon name="user" size={24} color="#9CA3AF" />
                 </View>
                 <Text style={styles.userName}>Jane Smith</Text>
             </View>
@@ -51,7 +53,7 @@ const TestimonialCard = () => {
 
             <View style={styles.userContainer}>
                 <View style={styles.avatar}>
-                {/* <UserOutlined style={{ color: '#9CA3AF', fontSize: 22 }} /> */}
+                <Icon name="user" size={24} color="#9CA3AF" />
                 </View>
                 <Text style={styles.userName}>Mike Johnson</Text>
             </View>

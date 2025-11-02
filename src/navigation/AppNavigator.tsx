@@ -1,35 +1,37 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import HomePage from '../screens/Home/index';
 import MatchesPage from '../screens/Matches/index';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-type RootStackParamList = {
-    Home:undefined;
-    Matches:undefined;
-}
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Drawer = createDrawerNavigator();
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName='Home'>
-            <Stack.Screen 
-              name='Home' 
-              component={HomePage}
-              options={{headerShown:false}}
-            />
-            <Stack.Screen 
-              name='Matches' 
-              component={MatchesPage}
-              options={{
-                headerShown:true,
-                headerTitle:"",
-                headerTransparent:true,
-              }}
-            />
-        </Stack.Navigator>
+        <Drawer.Navigator
+          screenOptions={{
+            drawerPosition:'right',
+            headerStyle:{backgroundColor:'#0b1b33'},
+            headerShown:true,
+            headerTintColor: '#00c951',
+            headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
+          }}
+        >
+          <Drawer.Screen 
+            name='Home' 
+            component={HomePage} 
+            options={{
+              title:'მთავარი',
+              headerShown:false
+            }}/>
+          <Drawer.Screen 
+            name='Matches' 
+            component={MatchesPage} 
+            options={{title:'მატჩები'}}
+          />
+        </Drawer.Navigator>
     </NavigationContainer>
   )
 }
