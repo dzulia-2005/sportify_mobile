@@ -5,6 +5,7 @@ import Cards from '../components/Cards';
 import {styles} from "../styles/homePageContainerStyles";
 import HowToItWorkCards from '../components/HowToItWorkCards';
 import TestimonialCard from '../components/TestimonialCard';
+import Footer from '../components/Footer';
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <Cards/>
       <HowToItWorkCards/>
       <TestimonialCard/>
+      <Footer/>
     </ScrollView>
   );
 };
