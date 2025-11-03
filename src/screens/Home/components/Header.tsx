@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
-
+import {styles} from "../styles/HeaderStyles";
 
 const Header:React.FC = () => {
   const navigation = useNavigation();
@@ -39,50 +39,5 @@ const Header:React.FC = () => {
       </ImageBackground>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 280,
-    justifyContent: 'flex-start', 
-    paddingTop: 30,
-    overflow:'hidden'
-  },
-  imageZoom:{
-    transform: [{ scale: 2.2 }]
-  },
-  overlay: {
-    padding: 20,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
-  },
-  headerText: {
-    color: '#00c951',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  darkOverlay:{
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  bottomTextContainer: {
-    alignItems: 'center',
-    marginTop:20
-  },
-  bottomTitle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 18,
-    color: '#fff',
-    marginBottom: 8,
-  },
-  bottomSubtitle: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 12,
-    width: 260,
-    lineHeight: 16,
-  },
-})
 
 export default Header

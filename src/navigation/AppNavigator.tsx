@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import HomePage from '../screens/Home/index';
-import MatchesPage from '../screens/Matches/index';
+import MatchesPage from '../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
@@ -27,9 +27,11 @@ const AppNavigator = () => {
               headerShown:false
             }}/>
           <Drawer.Screen 
-            name='Matches' 
+            name='Login' 
             component={MatchesPage} 
-            options={{title:'მატჩები'}}
+            options={{
+              title:'შესვლა'
+            }}
           />
         </Drawer.Navigator>
     </NavigationContainer>
