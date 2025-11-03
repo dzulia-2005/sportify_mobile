@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import {styles} from "../styles/LoginStyles";
 import { Props } from '../types/Footer.type';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types/navigation.type';
+
 
 
 
@@ -17,22 +20,26 @@ const Footer:React.FC<Props> = ({email,password}) => {
           Alert.alert("შესვლა შესრულდა წარმატებით!");
     };
 
+    const navigation = useNavigation<NavigationProp>();
+
   return (
     <>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>შესვლა</Text>
-              </TouchableOpacity>
+            <Text style={styles.buttonText}>შესვლა</Text>
+        </TouchableOpacity>
         
-              <TouchableOpacity>
-                <Text style={styles.forgot}>დაგავიწყდა პაროლი?</Text>
-              </TouchableOpacity>
+        <TouchableOpacity>
+            <Text style={styles.forgot}>დაგავიწყდა პაროლი?</Text>
+        </TouchableOpacity>
         
-              <View style={styles.bottomTextContainer}>
-                <Text style={styles.bottomText}>არ გაქვს ანგარიში?</Text>
-                <TouchableOpacity>
-                  <Text style={styles.registerText}> რეგისტრაცია</Text>
-                </TouchableOpacity>
-              </View>
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.bottomText}>არ გაქვს ანგარიში?</Text>
+          <TouchableOpacity 
+            onPress={()=>navigation.navigate("Register")}
+          >
+            <Text style={styles.registerText}> რეგისტრაცია</Text>
+          </TouchableOpacity>
+        </View>
     </>
   )
 }

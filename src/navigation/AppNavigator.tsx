@@ -3,6 +3,7 @@ import React from 'react'
 import HomePage from '../screens/Home/index';
 import MatchesPage from '../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import RegisterPage from '../screens/Register/index';
 
 
 const Drawer = createDrawerNavigator();
@@ -31,6 +32,13 @@ const AppNavigator = () => {
             component={MatchesPage} 
             options={{
               title:'შესვლა'
+            }}
+          />
+          <Drawer.Screen
+            name='Register'
+            component={RegisterPage}
+            options={{
+              title:'რეგისტრაცია'
             }}
           />
         </Drawer.Navigator>
