@@ -15,7 +15,7 @@ const AppNavigator = () => {
             drawerPosition:'right',
             headerStyle:{backgroundColor:'#0b1b33'},
             headerShown:true,
-            headerTintColor: '#00c951',
+            headerTintColor: '#fff',
             headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
           }}
         >
