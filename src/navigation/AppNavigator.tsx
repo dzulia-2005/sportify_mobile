@@ -5,6 +5,7 @@ import MatchesPage from '../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../screens/Register/index';
 import MyAccount from '../screens/MyAccount/index';
+import CustomDrawerContent from './CustomDrawerContent';
 
 const Drawer = createDrawerNavigator();
 
@@ -12,6 +13,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
         <Drawer.Navigator
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{
             drawerPosition:'right',
             headerStyle:{backgroundColor:'#0b1b33'},
