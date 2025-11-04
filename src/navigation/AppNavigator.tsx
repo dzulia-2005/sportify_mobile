@@ -4,7 +4,7 @@ import HomePage from '../screens/Home/index';
 import MatchesPage from '../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../screens/Register/index';
-
+import MyAccount from '../screens/MyAccount/index';
 
 const Drawer = createDrawerNavigator();
 
@@ -41,6 +41,15 @@ const AppNavigator = () => {
               title:'რეგისტრაცია'
             }}
           />
+
+          <Drawer.Screen
+            name='MyAccount'
+            component={MyAccount}
+            options={{
+              title:'ჩემი ანგარიში'
+            }}
+          />
+          
         </Drawer.Navigator>
     </NavigationContainer>
   )
