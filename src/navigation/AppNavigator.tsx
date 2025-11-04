@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../screens/Register/index';
 import MyAccount from '../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
+import MyTournaments from '../screens/MyTournaments/index';
 
 const Drawer = createDrawerNavigator();
 
@@ -52,6 +53,14 @@ const AppNavigator = () => {
             }}
           />
           
+            <Drawer.Screen
+              name='MyTournaments'
+              component={MyTournaments}
+              options={{
+                title:'ჩემი ტურნირები'
+              }}
+            />
+
         </Drawer.Navigator>
     </NavigationContainer>
   )
