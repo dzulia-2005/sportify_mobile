@@ -1,10 +1,19 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
+import Header from '../components/Header'
+import { styles } from '../styles/mainStyles'
+import TeamCard from '../components/TeamCard'
 
 const TournamentTeams:React.FC = () => {
   return (
-    <View>
-      <Text>TournamentTeams</Text>
+    <View style={styles.container}>
+      <Header/>
+      <ScrollView 
+        contentContainerStyle={styles.CardListContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <TeamCard/>
+      </ScrollView>
     </View>
   )
 }
