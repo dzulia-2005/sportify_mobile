@@ -7,12 +7,14 @@ import RegisterPage from '../screens/Register/index';
 import MyAccount from '../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
 import MyTournaments from '../screens/MyTournaments/index';
+import MySchoolTabsNavigator from './MySchoolTabsNavigator';
 
 const Drawer = createDrawerNavigator();
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
+        
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{
@@ -58,6 +60,14 @@ const AppNavigator = () => {
               component={MyTournaments}
               options={{
                 title:'ჩემი ტურნირები'
+              }}
+            />
+
+            <Drawer.Screen
+              name='MySchool'
+              component={MySchoolTabsNavigator}
+              options={{
+                title:'ჩემი სკოლა'
               }}
             />
 
