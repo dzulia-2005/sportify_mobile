@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, FlatList, Image } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/TeamsStyles';
+import { useNavigation } from '@react-navigation/native';
 
 const teams = [
   {
@@ -21,6 +22,7 @@ const teams = [
 ];
 
 const MySchoolTeams = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -31,18 +33,21 @@ const MySchoolTeams = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.table}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <View style={styles.logoContainer}>
-              <Image source={{ uri: item.logo }} style={styles.logo} resizeMode="contain" />
+          <TouchableOpacity
+            onPress={()=>navigation.navigate('MySchoolTeamDetailScreen',{ team:item })}
+          >
+            <View style={styles.row}>
+              <View style={styles.logoContainer}>
+                <Image source={{ uri: item.logo }} style={styles.logo} resizeMode="contain" />
+              </View>
+              <Text style={styles.name}>{item.name}</Text>
             </View>
-            <Text style={styles.name}>{item.name}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
   );
 };
-
 
 
 export default MySchoolTeams;

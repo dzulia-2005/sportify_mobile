@@ -5,7 +5,7 @@ import { styles } from '../styles/mainStyles'
 const Header:React.FC = () => {
   return (
          <View style={styles.HeaderContainer}>
-            <Text style={styles.HeaderTitle}>Tournaments Teams
+            <Text style={styles.HeaderTitle}>Tournaments Scores
             </Text>
           </View>
   )
