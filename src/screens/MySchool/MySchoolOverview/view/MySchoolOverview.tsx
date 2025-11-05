@@ -1,11 +1,21 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import {ScrollView} from 'react-native'
+import MySchoolTeams from '../components/MySchoolTeamsTable'
+import { styles } from '../styles/MainStyle'
+import MySchoolInfoContainer from '../components/MySchoolImageContainer'
+import MySchoolInfo from '../components/MySchoolInfo'
 
 const MySchoolOverview:React.FC = () => {
   return (
-    <View>
-      <Text>MySchoolOverview</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      
+      <MySchoolInfoContainer/>
+
+      <MySchoolInfo/>
+
+      <MySchoolTeams/>
+
+    </ScrollView>
   )
 }
 
