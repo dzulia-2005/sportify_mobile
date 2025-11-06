@@ -7,8 +7,10 @@ import RegisterPage from '../screens/Register/index';
 import MyAccount from '../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
 import MyTournaments from '../screens/MyTournaments/index';
-import MySchoolTabsNavigator from './MySchoolTabsNavigator';
-import MySchoolTeamDetail from '../screens/MySchool/MySchoolTeamDetailScreen/index';
+
+import MySchoolStackNavigator from './MySchoolStackNavigator';
+
+
 
 const Drawer = createDrawerNavigator();
 
@@ -66,17 +68,9 @@ const AppNavigator = () => {
 
             <Drawer.Screen
               name='MySchool'
-              component={MySchoolTabsNavigator}
+              component={MySchoolStackNavigator}
               options={{
                 title:'ჩემი სკოლა'
-              }}
-            />
-
-            <Drawer.Screen
-              name='MySchoolTeamDetailScreen'
-              component={MySchoolTeamDetail}
-              options={{
-                drawerItemStyle: { display: 'none' }
               }}
             />
 

@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 
+
 const TabsNavigator = () => {
   return (
     <Tab.Navigator
@@ -29,7 +30,6 @@ const TabsNavigator = () => {
         },
       }}
     >
-      {/* სკოლის მიმოხილვა */}
       <Tab.Screen
         name="MySchoolOverview"
         component={MySchoolOverview}
@@ -41,7 +41,6 @@ const TabsNavigator = () => {
         }}
       />
 
-      {/* სკოლის გუნდები */}
       <Tab.Screen
         name="MySchoolTeams"
         component={MySchoolTeams}
@@ -53,7 +52,6 @@ const TabsNavigator = () => {
         }}
       />
 
-      {/* სკოლის ყველა მოთამაშე */}
       <Tab.Screen
         name="MySchoolAllPlayer"
         component={MySchoolAllPlayer}
@@ -65,7 +63,6 @@ const TabsNavigator = () => {
         }}
       />
 
-      {/* ტურნირის გუნდები */}
       <Tab.Screen
         name="TournamentTeams"
         component={TournamentTeams}
@@ -77,7 +74,6 @@ const TabsNavigator = () => {
         }}
       />
 
-      {/* ტურნირის მატჩები */}
       <Tab.Screen
         name="TournamentMatches"
         component={TournamentMatches}
@@ -89,7 +85,6 @@ const TabsNavigator = () => {
         }}
       />
 
-      {/* ტურნირის ქულები */}
       <Tab.Screen
         name="TournamentScores"
         component={TournamentScores}
