@@ -1,11 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MySchoolOverview from "../screens/MySchool/MySchoolOverview";
-import MySchoolTeams from "../screens/MySchool/MySchoolTeams";
-import MySchoolAllPlayer from "../screens/MySchool/MySchoolAllPlayer";
-import TournamentTeams from "../screens/MySchool/TournamentTeams";
-import TournamentMatches from "../screens/MySchool/TournamentMatches";
-import TournamentScores from "../screens/MySchool/TournamentScores";
+import MySchoolOverview from "../../screens/MySchool/MySchoolOverview";
+import MySchoolTeams from "../../screens/MySchool/MySchoolTeams";
+import MySchoolAllPlayer from "../../screens/MySchool/MySchoolAllPlayer";
+import TournamentTeams from "../../screens/MySchool/TournamentTeams";
+import TournamentMatches from "../../screens/MySchool/TournamentMatches";
+import TournamentScores from "../../screens/MySchool/TournamentScores";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();

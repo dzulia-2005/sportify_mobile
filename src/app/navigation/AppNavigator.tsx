@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
-import HomePage from '../screens/Home/index';
-import MatchesPage from '../screens/Login/index';
+import HomePage from '../../screens/Home/index';
+import MatchesPage from '../../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import RegisterPage from '../screens/Register/index';
-import MyAccount from '../screens/MyAccount/index';
+import RegisterPage from '../../screens/Register/index';
+import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
-import MyTournaments from '../screens/MyTournaments/index';
+import MyTournaments from '../../screens/MyTournaments/';
 
 import MySchoolStackNavigator from './MySchoolStackNavigator';
 

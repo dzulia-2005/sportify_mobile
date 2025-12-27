@@ -54,7 +54,7 @@ const MyTeamTable = () => {
               <View key={item.id} style={styles.row}>
                 <View style={[styles.imageContainer, { width: 80 }]}>
                   <Image
-                    source={require('../../../../assets/images/icon-7797704_640.png')}
+                    source={require('../../../../shared/assets/images/icon-7797704_640.png')}
                     style={styles.image}
                   />
                 </View>

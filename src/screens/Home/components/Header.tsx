@@ -4,6 +4,7 @@ import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import {styles} from "../styles/HeaderStyles";
 
+
 const Header:React.FC = () => {
   const navigation = useNavigation();
 
@@ -12,10 +13,10 @@ const Header:React.FC = () => {
       type: 'OPEN_DRAWER'
     });
   };
-
+// ../../../assets/images/sport.jpg
   return (
      <ImageBackground
-            source={require('../../../assets/images/sport.jpg')}
+            source={require('../../../shared/assets/images/sport.jpg')}
             style={styles.header}
             resizeMode="cover"
             imageStyle={styles.imageZoom}

@@ -1,1 +1,1 @@
-export {default} from "./view/MySchoolTeamDetail.tsx";
+export {default} from "./view/MySchoolTeamDetail";

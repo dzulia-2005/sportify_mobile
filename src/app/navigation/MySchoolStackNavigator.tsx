@@ -1,7 +1,7 @@
 import React from 'react';
 import MySchoolTabsNavigator from './MySchoolTabsNavigator';
-import MySchoolTeamDetail from '../screens/MySchool/MySchoolTeamDetailScreen/index';
-import MySchoolPlayer from '../screens/MySchool/MySchoolPlayerDetailScreen/index';
+import MySchoolTeamDetail from '../../screens/MySchool/MySchoolTeamDetailScreen/index';
+import MySchoolPlayer from '../../screens/MySchool/MySchoolPlayerDetailScreen/index';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 

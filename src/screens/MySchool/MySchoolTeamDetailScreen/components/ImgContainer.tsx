@@ -8,7 +8,7 @@ const ImgContainer = () => {
               <View style={styles.ImgContainer}>
                 <Image 
                   style={styles.Img}
-                  source={require('../../../../assets/images/58-583825_team-icon-png-round-transparent-png.png')}
+                  source={require('../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png')}
                   resizeMode='cover'
                   />
               </View>

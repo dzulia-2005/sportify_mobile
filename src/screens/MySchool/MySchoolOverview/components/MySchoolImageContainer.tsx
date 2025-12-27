@@ -9,7 +9,7 @@ const MySchoolImageContainer = () => {
              <Image
                style={styles.image}
                resizeMode='cover'
-               source={require('../../../../assets/images/58-583825_team-icon-png-round-transparent-png.png')}
+               source={require('../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png')}
              />
            </View>
         </View>
