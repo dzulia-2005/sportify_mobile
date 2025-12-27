@@ -1,17 +1,31 @@
-import type { CreateAxiosDefaults } from "axios";
-import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import { BASE_URL } from '@env';
 
-const axiosConfig:CreateAxiosDefaults = {
-    baseURL: "https://sport-managment-backend-1.onrender.com/api"
-}
+console.log(BASE_URL, '<----');
 
-export const httpClient = axios.create(axiosConfig);
+const axiosConfig: CreateAxiosDefaults = {
+  baseURL: BASE_URL,
+};
 
-httpClient.interceptors.request.use((config)=>{
-    const token = localStorage.getItem("accessToken");
-    if(token){
-        config.headers.Authorization = `Bearer ${token}`
-    }
+const httpClient = axios.create(axiosConfig);
+
+httpClient.interceptors.request.use(
+  async (
+    config: InternalAxiosRequestConfig,
+  ): Promise<InternalAxiosRequestConfig> => {
+    const token = await AsyncStorage.getItem('accessToken');
+
+    config.headers = config.headers ?? {};
+
+    (config.headers as Record<string, string>).Authorization = token
+      ? `Bearer ${token}`
+      : '';
 
     return config;
-});
+  },
+  error => Promise.reject(error),
+);
+
+export { httpClient };
