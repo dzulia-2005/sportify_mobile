@@ -8,3 +8,5 @@ export const useLoginMutation = () => {
         mutationKey:["login"]
     });
 }
+
+const x:string = 3
