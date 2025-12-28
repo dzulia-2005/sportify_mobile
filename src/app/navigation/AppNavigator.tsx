@@ -1,5 +1,5 @@
-import { NavigationContainer } from '@react-navigation/native'
-import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import HomePage from '../../screens/Home/index';
 import MatchesPage from '../../screens/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -8,75 +8,72 @@ import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
 import MyTournaments from '../../screens/MyTournaments/';
 
-import MySchoolStackNavigator from './MySchoolStackNavigator';
-
-
+import MySchoolStackNavigator from './MySchoolStachNavigator/MySchoolStackNavigator';
 
 const Drawer = createDrawerNavigator();
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-        
-        <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          screenOptions={{
-            drawerPosition:'right',
-            headerStyle:{backgroundColor:'#0b1b33'},
-            headerShown:true,
-            headerTintColor: '#fff',
-            headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
+      <Drawer.Navigator
+        drawerContent={props => <CustomDrawerContent {...props} />}
+        screenOptions={{
+          drawerPosition: 'right',
+          headerStyle: { backgroundColor: '#0b1b33' },
+          headerShown: true,
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
+        }}
+      >
+        <Drawer.Screen
+          name="Home"
+          component={HomePage}
+          options={{
+            title: 'Home',
+            headerShown: false,
           }}
-        >
-          <Drawer.Screen 
-            name='Home' 
-            component={HomePage} 
-            options={{
-              title:'მთავარი',
-              headerShown:false
-            }}/>
-          <Drawer.Screen 
-            name='Login' 
-            component={MatchesPage} 
-            options={{
-              title:'შესვლა'
-            }}
-          />
-          <Drawer.Screen
-            name='Register'
-            component={RegisterPage}
-            options={{
-              title:'რეგისტრაცია'
-            }}
-          />
+        />
+        <Drawer.Screen
+          name="Login"
+          component={MatchesPage}
+          options={{
+            title: 'Login',
+          }}
+        />
+        <Drawer.Screen
+          name="Register"
+          component={RegisterPage}
+          options={{
+            title: 'Register',
+          }}
+        />
 
-          <Drawer.Screen
-            name='MyAccount'
-            component={MyAccount}
-            options={{
-              title:'ჩემი ანგარიში'
-            }}
-          />
-          
-            <Drawer.Screen
-              name='MyTournaments'
-              component={MyTournaments}
-              options={{
-                title:'ჩემი ტურნირები'
-              }}
-            />
+        <Drawer.Screen
+          name="MyAccount"
+          component={MyAccount}
+          options={{
+            title: 'MyAccount',
+          }}
+        />
 
-            <Drawer.Screen
-              name='MySchool'
-              component={MySchoolStackNavigator}
-              options={{
-                title:'ჩემი სკოლა'
-              }}
-            />
+        <Drawer.Screen
+          name="MyTournaments"
+          component={MyTournaments}
+          options={{
+            title: 'My Tournaments',
+          }}
+        />
 
-        </Drawer.Navigator>
+        <Drawer.Screen
+          name="MySchool"
+          component={MySchoolStackNavigator}
+          options={{
+            title: 'My School',
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default AppNavigator
+export default AppNavigator;

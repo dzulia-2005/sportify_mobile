@@ -1,16 +1,20 @@
-import React from "react";
-import { DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
-import { View, StyleSheet, Alert } from "react-native";
+import React from 'react';
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import { View, StyleSheet, Alert } from 'react-native';
 
 const CustomDrawerContent = (props: any) => {
   const handleLogout = () => {
-    Alert.alert("გასვლა", "გინდა რომ ანგარიშიდან გამოხვიდე?", [
-      { text: "გაუქმება", style: "cancel" },
+    Alert.alert('Logout', 'Do you want to log out of your account?', [
+      { text: 'cancel', style: 'cancel' },
       {
-        text: "გასვლა",
+        text: 'LogOut',
         onPress: () => {
-          console.log("User logged out");
-          props.navigation.replace("Login");
+          console.log('User logged out');
+          props.navigation.replace('Login');
         },
       },
     ]);
@@ -24,7 +28,7 @@ const CustomDrawerContent = (props: any) => {
 
       <View style={styles.bottomSection}>
         <DrawerItem
-          label="გასვლა"
+          label="LogOut"
           labelStyle={styles.logoutLabel}
           onPress={handleLogout}
         />
@@ -36,18 +40,18 @@ const CustomDrawerContent = (props: any) => {
 const styles = StyleSheet.create({
   bottomSection: {
     borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.1)",
+    borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,
     marginBottom: 20,
   },
   logoutLabel: {
-    color: "#fff",
-    backgroundColor:'red',
-    fontWeight: "bold",
-    fontSize:16,
-    borderRadius:10,
-    textAlign:'center',
-    paddingVertical:5
+    color: '#fff',
+    backgroundColor: 'red',
+    fontWeight: 'bold',
+    fontSize: 16,
+    borderRadius: 10,
+    textAlign: 'center',
+    paddingVertical: 5,
   },
 });
 
