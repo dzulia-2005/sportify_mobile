@@ -32,11 +32,11 @@ const MyPlayersScreen = () => {
       <SearchComponent search={search} setSearch={setSearch} />
 
       <View style={styles.tableContainer}>
-        {RenderHeader()}
+        <RenderHeader />
         <FlatList
           data={filteredPlayers}
-          renderItem={RenderItem}
           keyExtractor={item => item.id}
+          renderItem={({ item }) => <RenderItem item={item} />}
         />
       </View>
     </View>

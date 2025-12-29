@@ -4,8 +4,9 @@ import MySchoolTeamDetail from '../../../screens/MySchool/MySchoolTeamDetailScre
 import MySchoolPlayer from '../../../screens/MySchool/MySchoolPlayerDetailScreen/index';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ArrowLeft } from './MySchoolStackNavigatorIcons';
+import { MySchoolStackParamList } from './MySchoolStackNavigator.types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<MySchoolStackParamList>();
 
 const MySchoolStackNavigator = () => {
   return (
