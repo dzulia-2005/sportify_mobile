@@ -72,7 +72,6 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
         onSubmit(data);
       }
 
-      // Reset form
       setName('');
       setMySchoolId('');
       setMatchType(0);
@@ -94,6 +93,7 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
     return date.toLocaleDateString('en-GE', {
       month: 'long',
       day: 'numeric',
+      year: 'numeric',
     });
   };
 
@@ -219,7 +219,7 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
                       matchType === 0 && styles.matchTypeTextSelected,
                     ]}
                   >
-                    🏆 Individual
+                    🏆 Round Robin
                   </Text>
                 </TouchableOpacity>
 
@@ -236,7 +236,24 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
                       matchType === 1 && styles.matchTypeTextSelected,
                     ]}
                   >
-                    👥 Team
+                    👥 Single Elimination
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.matchTypeButton,
+                    matchType === 2 && styles.matchTypeSelected,
+                  ]}
+                  onPress={() => setMatchType(2)}
+                >
+                  <Text
+                    style={[
+                      styles.matchTypeText,
+                      matchType === 2 && styles.matchTypeTextSelected,
+                    ]}
+                  >
+                    🎯 Double Elimination
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -373,7 +390,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   matchTypeContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 12,
   },
   matchTypeButton: {

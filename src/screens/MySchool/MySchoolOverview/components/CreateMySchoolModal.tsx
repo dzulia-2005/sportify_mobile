@@ -2,229 +2,335 @@ import React, { useState } from 'react';
 import {
   Image,
   Modal,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  StyleSheet,
+  TextInput,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import StyledInput from '../../../../shared/components/StyledInput';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 type AddSchoolModalProps = {
   visible: boolean;
   onClose: () => void;
+  onSubmit?: (data: { schoolName: string; photoUri: string | null }) => void;
 };
 
 const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   visible,
   onClose,
+  onSubmit,
 }) => {
-  const [schoolName, setSchoolName] = useState<string>('');
+  const [schoolName, setSchoolName] = useState('');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ schoolName?: string }>({});
+
+  const validate = () => {
+    const newErrors: { schoolName?: string } = {};
+    if (!schoolName.trim()) {
+      newErrors.schoolName = 'Please enter school name';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const pickImage = () => {
     launchImageLibrary(
-      {
-        mediaType: 'photo',
-        quality: 1,
-        selectionLimit: 1,
-      },
+      { mediaType: 'photo', quality: 0.8, selectionLimit: 1 },
       response => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-          return;
-        }
+        if (response.didCancel) return;
 
         if (response.errorCode) {
-          console.log('ImagePicker Error: ', response.errorMessage);
-          Alert.alert('Error', response.errorMessage || 'Something went wrong');
+          Alert.alert('Error', response.errorMessage || 'Image pick failed');
           return;
         }
 
-        if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri;
-          if (uri) {
-            setPhotoUri(uri);
-          }
-        }
+        const uri = response.assets?.[0]?.uri;
+        if (uri) setPhotoUri(uri);
       },
     );
   };
 
   const handleCreate = () => {
-    if (!schoolName.trim()) {
-      Alert.alert('Error', 'Please enter school name');
-      return;
-    }
-    console.log('School Name:', schoolName);
-    console.log('Photo URI:', photoUri);
+    if (!validate()) return;
+
+    onSubmit?.({
+      schoolName: schoolName.trim(),
+      photoUri,
+    });
+
+    setSchoolName('');
+    setPhotoUri(null);
+    setErrors({});
     onClose();
+
+    Alert.alert('Success', 'School created successfully');
   };
 
   return (
-    <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        onRequestClose={onClose}
+    <Modal transparent visible={visible} animationType="slide">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.modalBackground}
       >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContent}>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Create School</Text>
-            </View>
+        <TouchableOpacity style={styles.backdrop} onPress={onClose} />
 
-            <StyledInput
-              placeholder="Enter School Name"
-              value={schoolName}
-              onChangeText={setSchoolName}
-            />
+        <View style={styles.modalContent}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Create School</Text>
+            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
+              <Text style={styles.closeIconText}>✕</Text>
+            </TouchableOpacity>
+          </View>
 
-            <View style={styles.photoSection}>
-              <TouchableOpacity onPress={pickImage} style={styles.photoButton}>
-                <Text style={styles.photoButtonText}>Choose School Logo</Text>
-              </TouchableOpacity>
-
-              {photoUri && (
-                <View style={styles.photoSelectedContainer}>
-                  <Text style={styles.photoSelectedText}>✓ Logo Selected</Text>
-                  <Image
-                    source={{ uri: photoUri }}
-                    style={styles.photoPreview}
-                  />
-                </View>
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>
+                School Name <Text style={styles.required}>*</Text>
+              </Text>
+              <TextInput
+                value={schoolName}
+                onChangeText={text => {
+                  setSchoolName(text);
+                  if (errors.schoolName) setErrors({});
+                }}
+                placeholder="e.g. TBC School"
+                placeholderTextColor="#9ca3af"
+                style={[styles.input, errors.schoolName && styles.inputError]}
+              />
+              {errors.schoolName && (
+                <Text style={styles.errorText}>{errors.schoolName}</Text>
               )}
             </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCreate}
-                style={styles.createButton}
-              >
-                <Text style={styles.createButtonText}>Create School</Text>
-              </TouchableOpacity>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>School Logo</Text>
+
+              {!photoUri ? (
+                <TouchableOpacity
+                  onPress={pickImage}
+                  style={styles.uploadContainer}
+                >
+                  <Text style={styles.uploadIcon}>🏫</Text>
+                  <Text style={styles.uploadText}>Choose School Logo</Text>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.imagePreviewContainer}>
+                  <Image
+                    source={{ uri: photoUri }}
+                    style={styles.imagePreview}
+                  />
+                  <View style={styles.imageOverlay}>
+                    <TouchableOpacity
+                      style={styles.changeImageBtn}
+                      onPress={pickImage}
+                    >
+                      <Text style={styles.btnText}>Change</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.removeImageBtn}
+                      onPress={() => setPhotoUri(null)}
+                    >
+                      <Text style={styles.btnText}>Remove</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
             </View>
+          </ScrollView>
+
+          {/* FOOTER */}
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+              <Text style={styles.footerText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.createButton}
+              onPress={handleCreate}
+            >
+              <Text style={styles.footerText}>Create</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
+      </KeyboardAvoidingView>
+    </Modal>
   );
 };
 
 export default AddSchoolModal;
 
 const styles = StyleSheet.create({
-  container: {
+  modalBackground: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  backdrop: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1000,
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)', // ოდნავ მუქი ფონი
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   modalContent: {
-    width: 340,
-    padding: 24,
-    backgroundColor: '#1f2937', // რბილი, მუქი კარდი
-    borderRadius: 16,
+    backgroundColor: '#1f2937',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '90%',
     shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
     elevation: 10,
   },
   header: {
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#374151',
   },
   headerText: {
+    fontSize: 24,
+    fontWeight: '700',
     color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
   },
-  photoSection: {
-    paddingVertical: 16,
+  closeIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#374151',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  photoButton: {
-    backgroundColor: '#3b82f6', // ცისფერი, მუქი
-    paddingVertical: 12,
+  closeIconText: {
+    fontSize: 20,
+    color: '#9ca3af',
+    fontWeight: '600',
+  },
+  scrollContent: {
     paddingHorizontal: 24,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
+    paddingVertical: 20,
   },
-  photoButtonText: {
-    color: '#fff',
+  inputGroup: {
+    marginBottom: 24,
+  },
+  label: {
+    fontSize: 15,
     fontWeight: '600',
-  },
-  photoSelectedContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  photoSelectedText: {
-    color: '#22c55e', // მწვანე
-    fontSize: 14,
-    fontWeight: '600',
+    color: '#e5e7eb',
     marginBottom: 8,
   },
-  photoPreview: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: '#22c55e',
+  required: {
+    color: '#ef4444',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 20,
-    gap: 12,
-  },
-  closeButton: {
-    backgroundColor: '#ef4444', // წითელი
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+  input: {
+    backgroundColor: '#374151',
+    color: '#fff',
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
+    padding: 14,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  inputError: {
+    borderColor: '#ef4444',
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 13,
+    marginTop: 6,
+    marginLeft: 4,
+  },
+  uploadContainer: {
+    backgroundColor: '#374151',
+    borderRadius: 12,
+    padding: 32,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#4b5563',
+    borderStyle: 'dashed',
+  },
+  uploadIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  uploadText: {
+    color: '#e5e7eb',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  imagePreviewContainer: {
+    position: 'relative',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  imagePreview: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+  },
+  imageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    gap: 8,
+    padding: 12,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+  },
+  changeImageBtn: {
+    flex: 1,
+    backgroundColor: '#3b82f6',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  removeImageBtn: {
+    flex: 1,
+    backgroundColor: '#ef4444',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  btnText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  footer: {
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    gap: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#374151',
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: '#374151',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
   },
   createButton: {
-    backgroundColor: '#22c55e', // მწვანე
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    flex: 1,
+    backgroundColor: '#10b981',
+    paddingVertical: 16,
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
+    alignItems: 'center',
   },
-  closeButtonText: {
+  footerText: {
     color: '#fff',
-    fontWeight: 'bold',
-  },
-  createButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '700',
+    fontSize: 16,
   },
 });
