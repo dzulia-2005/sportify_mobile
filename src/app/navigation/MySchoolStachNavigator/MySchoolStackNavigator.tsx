@@ -2,9 +2,12 @@ import React from 'react';
 import MySchoolTabsNavigator from '../MySchoolTabsNavigator/MySchoolTabsNavigator';
 import MySchoolTeamDetail from '../../../screens/MySchool/MySchoolTeamDetailScreen/index';
 import MySchoolPlayer from '../../../screens/MySchool/MySchoolPlayerDetailScreen/index';
+import MySchoolTournamentTeamsDetailScreen from '../../../screens/MySchool/TournamentTeamsDetailScreen/index';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ArrowLeft } from './MySchoolStackNavigatorIcons';
-import { MySchoolStackParamList } from './MySchoolStackNavigator.types';
+import {
+  HeaderLeft,
+  MySchoolStackParamList,
+} from './MySchoolStackNavigator.types';
 
 const Stack = createStackNavigator<MySchoolStackParamList>();
 
@@ -26,19 +29,28 @@ const MySchoolStackNavigator = () => {
       <Stack.Screen
         name="MySchoolTeamDetailScreen"
         component={MySchoolTeamDetail}
-        options={({ navigation }) => ({
+        options={() => ({
           headerTitle: '',
           headerTitleAlign: 'center',
-          headerLeft: () => <ArrowLeft onPress={() => navigation.goBack()} />,
+          headerLeft: HeaderLeft,
         })}
       />
 
       <Stack.Screen
         name="MySchoolPlayerDetailTeam"
         component={MySchoolPlayer}
-        options={({ navigation }) => ({
+        options={() => ({
           headerTitle: '',
-          headerLeft: () => <ArrowLeft onPress={() => navigation.goBack()} />,
+          headerLeft: HeaderLeft,
+        })}
+      />
+
+      <Stack.Screen
+        name="MySchoolTeamsDetailScreen"
+        component={MySchoolTournamentTeamsDetailScreen}
+        options={() => ({
+          headerTitle: '',
+          headerLeft: HeaderLeft,
         })}
       />
     </Stack.Navigator>

@@ -31,7 +31,11 @@ const MySchoolTeams = () => {
         keyExtractor={item => item.id}
         contentContainerStyle={styles.table}
         renderItem={({ item }) => (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              console.log(item.name);
+            }}
+          >
             <View style={styles.row}>
               <View style={styles.logoContainer}>
                 <Image
