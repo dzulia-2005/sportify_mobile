@@ -6,7 +6,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../../screens/Register/index';
 import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
-import MyTournaments from '../../screens/MyTournaments/';
 
 import MySchoolStackNavigator from './MySchoolStachNavigator/MySchoolStackNavigator';
 
@@ -53,14 +52,6 @@ const AppNavigator = () => {
           component={MyAccount}
           options={{
             title: 'MyAccount',
-          }}
-        />
-
-        <Drawer.Screen
-          name="MyTournaments"
-          component={MyTournaments}
-          options={{
-            title: 'My Tournaments',
           }}
         />
 
