@@ -3,6 +3,7 @@ import MySchoolTabsNavigator from '../MySchoolTabsNavigator/MySchoolTabsNavigato
 import MySchoolTeamDetail from '../../../screens/MySchool/MySchoolTeamDetailScreen/index';
 import MySchoolPlayer from '../../../screens/MySchool/MySchoolPlayerDetailScreen/index';
 import MySchoolTournamentTeamsDetailScreen from '../../../screens/MySchool/TournamentTeamsDetailScreen/index';
+import MySchoolTournamentMatches from '../../../screens/MySchool/MySchoolTournamentMatches/index';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   HeaderLeft,
@@ -48,6 +49,15 @@ const MySchoolStackNavigator = () => {
       <Stack.Screen
         name="MySchoolTeamsDetailScreen"
         component={MySchoolTournamentTeamsDetailScreen}
+        options={() => ({
+          headerTitle: '',
+          headerLeft: HeaderLeft,
+        })}
+      />
+
+      <Stack.Screen
+        name="MySchoolTournamentMatches"
+        component={MySchoolTournamentMatches}
         options={() => ({
           headerTitle: '',
           headerLeft: HeaderLeft,
