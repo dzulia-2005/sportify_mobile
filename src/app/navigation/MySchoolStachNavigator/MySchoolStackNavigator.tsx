@@ -9,6 +9,7 @@ import {
   HeaderLeft,
   MySchoolStackParamList,
 } from './MySchoolStackNavigator.types';
+import MySchoolTournamentScores from '../../../screens/MySchool/MySchoolTournamentScores';
 
 const Stack = createStackNavigator<MySchoolStackParamList>();
 
@@ -58,6 +59,15 @@ const MySchoolStackNavigator = () => {
       <Stack.Screen
         name="MySchoolTournamentMatches"
         component={MySchoolTournamentMatches}
+        options={() => ({
+          headerTitle: '',
+          headerLeft: HeaderLeft,
+        })}
+      />
+
+      <Stack.Screen
+        name="MySchoolTournamentScores"
+        component={MySchoolTournamentScores}
         options={() => ({
           headerTitle: '',
           headerLeft: HeaderLeft,

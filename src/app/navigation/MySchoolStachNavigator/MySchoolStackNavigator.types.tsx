@@ -8,6 +8,7 @@ export type MySchoolStackParamList = {
   MySchoolPlayerDetailTeam: undefined;
   MySchoolTeamsDetailScreen: undefined;
   MySchoolTournamentMatches: undefined;
+  MySchoolTournamentScores: undefined;
 };
 
 export const HeaderLeft = () => {
