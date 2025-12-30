@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStachNavigator/MySchoolStackNavigator.types';
+import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 import { useNavigation } from '@react-navigation/native';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;

@@ -9,15 +9,15 @@ import type {
   RegisterResponse,
 } from './index.type';
 
-export const Register = ({
-  payload,
-}: RegisterPayload): Promise<RegisterResponse> => {
+export const Register = (
+  payload: RegisterPayload,
+): Promise<RegisterResponse> => {
   return httpClient
     .post<RegisterResponse>(Auth_Endpoints.REGISTER, payload)
     .then(res => res.data);
 };
 
-export const Login = ({ payload }: LoginPayload): Promise<LoginResponse> => {
+export const Login = (payload: LoginPayload): Promise<LoginResponse> => {
   return httpClient
     .post<LoginResponse>(Auth_Endpoints.LOGIN, payload)
     .then(res => res.data);

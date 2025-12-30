@@ -6,10 +6,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../../screens/Register/index';
 import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
+import MySchoolStackNavigator from './MySchoolStackNavigator/MySchoolStackNavigator';
+import { DrawerNavigationType } from './DrawerNavigator.type';
 
-import MySchoolStackNavigator from './MySchoolStachNavigator/MySchoolStackNavigator';
-
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
 const AppNavigator = () => {
   return (

@@ -1,59 +1,66 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0b1b33",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#0b1b33',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 30,
   },
   title: {
-    color: "#00b4d8",
+    color: '#00b4d8',
     fontSize: 36,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   subtitle: {
-    color: "#cbd5e1",
+    color: '#cbd5e1',
     fontSize: 16,
     marginBottom: 40,
   },
   input: {
-    width: "100%",
-    backgroundColor: "#11294f",
+    width: '100%',
+    backgroundColor: '#11294f',
     borderRadius: 10,
     padding: 14,
     marginBottom: 15,
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
   },
   button: {
-    width: "100%",
-    backgroundColor: "#0077b6",
+    width: '100%',
+    backgroundColor: '#0077b6',
     borderRadius: 10,
     padding: 14,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 17,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   forgot: {
-    color: "#90e0ef",
+    color: '#90e0ef',
     marginTop: 15,
   },
   bottomTextContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 30,
   },
   bottomText: {
-    color: "#a0aec0",
+    color: '#a0aec0',
   },
   registerText: {
-    color: "#00b4d8",
-    fontWeight: "600",
+    color: '#00b4d8',
+    fontWeight: '600',
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 14,
+    marginTop: 4,
+    marginBottom: 8,
+    fontWeight: '500',
   },
 });

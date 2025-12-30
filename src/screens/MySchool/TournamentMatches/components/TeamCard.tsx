@@ -4,7 +4,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStachNavigator/MySchoolStackNavigator.types';
+import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
 

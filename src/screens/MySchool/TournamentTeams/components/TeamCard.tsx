@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStachNavigator/MySchoolStackNavigator.types';
+import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
