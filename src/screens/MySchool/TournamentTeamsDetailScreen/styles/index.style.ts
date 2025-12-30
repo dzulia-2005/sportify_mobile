@@ -85,4 +85,17 @@ export const styles = StyleSheet.create({
     color: '#9ca3af',
     fontSize: 16,
   },
+  AddTeamBtnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  AddBtn: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 10,
+  },
+  AddBtnText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });

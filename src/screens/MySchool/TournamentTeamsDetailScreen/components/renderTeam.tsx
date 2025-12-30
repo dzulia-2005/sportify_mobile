@@ -24,7 +24,6 @@ const RenderTeam: React.FC<RenderTeamProps> = ({ item }) => {
           </Text>
         </View>
       </View>
-      <Text style={styles.arrow}>›</Text>
     </TouchableOpacity>
   );
 };

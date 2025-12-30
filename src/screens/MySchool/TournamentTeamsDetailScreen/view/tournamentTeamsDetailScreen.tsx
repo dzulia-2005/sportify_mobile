@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/index.style';
 import RenderTeam from '../components/renderTeam';
 import NoTeamsAvailable from '../components/NoTeamsAvailable';
@@ -22,7 +22,13 @@ const TournamentTeamsDetailScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Tournament Teams</Text>
+        <View style={styles.AddTeamBtnContainer}>
+          <Text style={styles.header}>Tournament Teams</Text>
+          <TouchableOpacity style={styles.AddBtn}>
+            <Text style={styles.AddBtnText}>Add Team +</Text>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.teamCount}>{teams.length} Teams</Text>
       </View>
       <FlatList
