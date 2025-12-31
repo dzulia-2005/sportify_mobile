@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/index.styles';
 import { HeaderProp } from '../types/index.type';
+import EditMySchoolPlayerModal from './editPlayerModal';
 
 const mockPlayer = {
   id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -23,6 +24,7 @@ const mockPlayer = {
 };
 
 const Header: React.FC<HeaderProp> = ({ imageSource }) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   return (
     <View style={styles.avatarContainer}>
       <Image source={imageSource} style={styles.avatar} />
@@ -32,7 +34,10 @@ const Header: React.FC<HeaderProp> = ({ imageSource }) => {
       <Text style={styles.position}>{mockPlayer.position}</Text>
       <Text style={styles.team}>{mockPlayer.teamName}</Text>
       <View style={styles.actionRow}>
-        <TouchableOpacity style={styles.editBtn}>
+        <TouchableOpacity
+          style={styles.editBtn}
+          onPress={() => setIsOpenModal(true)}
+        >
           <Text style={styles.actionText}>Edit</Text>
         </TouchableOpacity>
 
@@ -40,6 +45,12 @@ const Header: React.FC<HeaderProp> = ({ imageSource }) => {
           <Text style={styles.actionText}>Delete</Text>
         </TouchableOpacity>
       </View>
+      {isOpenModal && (
+        <EditMySchoolPlayerModal
+          visible={isOpenModal}
+          onClose={() => setIsOpenModal(false)}
+        />
+      )}
     </View>
   );
 };
