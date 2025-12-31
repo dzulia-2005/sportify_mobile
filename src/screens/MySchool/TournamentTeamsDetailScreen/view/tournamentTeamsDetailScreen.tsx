@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/index.style';
 import RenderTeam from '../components/renderTeam';
 import NoTeamsAvailable from '../components/NoTeamsAvailable';
 import { Team } from '../types/index.type';
+import AddTeamModal from '../components/AddTeamsModal';
 
 const teams: Team[] = [
   {
@@ -18,13 +19,16 @@ const teams: Team[] = [
 
 const TournamentTeamsDetailScreen: React.FC = () => {
   const renderTeam = ({ item }: { item: Team }) => <RenderTeam item={item} />;
-
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.AddTeamBtnContainer}>
           <Text style={styles.header}>Tournament Teams</Text>
-          <TouchableOpacity style={styles.AddBtn}>
+          <TouchableOpacity
+            style={styles.AddBtn}
+            onPress={() => setIsOpenModal(true)}
+          >
             <Text style={styles.AddBtnText}>Add Team +</Text>
           </TouchableOpacity>
         </View>
@@ -39,6 +43,12 @@ const TournamentTeamsDetailScreen: React.FC = () => {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
+      {isOpenModal && (
+        <AddTeamModal
+          visible={isOpenModal}
+          onClose={() => setIsOpenModal(false)}
+        />
+      )}
     </View>
   );
 };

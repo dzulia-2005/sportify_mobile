@@ -98,4 +98,109 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  teamCardContainer: {
+    backgroundColor: '#1e293b',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    marginHorizontal: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#334155',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+
+  teamLogoWrapper: {
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    backgroundColor: '#0f172a',
+    alignSelf: 'center',
+    marginBottom: 12,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#3b82f6',
+    shadowColor: '#3b82f6',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+
+  teamLogoImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+
+  teamDetailsSection: {
+    alignItems: 'center',
+    gap: 8,
+  },
+
+  teamTitleText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    letterSpacing: 0.3,
+  },
+
+  playersCountBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#1e3a8a',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginTop: 4,
+  },
+
+  playersCountLabel: {
+    color: '#93c5fd',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  actionButtonsContainer: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    flexDirection: 'row', // ღილაკები გვერდიგვერდ
+    zIndex: 10,
+  },
+
+  editButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#f59e0b',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#f59e0b',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 3,
+    marginRight: 6, // ეს ქმნის spacing პირველ ღილაკსა და მეორე შორის
+  },
+
+  removeButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#ef4444',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#ef4444',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 3,
+  },
 });
