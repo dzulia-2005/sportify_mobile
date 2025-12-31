@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Image,
   Modal,
@@ -13,30 +15,44 @@ import {
   Platform,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { SchoolSchema } from './School.schema';
+import { useCreateMySchoolMutation } from '../../../../feature/mySchool/create/model/useCreateMySchoolMutation';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 type AddSchoolModalProps = {
   visible: boolean;
   onClose: () => void;
-  onSubmit?: (data: { schoolName: string; photoUri: string | null }) => void;
+};
+
+type SchoolDefaultTypes = {
+  Name: string;
+  LogoFile: {
+    uri: string;
+  };
+};
+
+const SchoolDefaultValues: SchoolDefaultTypes = {
+  Name: '',
+  LogoFile: {
+    uri: '',
+  },
 };
 
 const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   visible,
   onClose,
-  onSubmit,
 }) => {
-  const [schoolName, setSchoolName] = useState('');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
-  const [errors, setErrors] = useState<{ schoolName?: string }>({});
-
-  const validate = () => {
-    const newErrors: { schoolName?: string } = {};
-    if (!schoolName.trim()) {
-      newErrors.schoolName = 'Please enter school name';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    defaultValues: SchoolDefaultValues,
+    resolver: zodResolver(SchoolSchema),
+  });
+  const { mutate: createSchool, isPending } = useCreateMySchoolMutation();
 
   const pickImage = () => {
     launchImageLibrary(
@@ -49,26 +65,38 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
           return;
         }
 
-        const uri = response.assets?.[0]?.uri;
-        if (uri) setPhotoUri(uri);
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
+        }
+
+        setPhotoUri(asset.uri);
+        setValue(
+          'LogoFile',
+          {
+            uri: asset.uri,
+          },
+          { shouldValidate: true },
+        );
       },
     );
   };
 
-  const handleCreate = () => {
-    if (!validate()) return;
-
-    onSubmit?.({
-      schoolName: schoolName.trim(),
-      photoUri,
+  const handleCreate = (payload: SchoolDefaultTypes) => {
+    const formData = new FormData();
+    formData.append('Name', payload.Name);
+    formData.append('LogoFile', {
+      uri: payload.LogoFile.uri,
     });
 
-    setSchoolName('');
-    setPhotoUri(null);
-    setErrors({});
-    onClose();
-
-    Alert.alert('Success', 'School created successfully');
+    createSchool(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
   };
 
   return (
@@ -92,18 +120,21 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
               <Text style={styles.label}>
                 School Name <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                value={schoolName}
-                onChangeText={text => {
-                  setSchoolName(text);
-                  if (errors.schoolName) setErrors({});
-                }}
-                placeholder="e.g. TBC School"
-                placeholderTextColor="#9ca3af"
-                style={[styles.input, errors.schoolName && styles.inputError]}
+              <Controller
+                name="Name"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <TextInput
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder="e.g. TBC School"
+                    placeholderTextColor="#9ca3af"
+                    style={[styles.input]}
+                  />
+                )}
               />
-              {errors.schoolName && (
-                <Text style={styles.errorText}>{errors.schoolName}</Text>
+              {errors.Name && (
+                <Text style={styles.errorText}>{errors.Name?.message}</Text>
               )}
             </View>
 
@@ -133,26 +164,42 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.removeImageBtn}
-                      onPress={() => setPhotoUri(null)}
+                      onPress={() => {
+                        setPhotoUri(null);
+                        setValue(
+                          'LogoFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        );
+                      }}
                     >
                       <Text style={styles.btnText}>Remove</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               )}
+              {errors.LogoFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.LogoFile.uri.message}
+                </Text>
+              )}
             </View>
           </ScrollView>
 
-          {/* FOOTER */}
           <View style={styles.footer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.footerText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.createButton}
-              onPress={handleCreate}
+              onPress={handleSubmit(handleCreate)}
+              disabled={isPending}
             >
-              <Text style={styles.footerText}>Create</Text>
+              {isPending ? (
+                <Text style={styles.footerText}>Creating...</Text>
+              ) : (
+                <Text style={styles.footerText}>Create</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>

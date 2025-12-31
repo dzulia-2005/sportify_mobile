@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Image,
   Modal,
@@ -13,32 +15,43 @@ import {
   Platform,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { addTeamSchema } from './addTeam.schema';
+import { useCreateMySchoolTeams } from '../../../../feature/mySchoolTeams/create/model/useCreateMySchoolTeams';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 type AddTeamModalProps = {
   visible: boolean;
   onClose: () => void;
-  onSubmit?: (data: { teamName: string; photoUri: string | null }) => void;
 };
 
-const AddTeamModal: React.FC<AddTeamModalProps> = ({
-  visible,
-  onClose,
-  onSubmit,
-}) => {
-  const [photoUri, setPhotoUri] = useState<string | null>(null);
-  const [teamName, setTeamName] = useState<string>('');
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!teamName.trim()) {
-      newErrors.teamName = 'Please enter team name';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+type AddTeamType = {
+  Name: string;
+  MySchoolId: string;
+  LogoFile: {
+    uri: string;
   };
+};
+
+const AddTeamDefaultValues: AddTeamType = {
+  Name: '',
+  MySchoolId: '',
+  LogoFile: {
+    uri: '',
+  },
+};
+
+const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    defaultValues: AddTeamDefaultValues,
+    resolver: zodResolver(addTeamSchema),
+  });
+  const { mutate: createTeam, isPending } = useCreateMySchoolTeams();
 
   const pickImage = () => {
     launchImageLibrary(
@@ -57,44 +70,39 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
           return;
         }
 
-        if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri;
-          if (uri) {
-            setPhotoUri(uri);
-          }
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
         }
+
+        setPhotoUri(asset.uri);
+        setValue(
+          'LogoFile',
+          {
+            uri: asset.uri,
+          },
+          { shouldValidate: true },
+        );
       },
     );
   };
 
-  const handleCreate = () => {
-    if (validateForm()) {
-      const data = {
-        teamName: teamName.trim(),
-        photoUri,
-      };
+  const handleCreate = (payload: AddTeamType) => {
+    const formData = new FormData();
+    formData.append('Name', payload.Name);
+    formData.append('MySchoolId', payload.MySchoolId);
+    formData.append('LogoFile', {
+      uri: payload.LogoFile,
+    });
 
-      if (onSubmit) {
-        onSubmit(data);
-      }
-
-      // Reset form
-      setTeamName('');
-      setPhotoUri(null);
-      setErrors({});
-
-      onClose();
-      Alert.alert('Success', 'Team created successfully');
-    }
-  };
-
-  const handleClose = () => {
-    setErrors({});
-    onClose();
-  };
-
-  const removeImage = () => {
-    setPhotoUri(null);
+    createTeam(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
   };
 
   return (
@@ -102,7 +110,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
       animationType="slide"
       transparent
       visible={visible}
-      onRequestClose={handleClose}
+      onRequestClose={onClose}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -111,13 +119,13 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
         <TouchableOpacity
           style={styles.backdrop}
           activeOpacity={1}
-          onPress={handleClose}
+          onPress={onClose}
         />
 
         <View style={styles.modalContent}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Create School Team</Text>
-            <TouchableOpacity onPress={handleClose} style={styles.closeIcon}>
+            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
               <Text style={styles.closeIconText}>✕</Text>
             </TouchableOpacity>
           </View>
@@ -130,18 +138,21 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
               <Text style={styles.label}>
                 Team Name <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input, errors.teamName && styles.inputError]}
-                placeholder="e.g. Warriors, Eagles, Champions"
-                placeholderTextColor="#9ca3af"
-                value={teamName}
-                onChangeText={text => {
-                  setTeamName(text);
-                  if (errors.teamName) setErrors({ ...errors, teamName: '' });
-                }}
+              <Controller
+                name="Name"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="e.g. Warriors, Eagles, Champions"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
-              {errors.teamName && (
-                <Text style={styles.errorText}>{errors.teamName}</Text>
+              {errors.Name && (
+                <Text style={styles.errorText}>{errors.Name?.message}</Text>
               )}
             </View>
 
@@ -177,7 +188,14 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
                       <Text style={styles.changeImageText}>Change</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={removeImage}
+                      onPress={() => {
+                        setPhotoUri(null);
+                        setValue(
+                          'LogoFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        );
+                      }}
                       style={styles.removeImageBtn}
                       activeOpacity={0.8}
                     >
@@ -186,13 +204,18 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
                   </View>
                 </View>
               )}
+              {errors.LogoFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.LogoFile.uri.message}
+                </Text>
+              )}
             </View>
           </ScrollView>
 
           <View style={styles.footer}>
             <TouchableOpacity
               style={styles.cancelButton}
-              onPress={handleClose}
+              onPress={onClose}
               activeOpacity={0.8}
             >
               <Text style={styles.cancelButtonText}>Cancel</Text>
@@ -200,10 +223,15 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
 
             <TouchableOpacity
               style={styles.createButton}
-              onPress={handleCreate}
+              onPress={handleSubmit(handleCreate)}
               activeOpacity={0.8}
+              disabled={isPending}
             >
-              <Text style={styles.createButtonText}>Create Team</Text>
+              {isPending ? (
+                <Text style={styles.createButtonText}>Creating...</Text>
+              ) : (
+                <Text style={styles.createButtonText}>Create Team</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
