@@ -1,100 +1,145 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:'#0b1830'
+  container: {
+    flex: 1,
+    backgroundColor: '#0b1830',
+  },
+  ImgMainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  ImgContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    overflow: 'hidden',
+    borderWidth: 4,
+    borderColor: '#3b82f6',
+    shadowColor: '#3b82f6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  Img: {
+    width: '100%',
+    height: '100%',
   },
 
-  ImgContainer:{
-    width:150,
-    height:150,
-    overflow:'hidden',
-    borderRadius:'50%',
-    margin:20
+  TeamInfoMainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  TeamDetailInfo: {
+    backgroundColor: '#1e293b',
+    width: '100%',
+    maxWidth: 400,
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: '#334155',
   },
 
-  Img:{
-    width:150,
-    height:150,
-    borderRadius:'50%',
+  TeamInfoTitle: {
+    color: '#fff',
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+    letterSpacing: 0.5,
+  },
+  TeamInfoPlayersCount: {
+    color: '#94a3b8',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    fontWeight: '500',
+  },
 
+  ButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
   },
-  ImgMainContainer:{
-    flexDirection:'row',
-    justifyContent:'center'
+  EditBtnContainer: {
+    flex: 1,
+    backgroundColor: '#f59e0b',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#f59e0b',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  TeamDetailInfo:{
-    backgroundColor:'#1f2937',
-    width:'80%',
-    height:200,
-    borderRadius:10
+  DeleteBtnContainer: {
+    flex: 1,
+    backgroundColor: '#ef4444',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#ef4444',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  TeamInfoMainContainer:{
-    flexDirection:'row',
-    justifyContent:'center'
+  EditBtnTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 0.3,
   },
-  TeamInfoTitle:{
-    color:'#fff',
-    fontSize:24,
-    fontWeight:'bold',
-    textAlign:'center',
-    paddingTop:10,
-    paddingBottom:5
+
+  playerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginTop: 20,
   },
-  TeamInfoPlayersCount:{
-    color:'#fff',
-    fontSize:16,
-    paddingLeft:10,
-    paddingBottom:50
+  playerTitle: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
-  ButtonsContainer:{
-    flexDirection:'row',
-    justifyContent:'space-around',
-    alignItems:'center'
+  AddBtnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#10b981',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    shadowColor: '#10b981',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  EditBtnContainer:{
-    backgroundColor:'#d08700',
-    paddingVertical:10,
-    paddingHorizontal:20,
-    borderRadius:10
+  AddPlayerBtn: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 6,
+    letterSpacing: 0.3,
   },
-  EditBtnTitle:{
-    color:'#fff',
-    fontWeight:'bold',
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center'
-  },
-  DeleteBtnContainer:{
-    backgroundColor:'#e7000b',
-    paddingVertical:10,
-    paddingHorizontal:20,
-    borderRadius:10
-  },
-  playerContainer:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    paddingHorizontal:40,
-    paddingTop:40,
-    alignItems:'center'
-  },
-  playerTitle:{
-    color:'#fff',
-    fontSize:16,
-    fontWeight:'bold'
-  },
-  AddBtnContainer:{
-    flexDirection:'row',
-    alignItems:'center',
-    backgroundColor:'#00c951',
-    borderRadius:10,
-    paddingVertical:10,
-    paddingHorizontal:20
-  },
-  AddPlayerBtn:{
-    color:'#fff',
-    fontSize:16,
-    fontWeight:'bold'
-  }
-})
+});

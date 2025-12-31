@@ -1,9 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import HomePage from '../../screens/Home/index';
-import MatchesPage from '../../screens/Login/index';
+import MatchesPage from '../../screens/Auth/Login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import RegisterPage from '../../screens/Register/index';
+import RegisterPage from '../../screens/Auth/Register/index';
 import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
 import MySchoolStackNavigator from './MySchoolStackNavigator/MySchoolStackNavigator';

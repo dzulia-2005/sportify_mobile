@@ -3,11 +3,11 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/LoginStyles';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationType } from '../../../app/navigation/DrawerNavigator.type';
+import { DrawerNavigationType } from '../../../../app/navigation/DrawerNavigator.type';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from './schema';
-import { useLoginMutation } from '../../../feature/auth/login/model/useLoginMutation';
+import { useLoginMutation } from '../../../../feature/auth/login/model/useLoginMutation';
 import axios from 'axios';
 import { Toast } from '@ant-design/react-native';
 

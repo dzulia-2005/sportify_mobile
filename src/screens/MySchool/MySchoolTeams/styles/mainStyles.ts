@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
   HeaderBtnTitle: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: '600',
   },
 
   CardListContainer: {

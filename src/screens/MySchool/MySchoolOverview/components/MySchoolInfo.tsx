@@ -9,12 +9,14 @@ const MySchoolInfo = () => {
     <View style={styles.InfoContainer}>
       <Text style={styles.schoolName}>თბილისის სახელმწიფო სკოლა</Text>
       <Text style={styles.schoolFounded}>დაარსდა: 2008 წელი</Text>
+
       <TouchableOpacity
         onPress={() => setIsOpenModal(true)}
         style={styles.AddSchoolBtn}
       >
         <Text style={styles.AddSchoolBtnTitle}>Create School +</Text>
       </TouchableOpacity>
+
       {isOpenModal && (
         <AddSchoolModal
           visible={isOpenModal}

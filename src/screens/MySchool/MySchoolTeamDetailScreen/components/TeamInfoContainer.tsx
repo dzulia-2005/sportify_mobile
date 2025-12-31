@@ -7,28 +7,36 @@ import EditSchoolTeamModal from './EditSchoolTeamModal';
 
 const TeamInfoContainer = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
   return (
     <View style={styles.TeamInfoMainContainer}>
       <View style={styles.TeamDetailInfo}>
+        {/* Team Header */}
         <Text style={styles.TeamInfoTitle}>U16 Team</Text>
-        <Text style={styles.TeamInfoPlayersCount}>Team Players : 1 </Text>
+        <Text style={styles.TeamInfoPlayersCount}>👥 Team Players: 1</Text>
 
+        {/* Action Buttons */}
         <View style={styles.ButtonsContainer}>
           <TouchableOpacity
             onPress={() => setIsOpenModal(true)}
             style={styles.EditBtnContainer}
+            activeOpacity={0.8}
           >
-            <Text style={styles.EditBtnTitle}>
-              Edit <Feather name="edit-3" color="#fff" size={20} />
-            </Text>
+            <Feather name="edit-3" color="#fff" size={18} />
+            <Text style={[styles.EditBtnTitle, { marginLeft: 6 }]}>Edit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.DeleteBtnContainer}>
-            <Text style={styles.EditBtnTitle}>
-              Delete <AntDesign name="delete" color="#fff" size={20} />
-            </Text>
+          <TouchableOpacity
+            onPress={() => {}}
+            style={styles.DeleteBtnContainer}
+            activeOpacity={0.8}
+          >
+            <AntDesign name="delete" color="#fff" size={18} />
+            <Text style={[styles.EditBtnTitle, { marginLeft: 6 }]}>Delete</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Modal */}
         {isOpenModal && (
           <EditSchoolTeamModal
             visible={isOpenModal}
