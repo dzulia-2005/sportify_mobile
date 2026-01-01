@@ -1,5 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Modal,
@@ -10,10 +13,34 @@ import {
   View,
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { editSchoolTeamSchema } from './editSchoolTeam.schema';
+import { useUpdateMySchoolTeams } from '../../../../feature/mySchoolTeams/update/model/useUpdateMySchoolTeams';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 type EditSchoolTeamModal = {
   visible: boolean;
   onClose: () => void;
+};
+
+type ImageFile = {
+  uri: string;
+  name?: string;
+  type?: string;
+};
+
+type EditSchoolTeamsType = {
+  Name: string;
+  LogoFile: ImageFile;
+};
+
+const EditSchoolTeamsInitialValues: EditSchoolTeamsType = {
+  Name: '',
+  LogoFile: {
+    uri: '',
+    name: '',
+    type: '',
+  },
 };
 
 const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
@@ -21,6 +48,65 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
   onClose,
 }) => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue,
+  } = useForm<EditSchoolTeamsType>({
+    defaultValues: EditSchoolTeamsInitialValues,
+    resolver: zodResolver(editSchoolTeamSchema),
+  });
+
+  const PickImage = () => {
+    launchImageLibrary(
+      { mediaType: 'photo', quality: 0.8, selectionLimit: 1 },
+      response => {
+        if (response.didCancel) return;
+        if (response.errorCode) {
+          Alert.alert('Error', response.errorMessage || 'Failed to pick image');
+          return;
+        }
+
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
+        }
+
+        setPhotoUrl(asset.uri);
+        setValue(
+          'LogoFile',
+          {
+            uri: asset.uri,
+            name: asset.fileName ?? 'image.jpg',
+            type: asset.type ?? 'image/jpeg',
+          },
+          { shouldValidate: true },
+        );
+      },
+    );
+  };
+
+  const { mutate: EditSchoolTeam, isPending } = useUpdateMySchoolTeams('2');
+
+  const handleEditTeam = (payload: EditSchoolTeamsType) => {
+    const formData = new FormData();
+    formData.append('Name', payload.Name);
+    formData.append('LogoFile', {
+      uri: payload.LogoFile.uri,
+      name: payload.LogoFile.name ?? 'image.jpg',
+      type: payload.LogoFile.type ?? 'image/jpeg',
+    } as any);
+
+    EditSchoolTeam(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
+  };
 
   return (
     <Modal transparent visible={visible} animationType="slide">
@@ -42,7 +128,21 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
               <Text style={styles.label}>
                 Name<Text style={styles.required}>*</Text>
               </Text>
-              <TextInput style={styles.input} placeholder="Team Name" />
+              <Controller
+                name="Name"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={styles.input}
+                    placeholder="Team Name"
+                  />
+                )}
+              />
+              {errors.Name && (
+                <Text style={styles.errorText}>{errors.Name?.message}</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
@@ -50,7 +150,10 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
                 Logo<Text style={styles.required}>*</Text>
               </Text>
               {!photoUrl ? (
-                <TouchableOpacity style={styles.UploadImageContainer}>
+                <TouchableOpacity
+                  style={styles.UploadImageContainer}
+                  onPress={PickImage}
+                >
                   <Text style={styles.UploadImageContainerText}>
                     Choose Team File
                   </Text>
@@ -62,18 +165,33 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
                     source={{ uri: photoUrl }}
                   />
                   <View>
-                    <TouchableOpacity style={styles.changeBtnContainer}>
+                    <TouchableOpacity
+                      onPress={PickImage}
+                      style={styles.changeBtnContainer}
+                    >
                       <Text style={styles.changeBtnContainer}>Change</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                       style={styles.deleteBtnContainer}
-                      onPress={() => setPhotoUrl(null)}
+                      onPress={() => {
+                        setPhotoUrl(null);
+                        setValue(
+                          'LogoFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        );
+                      }}
                     >
                       <Text style={styles.btnText}>Remove</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+              )}
+              {errors.LogoFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.LogoFile.uri.message}
+                </Text>
               )}
             </View>
           </ScrollView>
@@ -83,8 +201,16 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
               <Text style={styles.BtnText}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onClose} style={styles.createBtn}>
-              <Text style={styles.BtnText}>Create</Text>
+            <TouchableOpacity
+              onPress={handleSubmit(handleEditTeam)}
+              style={styles.createBtn}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <Text style={styles.BtnText}>Editing...</Text>
+              ) : (
+                <Text style={styles.BtnText}>Edit</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -244,5 +370,11 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 14,
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 13,
+    marginTop: 6,
+    marginLeft: 4,
   },
 });

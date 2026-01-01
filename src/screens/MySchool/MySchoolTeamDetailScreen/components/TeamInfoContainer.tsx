@@ -11,11 +11,9 @@ const TeamInfoContainer = () => {
   return (
     <View style={styles.TeamInfoMainContainer}>
       <View style={styles.TeamDetailInfo}>
-        {/* Team Header */}
         <Text style={styles.TeamInfoTitle}>U16 Team</Text>
         <Text style={styles.TeamInfoPlayersCount}>👥 Team Players: 1</Text>
 
-        {/* Action Buttons */}
         <View style={styles.ButtonsContainer}>
           <TouchableOpacity
             onPress={() => setIsOpenModal(true)}
@@ -36,7 +34,6 @@ const TeamInfoContainer = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Modal */}
         {isOpenModal && (
           <EditSchoolTeamModal
             visible={isOpenModal}

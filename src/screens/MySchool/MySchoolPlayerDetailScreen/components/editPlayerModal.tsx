@@ -12,10 +12,31 @@ import {
 } from 'react-native';
 import StyledInput from '../../../../shared/components/StyledInput';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { StyleSheet } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
+import { useUpdateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 type AddMySchoolPlayerModalProps = {
   visible: boolean;
   onClose: () => void;
+};
+
+type EditPlayerType = {
+  firstName: string;
+  lastName: string;
+  ProfilePictureFile: {
+    uri: string;
+    name?: string;
+    type?: string;
+  };
+  position: string;
+  parentFirstName: string;
+  parentLastName: string;
+  parentPhoneNumber: string;
+  teamId: string;
 };
 
 const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
@@ -23,7 +44,20 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
   onClose,
 }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
-  const [name, setName] = useState<string>('');
+  const UpdatePlayerDefaultValues: EditPlayerType = {
+    firstName: '',
+    lastName: '',
+    ProfilePictureFile: {
+      uri: '',
+      name: '',
+      type: '',
+    },
+    position: '',
+    parentFirstName: '',
+    parentLastName: '',
+    parentPhoneNumber: '',
+    teamId: '3',
+  };
 
   const pickImage = () => {
     launchImageLibrary(
@@ -34,10 +68,59 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
           Alert.alert('Error', response.errorMessage || 'Failed to pick image');
           return;
         }
-        const uri = response.assets?.[0]?.uri;
-        if (uri) setPhotoUri(uri);
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
+        }
+        setPhotoUri(asset.uri);
+        setValue(
+          'ProfilePictureFile',
+          {
+            uri: asset.uri,
+            name: asset.fileName ?? 'image.jpg',
+            type: asset.type ?? 'image/jpeg',
+          },
+          { shouldValidate: true },
+        );
       },
     );
+  };
+
+  const { mutate: editPlayer, isPending } =
+    useUpdateMySchoolPlayerMutation('3');
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm<EditPlayerType>({
+    defaultValues: UpdatePlayerDefaultValues,
+    resolver: zodResolver(UpdateMySchoolPlayerSchema),
+  });
+
+  const handleEdit = (payload: EditPlayerType) => {
+    const formData = new FormData();
+    formData.append('firstName', payload.firstName);
+    formData.append('lastName', payload.lastName);
+    formData.append('ProfilePictureFile', {
+      uri: payload.ProfilePictureFile.uri,
+      name: payload.ProfilePictureFile.name ?? 'image.jpg',
+      type: payload.ProfilePictureFile.type ?? 'image/jpeg',
+    });
+    formData.append('position', payload.position);
+    formData.append('parentFirstName', payload.parentFirstName);
+    formData.append('parentLastName', payload.parentLastName);
+    formData.append('parentPhoneNumber', payload.parentPhoneNumber);
+    formData.append('teamId', payload.teamId);
+
+    editPlayer(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
   };
 
   return (
@@ -57,36 +140,115 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
           </View>
 
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <StyledInput
-              placeholder="Player First Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <StyledInput
-              placeholder="Player Last Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <StyledInput
-              placeholder="Position"
-              value={name}
-              onChangeText={setName}
-            />
-            <StyledInput
-              placeholder="Parent First Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <StyledInput
-              placeholder="Parent Last Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <StyledInput
-              placeholder="Parent Phone"
-              value={name}
-              onChangeText={setName}
-            />
+            <View>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Player First Name"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.firstName && (
+                <Text style={styles.errorText}>
+                  {errors.firstName?.message}
+                </Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Player Last Name"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.lastName && (
+                <Text style={styles.errorText}>{errors.lastName?.message}</Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                name="position"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Position"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.position && (
+                <Text style={styles.errorText}>{errors.position?.message}</Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                name="parentFirstName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Parent First Name"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.parentFirstName && (
+                <Text style={styles.errorText}>
+                  {errors.parentFirstName?.message}
+                </Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                name="parentLastName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Parent Last Name"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.parentLastName && (
+                <Text style={styles.errorText}>
+                  {errors.parentLastName?.message}
+                </Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                name="parentPhoneNumber"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <StyledInput
+                    placeholder="Parent Phone"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.parentPhoneNumber && (
+                <Text style={styles.errorText}>
+                  {errors.parentPhoneNumber?.message}
+                </Text>
+              )}
+            </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Player Photo</Text>
@@ -114,12 +276,24 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.removeImageBtn}
-                      onPress={() => setPhotoUri(null)}
+                      onPress={() => {
+                        setPhotoUri(null);
+                        setValue(
+                          'ProfilePictureFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        );
+                      }}
                     >
                       <Text style={styles.btnText}>Remove</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+              )}
+              {errors.ProfilePictureFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.ProfilePictureFile.uri.message}
+                </Text>
               )}
             </View>
           </ScrollView>
@@ -128,8 +302,16 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.footerText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.createButton}>
-              <Text style={styles.footerText}>Edit Player</Text>
+            <TouchableOpacity
+              style={styles.createButton}
+              onPress={handleSubmit(handleEdit)}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <Text style={styles.footerText}>Editing...</Text>
+              ) : (
+                <Text style={styles.footerText}>Edit Player</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -139,8 +321,6 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
 };
 
 export default EditMySchoolPlayerModal;
-
-import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   modalBackground: {
@@ -270,5 +450,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '700',
     fontSize: 16,
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 13,
+    marginTop: 6,
+    marginLeft: 4,
   },
 });
