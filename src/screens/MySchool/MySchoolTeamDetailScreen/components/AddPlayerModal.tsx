@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Modal,
   View,
@@ -10,25 +12,110 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { AddMySchoolPlayerSchema } from './addPlayer.schema';
+import { useCreateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 type AddMatchModalProps = {
   visible: boolean;
   onClose: () => void;
 };
 
+type AddPlayerType = {
+  firstName: string;
+  lastName: string;
+  position: string;
+  parentFirstName: string;
+  parentLastName: string;
+  parentPhoneNumber: string;
+  ProfilePictureFile: {
+    uri: string;
+  };
+  teamId: string;
+  MySchoolId: string;
+  UserId: string;
+};
+
 const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const AddPlayerDefaultlValues: AddPlayerType = {
+    firstName: '',
+    lastName: '',
+    position: '',
+    parentFirstName: '',
+    parentLastName: '',
+    parentPhoneNumber: '',
+    ProfilePictureFile: {
+      uri: '',
+    },
+    teamId: '2',
+    MySchoolId: '2',
+    UserId: '2',
+  };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm<AddPlayerType>({
+    defaultValues: AddPlayerDefaultlValues,
+    resolver: zodResolver(AddMySchoolPlayerSchema),
+  });
 
   const pickImage = () => {
     launchImageLibrary({ mediaType: 'photo', quality: 0.7 }, response => {
       if (response.didCancel) {
         return;
       }
-      if (response.assets && response.assets[0]?.uri) {
-        setProfileImage(response.assets[0].uri);
+      if (response.errorCode) {
+        Alert.alert('Error', response.errorMessage || 'failed to pick image');
+        return;
       }
+
+      const asset = response.assets?.[0];
+      if (!asset?.uri) {
+        return;
+      }
+
+      setProfileImage(asset.uri);
+      setValue(
+        'ProfilePictureFile',
+        {
+          uri: asset.uri,
+        },
+        {
+          shouldValidate: true,
+        },
+      );
+    });
+  };
+
+  const { mutate: CreatePlayer, isPending } =
+    useCreateMySchoolPlayerMutation('2');
+
+  const handleCreatePlayer = (payload: AddPlayerType) => {
+    const formData = new FormData();
+    formData.append('firstName', payload.firstName);
+    formData.append('lastName', payload.lastName);
+    formData.append('parentFirstName', payload.parentFirstName);
+    formData.append('parentLastName', payload.parentLastName);
+    formData.append('parentPhoneNumber', payload.parentPhoneNumber);
+    formData.append('position', payload.position);
+    formData.append('ProfilePictureFile', {
+      uri: payload.ProfilePictureFile.uri,
+    });
+    CreatePlayer(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
     });
   };
 
@@ -69,93 +156,187 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
               <Text style={styles.label}>
                 FirstName <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="e.g nick"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="e.g nick"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.firstName && (
+                <Text style={styles.errorText}>
+                  {errors.firstName?.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
                 LastName <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="e.g dzuliashvili"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="e.g dzuliashvili"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.lastName && (
+                <Text style={styles.errorText}>{errors.lastName?.message}</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>
-                ProfilePicture <Text style={styles.required}>*</Text>
-              </Text>
-              <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-                {profileImage ? (
+              <Text style={styles.label}>Player Photo</Text>
+
+              {!profileImage ? (
+                <TouchableOpacity
+                  style={styles.uploadContainer}
+                  onPress={pickImage}
+                >
+                  <Text style={styles.uploadIcon}>📷</Text>
+                  <Text style={styles.uploadText}>Choose Photo</Text>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.imagePreviewContainer}>
                   <Image
                     source={{ uri: profileImage }}
-                    style={styles.previewImage}
+                    style={styles.imagePreview}
                   />
-                ) : (
-                  <Text style={styles.imagePlaceholder}>Choose image</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>
-                ProfilePictureFile <Text style={styles.required}>*</Text>
-              </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="e.g dzuliashvili"
-                placeholderTextColor="#9ca3af"
-              />
+                  <View style={styles.imageOverlay}>
+                    <TouchableOpacity
+                      style={styles.changeImageBtn}
+                      onPress={pickImage}
+                    >
+                      <Text style={styles.btnText}>Change</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.removeImageBtn}
+                      onPress={() => {
+                        setProfileImage(null);
+                        setValue(
+                          'ProfilePictureFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        );
+                      }}
+                    >
+                      <Text style={styles.btnText}>Remove</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+              {errors.ProfilePictureFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.ProfilePictureFile.uri.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
                 Position <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="Position"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="position"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="Position"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.position && (
+                <Text style={styles.errorText}>{errors.position?.message}</Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
                 ParentFirstName <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="ParentFirstName"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="parentFirstName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="ParentFirstName"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.parentFirstName && (
+                <Text style={styles.errorText}>
+                  {errors.parentFirstName?.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
                 ParentLastName <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="ParentLastName"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="parentLastName"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="ParentLastName"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.parentLastName && (
+                <Text style={styles.errorText}>
+                  {errors.parentLastName?.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
                 ParentPhoneNumber <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input]}
-                placeholder="ParentPhoneNumber"
-                placeholderTextColor="#9ca3af"
+              <Controller
+                name="parentPhoneNumber"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="ParentPhoneNumber"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
+              {errors.parentPhoneNumber && (
+                <Text style={styles.errorText}>
+                  {errors.parentPhoneNumber?.message}
+                </Text>
+              )}
             </View>
           </ScrollView>
 
@@ -168,8 +349,17 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.createButton} activeOpacity={0.8}>
-              <Text style={styles.createButtonText}>Create</Text>
+            <TouchableOpacity
+              style={styles.createButton}
+              activeOpacity={0.8}
+              disabled={isPending}
+              onPress={handleSubmit(handleCreatePlayer)}
+            >
+              {isPending ? (
+                <Text style={styles.createButtonText}>Creating...</Text>
+              ) : (
+                <Text style={styles.createButtonText}>Create</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -362,6 +552,59 @@ const styles = StyleSheet.create({
   imageSelectedText: {
     color: '#10b981',
     fontSize: 16,
+    fontWeight: '600',
+  },
+
+  uploadContainer: {
+    backgroundColor: '#374151',
+    borderRadius: 12,
+    padding: 32,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: '#4b5563',
+  },
+  uploadIcon: {
+    fontSize: 28,
+    marginBottom: 8,
+  },
+  uploadText: {
+    color: '#e5e7eb',
+    fontWeight: '600',
+  },
+  imagePreviewContainer: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  imagePreview: {
+    width: '100%',
+    height: 200,
+  },
+  imageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    gap: 8,
+    padding: 12,
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+  },
+  changeImageBtn: {
+    flex: 1,
+    backgroundColor: '#3b82f6',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  removeImageBtn: {
+    flex: 1,
+    backgroundColor: '#ef4444',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  btnText: {
+    color: '#fff',
     fontWeight: '600',
   },
 });
