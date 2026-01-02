@@ -2,26 +2,17 @@ import React from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/LoginStyles';
 import { useNavigation } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationType } from '../../../../app/navigation/DrawerNavigator.type';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from './schema';
 import { useLoginMutation } from '../../../../feature/auth/login/model/useLoginMutation';
 import axios from 'axios';
 import { Toast } from '@ant-design/react-native';
-
-type NavigationProp = DrawerNavigationProp<DrawerNavigationType, 'Login'>;
-
-type LoginType = {
-  userName: string;
-  password: string;
-};
-
-const LoginInitialValues: LoginType = {
-  userName: '',
-  password: '',
-};
+import { useDispatch } from 'react-redux';
+import { setTokens } from '../../../../feature/auth/slices/authSlice';
+import { SignInSuccess } from '../utils/signInSuccess';
+import { LoginType, NavigationProp } from '../types/login.type';
+import { LoginInitialValues } from '../utils/loginInitialValues';
 
 const Inputs: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -34,10 +25,14 @@ const Inputs: React.FC = () => {
     defaultValues: LoginInitialValues,
     resolver: zodResolver(LoginSchema),
   });
+  const dispatch = useDispatch();
 
   const handleLogin = (loginValues: LoginType) => {
     Login(loginValues, {
-      onSuccess: () => {
+      onSuccess: res => {
+        const { accessToken, refreshToken } = res;
+        dispatch(setTokens({ accessToken, refreshToken }));
+        SignInSuccess(res);
         navigation.navigate('Home');
       },
       onError: err => {
