@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Image,
   Modal,
@@ -13,17 +15,30 @@ import {
   Platform,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { TeamSchema } from './team.schema';
+import { AddTeamModalProps, AddTeamType } from '../types/index.type';
+import { useUpdateTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/update/model/useUpdateTournamentTeamsMutation';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
-type AddTeamModalProps = {
-  visible: boolean;
-  onClose: () => void;
+const AddTeamDefaultValues: AddTeamType = {
+  Name: '',
+  LogoFile: {
+    uri: '',
+  },
 };
 
 const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
-  const [teamName, setTeamName] = useState<string>('');
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm<AddTeamType>({
+    defaultValues: AddTeamDefaultValues,
+    resolver: zodResolver(TeamSchema),
+  });
+  const { mutate: EditTeam, isPending } = useUpdateTournamentTeamsMutation('2');
   const pickImage = () => {
     launchImageLibrary(
       {
@@ -39,18 +54,30 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
           Alert.alert('Error', response.errorMessage || 'Failed to pick image');
           return;
         }
-        if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri;
-          if (uri) {
-            setPhotoUri(uri);
-          }
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
         }
+        setPhotoUri(asset.uri);
+        setValue('LogoFile', { uri: asset.uri }, { shouldValidate: true });
       },
     );
   };
 
-  const removeImage = () => {
-    setPhotoUri(null);
+  const handleEdit = (payload: AddTeamType) => {
+    const formData = new FormData();
+    formData.append('Name', payload.Name);
+    formData.append('LogoFile', {
+      uri: payload.LogoFile.uri,
+    });
+    EditTeam(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
   };
 
   return (
@@ -86,18 +113,21 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
               <Text style={styles.label}>
                 Team Name <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input, errors.teamName && styles.inputError]}
-                placeholder="e.g. Warriors, Eagles, Champions"
-                placeholderTextColor="#9ca3af"
-                value={teamName}
-                onChangeText={text => {
-                  setTeamName(text);
-                  if (errors.teamName) setErrors({ ...errors, teamName: '' });
-                }}
+              <Controller
+                name="Name"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="e.g. Warriors, Eagles, Champions"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
-              {errors.teamName && (
-                <Text style={styles.errorText}>{errors.teamName}</Text>
+              {errors.Name && (
+                <Text style={styles.errorText}>{errors.Name.message}</Text>
               )}
             </View>
 
@@ -133,7 +163,13 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
                       <Text style={styles.changeImageText}>Change</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={removeImage}
+                      onPress={() =>
+                        setValue(
+                          'LogoFile',
+                          { uri: '' },
+                          { shouldValidate: true },
+                        )
+                      }
                       style={styles.removeImageBtn}
                       activeOpacity={0.8}
                     >
@@ -141,6 +177,11 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
+              )}
+              {errors.LogoFile?.uri && (
+                <Text style={styles.errorText}>
+                  {errors.LogoFile.uri.message}
+                </Text>
               )}
             </View>
           </ScrollView>
@@ -150,8 +191,17 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.createButton} activeOpacity={0.8}>
-              <Text style={styles.createButtonText}>Edit Team</Text>
+            <TouchableOpacity
+              style={styles.createButton}
+              activeOpacity={0.8}
+              onPress={handleSubmit(handleEdit)}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <Text style={styles.createButtonText}>Editing...</Text>
+              ) : (
+                <Text style={styles.createButtonText}>Edit Team</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
