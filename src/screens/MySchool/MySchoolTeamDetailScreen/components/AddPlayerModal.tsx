@@ -18,26 +18,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { AddMySchoolPlayerSchema } from './addPlayer.schema';
 import { useCreateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
-
-type AddMatchModalProps = {
-  visible: boolean;
-  onClose: () => void;
-};
-
-type AddPlayerType = {
-  firstName: string;
-  lastName: string;
-  position: string;
-  parentFirstName: string;
-  parentLastName: string;
-  parentPhoneNumber: string;
-  ProfilePictureFile: {
-    uri: string;
-  };
-  teamId: string;
-  MySchoolId: string;
-  UserId: string;
-};
+import { AddMatchModalProps, AddPlayerType } from '../types/index.type';
 
 const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);

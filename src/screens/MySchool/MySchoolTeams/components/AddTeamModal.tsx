@@ -18,19 +18,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { addTeamSchema } from './addTeam.schema';
 import { useCreateMySchoolTeams } from '../../../../feature/mySchoolTeams/create/model/useCreateMySchoolTeams';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
-
-type AddTeamModalProps = {
-  visible: boolean;
-  onClose: () => void;
-};
-
-type AddTeamType = {
-  Name: string;
-  MySchoolId: string;
-  LogoFile: {
-    uri: string;
-  };
-};
+import { AddTeamModalProps, AddTeamType } from '../types/index.type';
 
 const AddTeamDefaultValues: AddTeamType = {
   Name: '',

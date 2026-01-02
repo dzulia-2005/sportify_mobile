@@ -18,18 +18,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { SchoolSchema } from './School.schema';
 import { useCreateMySchoolMutation } from '../../../../feature/mySchool/create/model/useCreateMySchoolMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
-
-type AddSchoolModalProps = {
-  visible: boolean;
-  onClose: () => void;
-};
-
-type SchoolDefaultTypes = {
-  Name: string;
-  LogoFile: {
-    uri: string;
-  };
-};
+import { AddSchoolModalProps, SchoolDefaultTypes } from '../types/index.type';
 
 const SchoolDefaultValues: SchoolDefaultTypes = {
   Name: '',

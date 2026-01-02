@@ -1,11 +1,10 @@
-export type AddTeamModalProps = {
+export type AddSchoolModalProps = {
   visible: boolean;
   onClose: () => void;
 };
 
-export type AddTeamType = {
+export type SchoolDefaultTypes = {
   Name: string;
-  MySchoolId: string;
   LogoFile: {
     uri: string;
   };

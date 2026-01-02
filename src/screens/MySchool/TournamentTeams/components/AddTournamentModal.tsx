@@ -6,91 +6,65 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-type AddMatchModalProps = {
-  visible: boolean;
-  onClose: () => void;
-  onSubmit?: (data: {
-    name: string;
-    mySchoolId: string;
-    matchType: number;
-    startDate: Date;
-    endDate: Date;
-  }) => void;
-};
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { tournamentSchema } from './Tournament.schema';
+import { useCreateMySchoolTournamentMutation } from '../../../../feature/mySchoolTournament/create/model/useCreateMySchoolTournamentMutation';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import { AddMatchModalProps, addTournamentType } from '../types/index.type';
 
 const AddTournamentModal: React.FC<AddMatchModalProps> = ({
   visible,
   onClose,
-  onSubmit,
 }) => {
-  const [name, setName] = useState('');
-  const [mySchoolId, setMySchoolId] = useState('');
-  const [matchType, setMatchType] = useState(0);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const defaultValues: addTournamentType = {
+    name: '',
+    startDate: '',
+    endDate: '',
+    mySchoolId: '2',
+    matchType: 0,
+  };
+
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues,
+    resolver: zodResolver(tournamentSchema),
+  });
 
-    if (!name.trim()) {
-      newErrors.name = 'Please enter tournament name';
-    }
+  const { mutate: CreateTournament, isPending } =
+    useCreateMySchoolTournamentMutation();
 
-    if (!mySchoolId.trim()) {
-      newErrors.mySchoolId = 'Please enter school ID';
-    }
+  const startDate = watch('startDate');
+  const endDate = watch('endDate');
+  const matchType = watch('matchType');
 
-    if (endDate <= startDate) {
-      newErrors.date = 'End date must be after start date';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleCreate = (payload: addTournamentType) => {
+    CreateTournament(payload, {
+      onSuccess: () => {
+        onClose();
+      },
+      onError: err => {
+        showErrorToast(err);
+      },
+    });
   };
 
-  const handleCreate = () => {
-    if (validateForm()) {
-      const data = {
-        name: name.trim(),
-        mySchoolId: mySchoolId.trim(),
-        matchType,
-        startDate,
-        endDate,
-      };
-
-      if (onSubmit) {
-        onSubmit(data);
-      }
-
-      setName('');
-      setMySchoolId('');
-      setMatchType(0);
-      setStartDate(new Date());
-      setEndDate(new Date());
-      setErrors({});
-
-      onClose();
-      Alert.alert('Success', 'Tournament created successfully');
-    }
-  };
-
-  const handleClose = () => {
-    setErrors({});
-    onClose();
-  };
-
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-GE', {
+  const formatDate = (date?: string) => {
+    if (!date) return 'Select Date';
+    return new Date(date).toLocaleDateString('en-GE', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
@@ -102,7 +76,7 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
       animationType="slide"
       transparent
       visible={visible}
-      onRequestClose={handleClose}
+      onRequestClose={onClose}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -111,13 +85,13 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
         <TouchableOpacity
           style={styles.backdrop}
           activeOpacity={1}
-          onPress={handleClose}
+          onPress={onClose}
         />
 
         <View style={styles.modalContent}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Create New Tournament</Text>
-            <TouchableOpacity onPress={handleClose} style={styles.closeIcon}>
+            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
               <Text style={styles.closeIconText}>✕</Text>
             </TouchableOpacity>
           </View>
@@ -130,18 +104,21 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
               <Text style={styles.label}>
                 Tournament Name <Text style={styles.required}>*</Text>
               </Text>
-              <TextInput
-                style={[styles.input, errors.name && styles.inputError]}
-                placeholder="e.g. Summer Championship 2024"
-                placeholderTextColor="#9ca3af"
-                value={name}
-                onChangeText={text => {
-                  setName(text);
-                  if (errors.name) setErrors({ ...errors, name: '' });
-                }}
+              <Controller
+                name="name"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input, errors.name && styles.inputError]}
+                    placeholder="e.g. Summer Championship 2024"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
               />
               {errors.name && (
-                <Text style={styles.errorText}>{errors.name}</Text>
+                <Text style={styles.errorText}>{errors.name.message}</Text>
               )}
             </View>
 
@@ -158,18 +135,22 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
 
               {showStartPicker && (
                 <DateTimePicker
-                  value={startDate}
                   mode="date"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  value={startDate ? new Date(startDate) : new Date()}
                   themeVariant="dark"
-                  onChange={(event, date) => {
+                  onChange={(_, date) => {
                     setShowStartPicker(false);
                     if (date) {
-                      setStartDate(date);
-                      if (errors.date) setErrors({ ...errors, date: '' });
+                      setValue('startDate', date.toISOString(), {
+                        shouldValidate: true,
+                      });
                     }
                   }}
                 />
+              )}
+              {errors.startDate && (
+                <Text style={styles.errorText}>{errors.startDate.message}</Text>
               )}
             </View>
 
@@ -184,78 +165,47 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
 
               {showEndPicker && (
                 <DateTimePicker
-                  value={endDate}
+                  value={endDate ? new Date(endDate) : new Date()}
+                  onChange={(_, date) => {
+                    setShowEndPicker(false);
+                    if (date) {
+                      setValue('endDate', date.toISOString(), {
+                        shouldValidate: true,
+                      });
+                    }
+                  }}
                   mode="date"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                   themeVariant="dark"
-                  onChange={(event, date) => {
-                    setShowEndPicker(false);
-                    if (date) {
-                      setEndDate(date);
-                      if (errors.date) setErrors({ ...errors, date: '' });
-                    }
-                  }}
                 />
               )}
 
-              {errors.date && (
-                <Text style={styles.errorText}>{errors.date}</Text>
+              {errors.endDate && (
+                <Text style={styles.errorText}>{errors.endDate.message}</Text>
               )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Match Type</Text>
               <View style={styles.matchTypeContainer}>
-                <TouchableOpacity
-                  style={[
-                    styles.matchTypeButton,
-                    matchType === 0 && styles.matchTypeSelected,
-                  ]}
-                  onPress={() => setMatchType(0)}
-                >
-                  <Text
+                {[0, 1, 2].map(type => (
+                  <TouchableOpacity
+                    key={type}
                     style={[
-                      styles.matchTypeText,
-                      matchType === 0 && styles.matchTypeTextSelected,
+                      styles.matchTypeButton,
+                      matchType === type && styles.matchTypeSelected,
                     ]}
+                    onPress={() =>
+                      setValue('matchType', type, { shouldValidate: true })
+                    }
                   >
-                    🏆 Round Robin
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[
-                    styles.matchTypeButton,
-                    matchType === 1 && styles.matchTypeSelected,
-                  ]}
-                  onPress={() => setMatchType(1)}
-                >
-                  <Text
-                    style={[
-                      styles.matchTypeText,
-                      matchType === 1 && styles.matchTypeTextSelected,
-                    ]}
-                  >
-                    👥 Single Elimination
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[
-                    styles.matchTypeButton,
-                    matchType === 2 && styles.matchTypeSelected,
-                  ]}
-                  onPress={() => setMatchType(2)}
-                >
-                  <Text
-                    style={[
-                      styles.matchTypeText,
-                      matchType === 2 && styles.matchTypeTextSelected,
-                    ]}
-                  >
-                    🎯 Double Elimination
-                  </Text>
-                </TouchableOpacity>
+                    <Text style={styles.matchTypeTextSelected}>
+                      {type === 0 && '🏆 Round Robin'}
+                      {type === 1 && '👥 Single Elimination'}
+                      {type === 2 && '🎯 Double Elimination'}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
           </ScrollView>
@@ -263,7 +213,7 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
           <View style={styles.footer}>
             <TouchableOpacity
               style={styles.cancelButton}
-              onPress={handleClose}
+              onPress={onClose}
               activeOpacity={0.8}
             >
               <Text style={styles.cancelButtonText}>Cancel</Text>
@@ -271,10 +221,15 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
 
             <TouchableOpacity
               style={styles.createButton}
-              onPress={handleCreate}
+              onPress={handleSubmit(handleCreate)}
               activeOpacity={0.8}
+              disabled={isPending}
             >
-              <Text style={styles.createButtonText}>Create</Text>
+              {isPending ? (
+                <Text style={styles.createButtonText}>Creating...</Text>
+              ) : (
+                <Text style={styles.createButtonText}>Create</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -413,6 +368,8 @@ const styles = StyleSheet.create({
   },
   matchTypeTextSelected: {
     color: '#fff',
+    fontWeight: '600',
+    fontSize: 15,
   },
   footer: {
     flexDirection: 'row',

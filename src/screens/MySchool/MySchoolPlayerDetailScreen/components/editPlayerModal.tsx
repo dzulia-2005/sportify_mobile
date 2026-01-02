@@ -18,26 +18,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
 import { useUpdateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
-
-type AddMySchoolPlayerModalProps = {
-  visible: boolean;
-  onClose: () => void;
-};
-
-type EditPlayerType = {
-  firstName: string;
-  lastName: string;
-  ProfilePictureFile: {
-    uri: string;
-    name?: string;
-    type?: string;
-  };
-  position: string;
-  parentFirstName: string;
-  parentLastName: string;
-  parentPhoneNumber: string;
-  teamId: string;
-};
+import {
+  AddMySchoolPlayerModalProps,
+  EditPlayerType,
+} from '../types/index.type';
 
 const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
   visible,
