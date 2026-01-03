@@ -21,6 +21,7 @@ const Inputs: React.FC = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: LoginInitialValues,
     resolver: zodResolver(LoginSchema),
@@ -34,6 +35,7 @@ const Inputs: React.FC = () => {
         dispatch(setTokens({ accessToken, refreshToken }));
         SignInSuccess(res);
         navigation.navigate('Home');
+        reset();
       },
       onError: err => {
         if (axios.isAxiosError(err)) {
