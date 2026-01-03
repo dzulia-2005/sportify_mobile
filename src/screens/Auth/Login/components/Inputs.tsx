@@ -6,13 +6,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from './schema';
 import { useLoginMutation } from '../../../../feature/auth/login/model/useLoginMutation';
-import axios from 'axios';
-import { Toast } from '@ant-design/react-native';
 import { useDispatch } from 'react-redux';
 import { setTokens } from '../../../../feature/auth/slices/authSlice';
 import { SignInSuccess } from '../utils/signInSuccess';
 import { LoginType, NavigationProp } from '../types/login.type';
 import { LoginInitialValues } from '../utils/loginInitialValues';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 const Inputs: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -37,17 +36,9 @@ const Inputs: React.FC = () => {
         navigation.navigate('Home');
         reset();
       },
-      onError: err => {
-        if (axios.isAxiosError(err)) {
-          const status = err.response?.status;
-          if (status === 400 || status === 401) {
-            Toast.fail(
-              'The username or password is incorrect. Please try again.',
-            );
-          } else {
-            Toast.fail('An unexpected error occurred.');
-          }
-        }
+      onError: (err: unknown) => {
+        console.log(err, 'this is error');
+        showErrorToast(err);
       },
     });
   };
