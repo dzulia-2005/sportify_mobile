@@ -1,23 +1,21 @@
-import React from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { logout } from '../../feature/auth/slices/authActions';
+import { useAppDispatch } from '../store/hooks/hook';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../../screens/Auth/Login/types/login.type';
 
 const CustomDrawerContent = (props: any) => {
+  const navigation = useNavigation<NavigationProp>();
+  const dispatch = useAppDispatch();
+
   const handleLogout = () => {
-    Alert.alert('Logout', 'Do you want to log out of your account?', [
-      { text: 'cancel', style: 'cancel' },
-      {
-        text: 'LogOut',
-        onPress: () => {
-          console.log('User logged out');
-          props.navigation.replace('Login');
-        },
-      },
-    ]);
+    dispatch(logout());
+    navigation.navigate('Login');
   };
 
   return (

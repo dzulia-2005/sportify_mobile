@@ -11,12 +11,10 @@ import { store } from './src/app/store/store';
 import { Provider } from 'react-redux';
 import { Provider as AntProvider } from '@ant-design/react-native';
 import Toast from 'react-native-toast-message';
-import { useHttpInterceptor } from './src/shared/hooks/useHttpInterceptor';
 
 enableScreens();
 
 function App() {
-  useHttpInterceptor();
   const isDarkMode = useColorScheme() === 'dark';
 
   return (

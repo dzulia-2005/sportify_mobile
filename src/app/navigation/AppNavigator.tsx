@@ -8,10 +8,12 @@ import MyAccount from '../../screens/MyAccount/index';
 import CustomDrawerContent from './CustomDrawerContent';
 import MySchoolStackNavigator from './MySchoolStackNavigator/MySchoolStackNavigator';
 import { DrawerNavigationType } from './DrawerNavigator.type';
+import { useAuth } from '../../shared/hooks/useAuth';
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
 const AppNavigator = () => {
+  const { accessToken } = useAuth();
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -24,44 +26,59 @@ const AppNavigator = () => {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
         }}
       >
-        <Drawer.Screen
-          name="Home"
-          component={HomePage}
-          options={{
-            title: 'Home',
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="Login"
-          component={MatchesPage}
-          options={{
-            title: 'Login',
-          }}
-        />
-        <Drawer.Screen
-          name="Register"
-          component={RegisterPage}
-          options={{
-            title: 'Register',
-          }}
-        />
+        {accessToken ? (
+          <>
+            <Drawer.Screen
+              name="Home"
+              component={HomePage}
+              options={{
+                title: 'Home',
+                headerShown: false,
+              }}
+            />
+            <Drawer.Screen
+              name="MyAccount"
+              component={MyAccount}
+              options={{
+                title: 'MyAccount',
+              }}
+            />
 
-        <Drawer.Screen
-          name="MyAccount"
-          component={MyAccount}
-          options={{
-            title: 'MyAccount',
-          }}
-        />
+            <Drawer.Screen
+              name="MySchool"
+              component={MySchoolStackNavigator}
+              options={{
+                title: 'My School',
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Drawer.Screen
+              name="Home"
+              component={HomePage}
+              options={{
+                title: 'Home',
+                headerShown: false,
+              }}
+            />
 
-        <Drawer.Screen
-          name="MySchool"
-          component={MySchoolStackNavigator}
-          options={{
-            title: 'My School',
-          }}
-        />
+            <Drawer.Screen
+              name="Login"
+              component={MatchesPage}
+              options={{
+                title: 'Login',
+              }}
+            />
+            <Drawer.Screen
+              name="Register"
+              component={RegisterPage}
+              options={{
+                title: 'Register',
+              }}
+            />
+          </>
+        )}
       </Drawer.Navigator>
     </NavigationContainer>
   );
