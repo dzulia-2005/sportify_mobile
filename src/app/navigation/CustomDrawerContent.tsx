@@ -3,15 +3,17 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { logout } from '../../feature/auth/slices/authActions';
 import { useAppDispatch } from '../store/hooks/hook';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../../screens/Auth/Login/types/login.type';
+import { useAuth } from '../../shared/hooks/useAuth';
 
 const CustomDrawerContent = (props: any) => {
   const navigation = useNavigation<NavigationProp>();
   const dispatch = useAppDispatch();
+  const { accessToken } = useAuth();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -24,13 +26,15 @@ const CustomDrawerContent = (props: any) => {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      <View style={styles.bottomSection}>
-        <DrawerItem
-          label="LogOut"
-          labelStyle={styles.logoutLabel}
-          onPress={handleLogout}
-        />
-      </View>
+      {accessToken && (
+        <TouchableOpacity style={styles.bottomSection}>
+          <DrawerItem
+            label="LogOut"
+            labelStyle={styles.logoutLabel}
+            onPress={handleLogout}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
