@@ -87,7 +87,7 @@ export const useHttpInterceptor = () => {
 
           default:
             if (status >= 500) {
-              console.error('❌ Server error:', err.response?.data);
+              console.error('Server error:', err.response?.data);
               showErrorToast(
                 'Server Error',
                 'A server error occurred. Please try again later',

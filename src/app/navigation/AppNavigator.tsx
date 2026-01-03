@@ -14,7 +14,6 @@ const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
 const AppNavigator = () => {
   const { accessToken } = useAuth();
-
   return (
     <NavigationContainer>
       <Drawer.Navigator
