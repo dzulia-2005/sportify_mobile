@@ -1897,6 +1897,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - react-native-worklets-core (1.6.2):
     - boost
     - DoubleConversion
@@ -2831,6 +2833,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-worklets-core (from `../node_modules/react-native-worklets-core`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
@@ -2963,6 +2966,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-worklets-core:
     :path: "../node_modules/react-native-worklets-core"
   React-NativeModulesApple:
@@ -3087,6 +3092,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 885bebe5c5f25035e1fd0920776078840a0e3a76
   react-native-image-picker: 43e6cd4231e670030fe09b079d696fa5a634ccfc
   react-native-safe-area-context: 54d812805f3c4e08a4580ad086cbde1d8780c2e4
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-worklets-core: 5abf7405ae179fd6b3a45899b1a0e5777aa389d3
   React-NativeModulesApple: c4bee6aa736092cd347456488a4f97a8e7517604
   React-oscompat: 95875e81f5d4b3c7b2c888d5bd2c9d83450d8bdb

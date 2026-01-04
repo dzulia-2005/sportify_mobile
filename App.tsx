@@ -11,11 +11,19 @@ import { Provider } from 'react-redux';
 import { Provider as AntProvider } from '@ant-design/react-native';
 import Toast from 'react-native-toast-message';
 import NavigationWrapper from './src/app/navigation/NavigationWrapper';
+import { useEffect } from 'react';
+import SplashScreen from 'react-native-splash-screen';
 
 enableScreens();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    const init = async () => {
+      SplashScreen.hide();
+    };
+    init();
+  }, []);
 
   return (
     <AntProvider>
