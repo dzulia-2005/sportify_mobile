@@ -8,7 +8,9 @@ const TournamentMatches: React.FC = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <TeamCard />
+      <View style={styles.CardListContainer}>
+        <TeamCard />
+      </View>
     </View>
   );
 };

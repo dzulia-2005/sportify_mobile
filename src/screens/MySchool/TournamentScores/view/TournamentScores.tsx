@@ -1,21 +1,18 @@
-import React from 'react'
-import { ScrollView, View } from 'react-native'
-import { styles } from '../styles/mainStyles'
-import Header from '../components/Header'
-import TeamCard from '../components/TeamCard'
+import React from 'react';
+import { View } from 'react-native';
+import { styles } from '../styles/mainStyles';
+import Header from '../components/Header';
+import TeamCard from '../components/TeamCard';
 
-const TournamentScores:React.FC = () => {
+const TournamentScores: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Header/>
-      <ScrollView 
-        contentContainerStyle={styles.CardListContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <TeamCard/>
-      </ScrollView>
+      <Header />
+      <View style={styles.CardListContainer}>
+        <TeamCard />
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default TournamentScores
+export default TournamentScores;
