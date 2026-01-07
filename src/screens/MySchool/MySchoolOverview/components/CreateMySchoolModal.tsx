@@ -32,11 +32,13 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   onClose,
 }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoAsset, setPhotoAsset] = useState<any>(null);
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: SchoolDefaultValues,
     resolver: zodResolver(SchoolSchema),
@@ -45,7 +47,12 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
 
   const pickImage = () => {
     launchImageLibrary(
-      { mediaType: 'photo', quality: 0.8, selectionLimit: 1 },
+      {
+        mediaType: 'photo',
+        quality: 0.8,
+        selectionLimit: 1,
+        includeBase64: false,
+      },
       response => {
         if (response.didCancel) return;
 
@@ -60,6 +67,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
         }
 
         setPhotoUri(asset.uri);
+        setPhotoAsset(asset);
         setValue(
           'LogoFile',
           {
@@ -74,15 +82,33 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   const handleCreate = (payload: SchoolDefaultTypes) => {
     const formData = new FormData();
     formData.append('Name', payload.Name);
-    formData.append('LogoFile', {
-      uri: payload.LogoFile.uri,
+    if (photoAsset && photoAsset.uri) {
+      const fileExtension = photoAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        photoAsset.fileName || `school_logo_${Date.now()}.${fileExtension}`;
+
+      formData.append('LogoFile', {
+        uri: photoAsset.uri,
+        type: photoAsset.type || 'image/jpeg',
+        name: fileName,
+      });
+    }
+
+    console.log('FormData to send:', {
+      Name: payload.Name,
+      hasLogo: !!photoAsset,
+      logoUri: photoAsset?.uri,
     });
 
     createSchool(formData, {
       onSuccess: () => {
+        reset();
+        setPhotoUri(null);
+        setPhotoAsset(null);
         onClose();
       },
       onError: err => {
+        onClose();
         showErrorToast(err);
       },
     });

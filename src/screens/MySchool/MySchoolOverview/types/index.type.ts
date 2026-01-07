@@ -1,3 +1,4 @@
+import { QueryObserverResult } from '@tanstack/react-query';
 import { MySchoolResponse } from '../../../../shared/api/mySchool/index.type';
 
 export type AddSchoolModalProps = {
@@ -14,4 +15,6 @@ export type SchoolDefaultTypes = {
 
 export type SchoolProp = {
   school: MySchoolResponse | undefined;
+  refetch: () => Promise<QueryObserverResult<MySchoolResponse, Error>>;
+  isLoading: boolean;
 };

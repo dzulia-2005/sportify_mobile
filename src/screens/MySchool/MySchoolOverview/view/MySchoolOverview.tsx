@@ -7,13 +7,17 @@ import MySchoolInfo from '../components/MySchoolInfo';
 import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const MySchoolOverview: React.FC = () => {
-  const { data: school } = useGetMySchoolQuery();
+  const { data: school, refetch, isLoading } = useGetMySchoolQuery();
 
   return (
     <View style={styles.container}>
-      <MySchoolInfoContainer school={school} />
-      <MySchoolInfo school={school} />
-      <MySchoolTeams school={school} />
+      <MySchoolInfoContainer
+        school={school}
+        refetch={refetch}
+        isLoading={isLoading}
+      />
+      <MySchoolInfo school={school} refetch={refetch} isLoading={isLoading} />
+      <MySchoolTeams school={school} refetch={refetch} isLoading={isLoading} />
     </View>
   );
 };

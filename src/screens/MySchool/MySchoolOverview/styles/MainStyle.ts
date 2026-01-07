@@ -44,16 +44,52 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 4,
   },
-  AddSchoolBtn: {
-    backgroundColor: '#00c951',
+  BaseBtn: {
     borderRadius: 10,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 12,
     marginTop: 10,
+    alignItems: 'center',
   },
-  AddSchoolBtnTitle: {
+
+  AddSchoolBtn: {
+    backgroundColor: '#00c951',
+  },
+
+  EditSchoolBtn: {
+    backgroundColor: '#4A90E2',
+  },
+
+  DeleteSchoolBtn: {
+    backgroundColor: '#E74C3C',
+  },
+
+  BtnTitle: {
     fontSize: 16,
     color: '#fff',
     fontWeight: '600',
+  },
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f3f4f6',
+  },
+
+  skeletonContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#e5e7eb',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+
+  shimmer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
 });

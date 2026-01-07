@@ -3,19 +3,91 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/MainStyle';
 import AddSchoolModal from './CreateMySchoolModal';
 import { SchoolProp } from '../types/index.type';
+import { useDeleteMySchoolMutation } from '../../../../feature/mySchool/delete/model/useDeleteMySchoolMutation';
+import { useQueryClient } from '@tanstack/react-query';
 
-const MySchoolInfo: React.FC<SchoolProp> = ({ school }) => {
+const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const { mutate: deleteSchool, isPending } = useDeleteMySchoolMutation();
+  const queryClient = useQueryClient();
+
+  const handleDelete = async (id: string) => {
+    console.log('Starting delete for school:', id);
+
+    deleteSchool(id, {
+      onSuccess: async () => {
+        console.log('Delete API call successful');
+
+        await queryClient.invalidateQueries({
+          queryKey: ['get-mySchool'],
+        });
+
+        queryClient.setQueryData(['get-mySchool'], null);
+
+        if (refetch) {
+          console.log('Calling refetch prop');
+          await refetch();
+        } else {
+          console.log('Manually refetching');
+          await queryClient.refetchQueries({
+            queryKey: ['get-mySchool'],
+          });
+        }
+
+        console.log('Cache operations completed');
+      },
+      onError: error => {
+        console.error('Delete error:', error);
+      },
+    });
+  };
+
+  console.log('Rendering MySchoolInfo with school:', {
+    hasSchool: !!school,
+    id: school?.id,
+    name: school?.name,
+  });
+
   return (
     <View style={styles.InfoContainer}>
-      <Text style={styles.schoolName}>{school?.name || 'school name'}</Text>
+      <Text style={styles.schoolName}>{school?.name || 'No school found'}</Text>
 
-      <TouchableOpacity
-        onPress={() => setIsOpenModal(true)}
-        style={styles.AddSchoolBtn}
-      >
-        <Text style={styles.AddSchoolBtnTitle}>Create School +</Text>
-      </TouchableOpacity>
+      {school && school.id ? (
+        <>
+          <TouchableOpacity
+            onPress={() => setIsOpenModal(true)}
+            style={[styles.BaseBtn, styles.AddSchoolBtn]}
+          >
+            <Text style={styles.BtnTitle}>Create School +</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setIsOpenModal(true)}
+            style={[styles.BaseBtn, styles.EditSchoolBtn]}
+          >
+            <Text style={styles.BtnTitle}>Update School</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => handleDelete(school.id!)}
+            disabled={isPending}
+            style={[styles.BaseBtn, styles.DeleteSchoolBtn]}
+          >
+            {isPending ? (
+              <Text style={styles.BtnTitle}>Deleting...</Text>
+            ) : (
+              <Text style={styles.BtnTitle}>Delete School</Text>
+            )}
+          </TouchableOpacity>
+        </>
+      ) : (
+        <TouchableOpacity
+          onPress={() => setIsOpenModal(true)}
+          style={[styles.BaseBtn, styles.AddSchoolBtn]}
+        >
+          <Text style={styles.BtnTitle}>Create School +</Text>
+        </TouchableOpacity>
+      )}
 
       {isOpenModal && (
         <AddSchoolModal

@@ -16,11 +16,7 @@ const MySchoolTeams: React.FC<SchoolProp> = ({ school }) => {
         contentContainerStyle={styles.table}
         ListEmptyComponent={NotFoundComponent}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              console.log(item.name);
-            }}
-          >
+          <TouchableOpacity>
             <View style={styles.row}>
               <View style={styles.logoContainer}>
                 <Image
