@@ -1,28 +1,39 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
-import { StackNavigationProp } from '@react-navigation/stack';
-
-type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
+import { useGetMySchoolAllTournamentQuery } from '../../../../feature/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import EmptyTournament from './EmptyTournament';
+import { NavigationProp } from '../types/index.type';
 
 const TeamCard: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const handlePress = () => {
     navigation.navigate('MySchoolTeamsDetailScreen');
   };
-  return (
-    <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
-      <View style={styles.CardLeftSide}>
-        <Text style={styles.TeamTitle}>My Tournaments</Text>
-      </View>
+  const { data: School } = useGetMySchoolQuery();
+  const schoolId = School?.id;
+  const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
 
-      <View>
-        <EvilIcons name="external-link" color="#fff" size={30} />
-      </View>
-    </TouchableOpacity>
+  return (
+    <FlatList
+      keyExtractor={item => item.id.toString()}
+      data={TournamentCards}
+      ListEmptyComponent={EmptyTournament}
+      renderItem={({ item }) => (
+        <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
+          <View style={styles.CardLeftSide}>
+            <Text style={styles.TeamTitle}>{item.name}</Text>
+          </View>
+
+          <View>
+            <EvilIcons name="external-link" color="#fff" size={30} />
+          </View>
+        </TouchableOpacity>
+      )}
+    />
   );
 };
 
