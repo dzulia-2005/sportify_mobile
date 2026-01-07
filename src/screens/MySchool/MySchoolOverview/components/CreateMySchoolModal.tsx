@@ -94,12 +94,6 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
       });
     }
 
-    console.log('FormData to send:', {
-      Name: payload.Name,
-      hasLogo: !!photoAsset,
-      logoUri: photoAsset?.uri,
-    });
-
     createSchool(formData, {
       onSuccess: () => {
         reset();

@@ -19,27 +19,34 @@ import { addTeamSchema } from './addTeam.schema';
 import { useCreateMySchoolTeams } from '../../../../feature/mySchoolTeams/create/model/useCreateMySchoolTeams';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddTeamModalProps, AddTeamType } from '../types/index.type';
-
-const AddTeamDefaultValues: AddTeamType = {
-  Name: '',
-  MySchoolId: '',
-  LogoFile: {
-    uri: '',
-  },
-};
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoAsset, setPhotoAsset] = useState<any>(null);
+
+  const { mutate: createTeam, isPending } = useCreateMySchoolTeams();
+  const { data: school } = useGetMySchoolQuery();
+  const schoolId = school?.id;
+
+  const AddTeamDefaultValues: AddTeamType = {
+    Name: '',
+    MySchoolId: schoolId || '',
+    LogoFile: {
+      uri: '',
+    },
+  };
+
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: AddTeamDefaultValues,
     resolver: zodResolver(addTeamSchema),
   });
-  const { mutate: createTeam, isPending } = useCreateMySchoolTeams();
 
   const pickImage = () => {
     launchImageLibrary(
@@ -47,6 +54,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
         mediaType: 'photo',
         quality: 0.8,
         selectionLimit: 1,
+        includeBase64: false,
       },
       response => {
         if (response.didCancel) {
@@ -64,6 +72,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
         }
 
         setPhotoUri(asset.uri);
+        setPhotoAsset(asset);
         setValue(
           'LogoFile',
           {
@@ -79,13 +88,25 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
     const formData = new FormData();
     formData.append('Name', payload.Name);
     formData.append('MySchoolId', payload.MySchoolId);
-    formData.append('LogoFile', {
-      uri: payload.LogoFile,
-    });
+
+    if (photoAsset && photoAsset.uri) {
+      const fileExtension = photoAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        photoAsset.fileName || `school_logo_${Date.now()}.${fileExtension}`;
+
+      formData.append('LogoFile', {
+        uri: photoAsset.uri,
+        type: photoAsset.type || 'image|jpeg',
+        name: fileName,
+      });
+    }
 
     createTeam(formData, {
       onSuccess: () => {
         onClose();
+        reset();
+        setPhotoUri(null);
+        setPhotoAsset(null);
       },
       onError: err => {
         showErrorToast(err);
