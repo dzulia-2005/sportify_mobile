@@ -50,8 +50,10 @@ const TeamCard: React.FC = () => {
     outputRange: [-100, 100],
   });
 
-  const handlePress = () => {
-    navigation.navigate('MySchoolTeamDetailScreen');
+  const handlePress = (teamId: string) => {
+    navigation.navigate('MySchoolTeamDetailScreen', {
+      teamId: teamId,
+    });
   };
 
   return (
@@ -60,7 +62,10 @@ const TeamCard: React.FC = () => {
         data={TEAMS}
         ListEmptyComponent={NotFoundText}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
+          <TouchableOpacity
+            onPress={() => handlePress(item.id)}
+            style={styles.CardContainer}
+          >
             <View style={styles.CardLeftSide}>
               <View style={styles.imageWrapper}>
                 {isLoading ? (

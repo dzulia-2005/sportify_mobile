@@ -4,15 +4,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import { styles } from '../styles/MainStyles';
 import EditSchoolTeamModal from './EditSchoolTeamModal';
+import { TeamDetailProp } from '../types/index.type';
 
-const TeamInfoContainer = () => {
+const TeamInfoContainer: React.FC<TeamDetailProp> = ({ TeamDetail }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   return (
     <View style={styles.TeamInfoMainContainer}>
       <View style={styles.TeamDetailInfo}>
-        <Text style={styles.TeamInfoTitle}>U16 Team</Text>
-        <Text style={styles.TeamInfoPlayersCount}>👥 Team Players: 1</Text>
+        <Text style={styles.TeamInfoTitle}>{TeamDetail?.name}</Text>
+        <Text style={styles.TeamInfoPlayersCount}>
+          {' '}
+          Team Players: {TeamDetail?.players.length}
+        </Text>
 
         <View style={styles.ButtonsContainer}>
           <TouchableOpacity

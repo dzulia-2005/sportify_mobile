@@ -4,7 +4,9 @@ import { useCallback } from 'react';
 
 export type MySchoolStackParamList = {
   MySchoolTabs: undefined;
-  MySchoolTeamDetailScreen: undefined;
+  MySchoolTeamDetailScreen: {
+    teamId: string;
+  };
   MySchoolPlayerDetailTeam: undefined;
   MySchoolTeamsDetailScreen: undefined;
   MySchoolTournamentMatches: undefined;
