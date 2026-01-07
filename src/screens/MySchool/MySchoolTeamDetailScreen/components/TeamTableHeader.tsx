@@ -3,8 +3,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { styles } from '../styles/MainStyles';
 import { Text, TouchableOpacity, View } from 'react-native';
 import AddPlayerModal from './AddPlayerModal';
+import { TeamDetailProp } from '../types/index.type';
 
-const TeamTableHeader = () => {
+const TeamTableHeader: React.FC<TeamDetailProp> = ({ teamId }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   return (
     <View style={styles.playerContainer}>
@@ -24,6 +25,7 @@ const TeamTableHeader = () => {
       </TouchableOpacity>
       {isOpenModal && (
         <AddPlayerModal
+          teamId={teamId}
           visible={isOpenModal}
           onClose={() => setIsOpenModal(false)}
         />

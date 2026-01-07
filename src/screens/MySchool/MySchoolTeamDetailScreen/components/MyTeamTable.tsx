@@ -16,7 +16,7 @@ const MyTeamTable: React.FC<TeamDetailProp> = ({ TeamDetail, isLoading }) => {
             useNativeDriver: true,
           }),
           Animated.timing(shimmerAnimation, {
-            toValue: 1,
+            toValue: 0,
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -32,6 +32,10 @@ const MyTeamTable: React.FC<TeamDetailProp> = ({ TeamDetail, isLoading }) => {
     inputRange: [0, 1],
     outputRange: [-100, 100],
   });
+
+  const imageSource = TeamDetail?.logoUrl
+    ? { uri: TeamDetail.logoUrl }
+    : require('../../../../shared/assets/images/icon-7797704_640.png');
 
   return (
     <View style={styles.outerContainer}>
@@ -61,10 +65,7 @@ const MyTeamTable: React.FC<TeamDetailProp> = ({ TeamDetail, isLoading }) => {
                       />
                     </View>
                   ) : (
-                    <Image
-                      source={require('../../../../shared/assets/images/icon-7797704_640.png')}
-                      style={styles.image}
-                    />
+                    <Image source={imageSource} style={styles.image} />
                   )}
                 </View>
                 <Text style={[styles.cell, { width: 150 }]}>

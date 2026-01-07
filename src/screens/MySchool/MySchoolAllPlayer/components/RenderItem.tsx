@@ -1,12 +1,9 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/mainStyles';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 import { useNavigation } from '@react-navigation/native';
 import { MySchoolPlayersResponse } from '../../../../shared/api/mySchoolPlayer/index.type';
-
-type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
+import { NavigationProp } from '../types/index.type';
 
 const RenderItem = ({ item }: { item: MySchoolPlayersResponse }) => {
   const navigation = useNavigation<NavigationProp>();

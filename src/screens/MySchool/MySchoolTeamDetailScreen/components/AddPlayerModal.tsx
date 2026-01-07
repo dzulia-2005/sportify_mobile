@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Modal,
@@ -19,83 +19,129 @@ import { AddMySchoolPlayerSchema } from './addPlayer.schema';
 import { useCreateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps, AddPlayerType } from '../types/index.type';
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useMeQuery } from '../../../../feature/auth/me/model/useMeQuery';
 
-const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
+const AddPlayerModal: React.FC<AddMatchModalProps> = ({
+  visible,
+  onClose,
+  teamId,
+}) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [imageAsset, setImageAsset] = useState<any>(null);
+  const { data: school } = useGetMySchoolQuery();
+  const schoolId = school?.id;
+  const { data: user } = useMeQuery();
+  const userId = user?.id;
 
-  const AddPlayerDefaultlValues: AddPlayerType = {
-    firstName: '',
-    lastName: '',
-    position: '',
-    parentFirstName: '',
-    parentLastName: '',
-    parentPhoneNumber: '',
-    ProfilePictureFile: {
-      uri: '',
-    },
-    teamId: '2',
-    MySchoolId: '2',
-    UserId: '2',
-  };
+  const defaultValues = useMemo<AddPlayerType>(
+    () => ({
+      FirstName: '',
+      LastName: '',
+      Position: '',
+      ParentFirstName: '',
+      ParentLastName: '',
+      ParentPhoneNumber: '',
+      ProfilePictureFile: {
+        uri: '',
+      },
+      TeamId: teamId || '',
+      MySchoolId: schoolId || '',
+      UserId: userId || '',
+    }),
+    [teamId, schoolId, userId],
+  );
 
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<AddPlayerType>({
-    defaultValues: AddPlayerDefaultlValues,
+    defaultValues: defaultValues,
     resolver: zodResolver(AddMySchoolPlayerSchema),
   });
 
+  useEffect(() => {
+    if (teamId && schoolId && userId) {
+      reset(defaultValues);
+    }
+  }, [schoolId, userId, teamId, reset, defaultValues]);
+
   const pickImage = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 0.7 }, response => {
-      if (response.didCancel) {
-        return;
-      }
-      if (response.errorCode) {
-        Alert.alert('Error', response.errorMessage || 'failed to pick image');
-        return;
-      }
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.7,
+        includeBase64: false,
+      },
+      response => {
+        if (response.didCancel) {
+          return;
+        }
+        if (response.errorCode) {
+          Alert.alert('Error', response.errorMessage || 'failed to pick image');
+          return;
+        }
 
-      const asset = response.assets?.[0];
-      if (!asset?.uri) {
-        return;
-      }
+        const asset = response.assets?.[0];
+        if (!asset?.uri) {
+          return;
+        }
 
-      setProfileImage(asset.uri);
-      setValue(
-        'ProfilePictureFile',
-        {
-          uri: asset.uri,
-        },
-        {
-          shouldValidate: true,
-        },
-      );
-    });
+        setProfileImage(asset.uri);
+        setImageAsset(asset);
+        setValue(
+          'ProfilePictureFile',
+          {
+            uri: asset.uri,
+          },
+          {
+            shouldValidate: true,
+          },
+        );
+      },
+    );
   };
 
-  const { mutate: CreatePlayer, isPending } =
-    useCreateMySchoolPlayerMutation('2');
+  const { mutate: CreatePlayer, isPending } = useCreateMySchoolPlayerMutation();
 
   const handleCreatePlayer = (payload: AddPlayerType) => {
     const formData = new FormData();
-    formData.append('firstName', payload.firstName);
-    formData.append('lastName', payload.lastName);
-    formData.append('parentFirstName', payload.parentFirstName);
-    formData.append('parentLastName', payload.parentLastName);
-    formData.append('parentPhoneNumber', payload.parentPhoneNumber);
-    formData.append('position', payload.position);
-    formData.append('ProfilePictureFile', {
-      uri: payload.ProfilePictureFile.uri,
-    });
+    formData.append('FirstName', payload.FirstName);
+    formData.append('LastName', payload.LastName);
+    formData.append('ParentFirstName', payload.ParentFirstName);
+    formData.append('ParentLastName', payload.ParentLastName);
+    formData.append('ParentPhoneNumber', payload.ParentPhoneNumber);
+    formData.append('Position', payload.Position);
+
+    formData.append('TeamId', payload.TeamId);
+    formData.append('MySchoolId', payload.MySchoolId);
+    formData.append('UserId', payload.UserId);
+
+    if (imageAsset && imageAsset.uri) {
+      const fileExtension = imageAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        imageAsset.uri || `school_logo_${Date.now()}.${fileExtension}`;
+
+      formData.append('ProfilePictureFile', {
+        uri: imageAsset.uri,
+        type: imageAsset.type || 'image/jpeg',
+        name: fileName,
+      });
+    }
+
     CreatePlayer(formData, {
       onSuccess: () => {
         onClose();
+        reset();
+        setImageAsset(null);
+        setProfileImage(null);
       },
       onError: err => {
         showErrorToast(err);
+        onClose();
       },
     });
   };
@@ -138,7 +184,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 FirstName <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="firstName"
+                name="FirstName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -150,9 +196,9 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.firstName && (
+              {errors.FirstName && (
                 <Text style={styles.errorText}>
-                  {errors.firstName?.message}
+                  {errors.FirstName?.message}
                 </Text>
               )}
             </View>
@@ -162,7 +208,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 LastName <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="lastName"
+                name="LastName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -174,8 +220,8 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.lastName && (
-                <Text style={styles.errorText}>{errors.lastName?.message}</Text>
+              {errors.LastName && (
+                <Text style={styles.errorText}>{errors.LastName?.message}</Text>
               )}
             </View>
 
@@ -231,7 +277,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 Position <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="position"
+                name="Position"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -243,8 +289,8 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.position && (
-                <Text style={styles.errorText}>{errors.position?.message}</Text>
+              {errors.Position && (
+                <Text style={styles.errorText}>{errors.Position?.message}</Text>
               )}
             </View>
 
@@ -253,7 +299,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 ParentFirstName <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="parentFirstName"
+                name="ParentFirstName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -265,9 +311,9 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.parentFirstName && (
+              {errors.ParentFirstName && (
                 <Text style={styles.errorText}>
-                  {errors.parentFirstName?.message}
+                  {errors.ParentFirstName?.message}
                 </Text>
               )}
             </View>
@@ -277,7 +323,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 ParentLastName <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="parentLastName"
+                name="ParentLastName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -289,9 +335,9 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.parentLastName && (
+              {errors.ParentLastName && (
                 <Text style={styles.errorText}>
-                  {errors.parentLastName?.message}
+                  {errors.ParentLastName?.message}
                 </Text>
               )}
             </View>
@@ -301,7 +347,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                 ParentPhoneNumber <Text style={styles.required}>*</Text>
               </Text>
               <Controller
-                name="parentPhoneNumber"
+                name="ParentPhoneNumber"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -313,9 +359,9 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({ visible, onClose }) => {
                   />
                 )}
               />
-              {errors.parentPhoneNumber && (
+              {errors.ParentPhoneNumber && (
                 <Text style={styles.errorText}>
-                  {errors.parentPhoneNumber?.message}
+                  {errors.ParentPhoneNumber?.message}
                 </Text>
               )}
             </View>

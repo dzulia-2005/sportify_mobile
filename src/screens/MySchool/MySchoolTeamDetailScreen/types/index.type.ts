@@ -3,28 +3,30 @@ import { Root2 } from '../../../../shared/api/mySchoolTeams/index.type';
 import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 
 export type AddPlayerType = {
-  firstName: string;
-  lastName: string;
-  position: string;
-  parentFirstName: string;
-  parentLastName: string;
-  parentPhoneNumber: string;
+  FirstName: string;
+  LastName: string;
+  Position: string;
+  ParentFirstName: string;
+  ParentLastName: string;
+  ParentPhoneNumber: string;
   ProfilePictureFile: {
     uri: string;
   };
-  teamId: string;
   MySchoolId: string;
   UserId: string;
+  TeamId: string;
 };
 
 export type AddMatchModalProps = {
   visible: boolean;
   onClose: () => void;
+  teamId: string;
 };
 
 export type TeamDetailProp = {
   TeamDetail: Root2 | undefined;
   isLoading: boolean;
+  teamId: string;
 };
 
 export type TeamDetailRouteProp = RouteProp<

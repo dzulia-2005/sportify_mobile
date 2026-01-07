@@ -15,10 +15,26 @@ const MySchoolTeamDetail = () => {
   const { data: TeamDetail, isLoading } = useGetByIdQuery(teamId!);
   return (
     <ScrollView style={styles.container}>
-      <ImgContainer TeamDetail={TeamDetail} isLoading={isLoading} />
-      <TeamInfoContainer TeamDetail={TeamDetail} isLoading={isLoading} />
-      <TeamTableHeader />
-      <MyTeamTable TeamDetail={TeamDetail} isLoading={isLoading} />
+      <ImgContainer
+        TeamDetail={TeamDetail}
+        isLoading={isLoading}
+        teamId={teamId}
+      />
+      <TeamInfoContainer
+        TeamDetail={TeamDetail}
+        isLoading={isLoading}
+        teamId={teamId}
+      />
+      <TeamTableHeader
+        TeamDetail={TeamDetail}
+        isLoading={isLoading}
+        teamId={teamId}
+      />
+      <MyTeamTable
+        TeamDetail={TeamDetail}
+        isLoading={isLoading}
+        teamId={teamId}
+      />
     </ScrollView>
   );
 };

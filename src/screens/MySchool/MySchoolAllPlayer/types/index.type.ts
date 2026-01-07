@@ -1,6 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch, SetStateAction } from 'react';
+import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 
 export type Props = {
-    setSearch:Dispatch<SetStateAction<string>>;
-    search:string;
-}
+  setSearch: Dispatch<SetStateAction<string>>;
+  search: string;
+};
+
+export type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
