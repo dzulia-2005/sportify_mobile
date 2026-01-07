@@ -4,26 +4,19 @@ import { styles } from '../styles/mainStyles';
 import RenderHeader from '../components/RenderHeader';
 import RenderItem from '../components/RenderItem';
 import SearchComponent from '../components/searchComponent';
-
-const initialPlayers = [
-  {
-    id: '1',
-    name: 'Nikoloz Dzuliashvili',
-    position: 'mekare',
-    goals: 0,
-    team: 'u16 team',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg',
-  },
-];
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetAllPlayerInMySchool } from '../../../../feature/mySchoolPlayer/getAllPlayerInMySchool/model/useGetAllPlayerInMySchool';
 
 const MyPlayersScreen = () => {
   const [search, setSearch] = useState('');
-  const [players] = useState(initialPlayers);
+  const { data: school } = useGetMySchoolQuery();
+  const schoolId = school?.id;
+  const { data: PLAYERS = [] } = useGetAllPlayerInMySchool(schoolId!);
+  const [players] = useState(PLAYERS);
 
   const filteredPlayers = useMemo(() => {
     return players.filter(p =>
-      p.name.toLowerCase().includes(search.toLowerCase()),
+      p.firstName.toLowerCase().includes(search.toLowerCase()),
     );
   }, [players, search]);
 

@@ -4,10 +4,11 @@ import { styles } from '../styles/mainStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 import { useNavigation } from '@react-navigation/native';
+import { MySchoolPlayersResponse } from '../../../../shared/api/mySchoolPlayer/index.type';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
 
-const RenderItem = ({ item }: { item: any }) => {
+const RenderItem = ({ item }: { item: MySchoolPlayersResponse }) => {
   const navigation = useNavigation<NavigationProp>();
   const handlePress = () => {
     navigation.navigate('MySchoolPlayerDetailTeam');
@@ -17,16 +18,20 @@ const RenderItem = ({ item }: { item: any }) => {
     <TouchableOpacity onPress={handlePress} style={styles.row}>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../../../shared/assets/images/icon-7797704_640.png')}
+          source={{
+            uri: item.profilePictureUrl
+              ? item.profilePictureUrl
+              : '../../../../shared/assets/images/icon-7797704_640.png',
+          }}
           style={styles.image}
         />
       </View>
-      <Text style={[styles.cell, { flex: 2 }]}>{item.name}</Text>
+      <Text style={[styles.cell, { flex: 2 }]}>{item.firstName}</Text>
       <Text style={[styles.cell, { flex: 1 }]}>{item.position}</Text>
       <Text style={[styles.cell, { flex: 1, color: '#00aaff' }]}>
         {item.goals}
       </Text>
-      <Text style={[styles.cell, { flex: 1 }]}>{item.team}</Text>
+      <Text style={[styles.cell, { flex: 1 }]}>{item.teamName}</Text>
     </TouchableOpacity>
   );
 };
