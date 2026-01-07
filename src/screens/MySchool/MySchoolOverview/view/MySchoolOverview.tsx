@@ -4,13 +4,16 @@ import MySchoolTeams from '../components/MySchoolTeamsTable';
 import { styles } from '../styles/MainStyle';
 import MySchoolInfoContainer from '../components/MySchoolImageContainer';
 import MySchoolInfo from '../components/MySchoolInfo';
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const MySchoolOverview: React.FC = () => {
+  const { data: school } = useGetMySchoolQuery();
+
   return (
     <View style={styles.container}>
-      <MySchoolInfoContainer />
-      <MySchoolInfo />
-      <MySchoolTeams />
+      <MySchoolInfoContainer school={school} />
+      <MySchoolInfo school={school} />
+      <MySchoolTeams school={school} />
     </View>
   );
 };

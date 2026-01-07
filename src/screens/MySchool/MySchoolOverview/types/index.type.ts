@@ -1,3 +1,5 @@
+import { MySchoolResponse } from '../../../../shared/api/mySchool/index.type';
+
 export type AddSchoolModalProps = {
   visible: boolean;
   onClose: () => void;
@@ -8,4 +10,8 @@ export type SchoolDefaultTypes = {
   LogoFile: {
     uri: string;
   };
+};
+
+export type SchoolProp = {
+  school: MySchoolResponse | undefined;
 };

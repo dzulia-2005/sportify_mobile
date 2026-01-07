@@ -1,15 +1,12 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
-import { StackNavigationProp } from '@react-navigation/stack';
-
-type NavigationProp = StackNavigationProp<
-  MySchoolStackParamList,
-  'MySchoolTabs'
->;
+import { NavigationProp } from '../types/index.type';
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetTeamBySchoolIdQuery } from '../../../../feature/mySchoolTeams/getTeamBySchool/model/useGetTeamBySchoolIdQuery';
+import NotFoundText from './NotFoundText';
 
 const TeamCard: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -18,25 +15,39 @@ const TeamCard: React.FC = () => {
     navigation.navigate('MySchoolTeamDetailScreen');
   };
 
-  return (
-    <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
-      <View style={styles.CardLeftSide}>
-        <View style={styles.imageWrapper}>
-          <Image
-            source={{
-              uri: 'https://upload.wikimedia.org/wikipedia/ka/7/78/FC_Dinamo_Tbilisi_Logo_%28v.3%29.png',
-            }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={styles.TeamTitle}>U16</Text>
-      </View>
+  const { data: school } = useGetMySchoolQuery();
+  const schoolId = school?.id;
+  const { data: TEAMS = [] } = useGetTeamBySchoolIdQuery(schoolId!);
 
-      <View>
-        <EvilIcons name="external-link" color="#fff" size={30} />
-      </View>
-    </TouchableOpacity>
+  return (
+    <>
+      <FlatList
+        data={TEAMS}
+        ListEmptyComponent={NotFoundText}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
+            <View style={styles.CardLeftSide}>
+              <View style={styles.imageWrapper}>
+                <Image
+                  source={{
+                    uri: item.logoUrl
+                      ? item.logoUrl
+                      : 'https://upload.wikimedia.org/wikipedia/ka/7/78/FC_Dinamo_Tbilisi_Logo_%28v.3%29.png',
+                  }}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={styles.TeamTitle}>{item.name}</Text>
+            </View>
+
+            <View>
+              <EvilIcons name="external-link" color="#fff" size={30} />
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </>
   );
 };
 

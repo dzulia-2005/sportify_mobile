@@ -1,10 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-
-  titleContainer:{
-    alignItems:'center',
-    justifyContent:'center'
+  titleContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   container: {
@@ -18,10 +17,10 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     marginBottom: 20,
-},
+  },
   table: {
     width: '100%',
-    paddingHorizontal:15
+    paddingHorizontal: 15,
   },
   row: {
     flexDirection: 'row',
@@ -32,7 +31,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#00c95155',
-    width:'100%'
+    width: '100%',
   },
   logoContainer: {
     width: 60,
@@ -51,6 +50,13 @@ export const styles = StyleSheet.create({
   name: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  notFound: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#8fa3c8',
     fontWeight: '500',
   },
 });
