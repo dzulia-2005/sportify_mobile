@@ -5,9 +5,11 @@ import AddSchoolModal from './CreateMySchoolModal';
 import { SchoolProp } from '../types/index.type';
 import { useDeleteMySchoolMutation } from '../../../../feature/mySchool/delete/model/useDeleteMySchoolMutation';
 import { useQueryClient } from '@tanstack/react-query';
+import EditSchoolModal from './EditMySchoolModal';
 
 const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const { mutate: deleteSchool, isPending } = useDeleteMySchoolMutation();
   const queryClient = useQueryClient();
 
@@ -62,7 +64,7 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => setIsOpenModal(true)}
+            onPress={() => setIsOpenEditModal(true)}
             style={[styles.BaseBtn, styles.EditSchoolBtn]}
           >
             <Text style={styles.BtnTitle}>Update School</Text>
@@ -93,6 +95,12 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
         <AddSchoolModal
           visible={isOpenModal}
           onClose={() => setIsOpenModal(false)}
+        />
+      )}
+      {isOpenEditModal && (
+        <EditSchoolModal
+          visible={isOpenEditModal}
+          onClose={() => setIsOpenEditModal(false)}
         />
       )}
     </View>
