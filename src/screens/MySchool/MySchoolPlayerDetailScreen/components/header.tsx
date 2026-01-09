@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { styles } from '../styles/index.styles';
 import { HeaderProp } from '../types/index.type';
 import EditMySchoolPlayerModal from './editPlayerModal';
 
-const mockPlayer = {
-  id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  mySchoolId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  teamId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  teamName: 'U16 Team',
-  firstName: 'Nikoloz',
-  lastName: 'Dzuliashvili',
-  profilePictureUrl: '',
-  position: 'Goalkeeper',
-  parentFirstName: 'Giorgi',
-  parentLastName: 'Dzuliashvili',
-  parentPhoneNumber: '+995 599 12 34 56',
-  goals: 0,
-  assists: 0,
-  matchesPlayed: 12,
-  yellowCards: 1,
-  redCards: 0,
-};
-
-const Header: React.FC<HeaderProp> = ({ imageSource }) => {
+const Header: React.FC<HeaderProp> = ({ Player, isLoading }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  const imageSource = Player?.profilePictureUrl
+    ? { uri: Player.profilePictureUrl }
+    : require('../../../../shared/assets/images/icon-7797704_640.png');
+
+  const shimmerAnimation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isLoading) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(shimmerAnimation, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shimmerAnimation, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    } else {
+      shimmerAnimation.setValue(0);
+      shimmerAnimation.stopAnimation();
+    }
+  }, [isLoading, shimmerAnimation]);
+
+  const translateX = shimmerAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-100, 100],
+  });
+
   return (
     <View style={styles.avatarContainer}>
-      <Image source={imageSource} style={styles.avatar} />
+      {isLoading ? (
+        <View style={styles.skeletonContainer}>
+          <Animated.View
+            style={[styles.shimmer, { transform: [{ translateX }] }]}
+          />
+        </View>
+      ) : (
+        <Image source={imageSource} style={styles.avatar} />
+      )}
       <Text style={styles.name}>
-        {mockPlayer.firstName} {mockPlayer.lastName}
+        {Player?.firstName} {Player?.lastName}
       </Text>
-      <Text style={styles.position}>{mockPlayer.position}</Text>
-      <Text style={styles.team}>{mockPlayer.teamName}</Text>
+      <Text style={styles.position}>{Player?.position}</Text>
+      <Text style={styles.team}>{Player?.teamName}</Text>
       <View style={styles.actionRow}>
         <TouchableOpacity
           style={styles.editBtn}

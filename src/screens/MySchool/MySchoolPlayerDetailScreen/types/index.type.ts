@@ -1,7 +1,8 @@
-import { ImageURISource } from 'react-native';
+import { MySchoolPlayersResponse } from '../../../../shared/api/mySchoolPlayer/index.type';
 
 export type HeaderProp = {
-  imageSource: number | ImageURISource;
+  Player: MySchoolPlayersResponse | undefined;
+  isLoading: boolean;
 };
 
 export type AddMySchoolPlayerModalProps = {
@@ -22,4 +23,8 @@ export type EditPlayerType = {
   parentLastName: string;
   parentPhoneNumber: string;
   teamId: string;
+};
+
+export type PlayerStatProp = {
+  Player: MySchoolPlayersResponse | undefined;
 };

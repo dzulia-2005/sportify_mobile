@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   pageContainer: {
@@ -58,16 +58,32 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
-  AddPlayerBtnContainer:{
-    paddingVertical:15,
-    backgroundColor:'#00c951',
-    borderRadius:10,
-    marginBottom:15
+  AddPlayerBtnContainer: {
+    paddingVertical: 15,
+    backgroundColor: '#00c951',
+    borderRadius: 10,
+    marginBottom: 15,
   },
-  AddPlayerBtnText:{
-    color:'#fff',
-    fontSize:16,
-    fontWeight:'bold',
-    textAlign:"center"
-  }
+  AddPlayerBtnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  skeletonContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#e5e7eb',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+
+  shimmer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
 });

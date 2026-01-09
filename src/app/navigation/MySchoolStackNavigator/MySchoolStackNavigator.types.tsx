@@ -7,7 +7,9 @@ export type MySchoolStackParamList = {
   MySchoolTeamDetailScreen: {
     teamId: string;
   };
-  MySchoolPlayerDetailTeam: undefined;
+  MySchoolPlayerDetailTeam: {
+    playerId: string;
+  };
   MySchoolTeamsDetailScreen: undefined;
   MySchoolTournamentMatches: undefined;
   MySchoolTournamentScores: undefined;

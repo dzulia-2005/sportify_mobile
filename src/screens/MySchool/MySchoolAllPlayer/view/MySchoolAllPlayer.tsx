@@ -12,7 +12,7 @@ const MyPlayersScreen = () => {
   const [search, setSearch] = useState('');
   const { data: school } = useGetMySchoolQuery();
   const schoolId = school?.id;
-  const { data: PLAYERS } = useGetAllPlayerInMySchool(schoolId!);
+  const { data: PLAYERS, isLoading } = useGetAllPlayerInMySchool(schoolId!);
 
   const filteredPlayers = useMemo(() => {
     return PLAYERS?.filter(p =>
@@ -30,7 +30,9 @@ const MyPlayersScreen = () => {
           data={filteredPlayers}
           ListEmptyComponent={EmptyList}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <RenderItem item={item} />}
+          renderItem={({ item }) => (
+            <RenderItem item={item} isLoading={isLoading} />
+          )}
         />
       </View>
     </View>
