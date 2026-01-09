@@ -17,42 +17,36 @@ import { editSchoolTeamSchema } from './editSchoolTeam.schema';
 import { useUpdateMySchoolTeams } from '../../../../feature/mySchoolTeams/update/model/useUpdateMySchoolTeams';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { EditSchoolTeamsType } from '../types/index.type';
+import { useQueryClient } from '@tanstack/react-query';
 
 type EditSchoolTeamModal = {
   visible: boolean;
   onClose: () => void;
-};
-
-type ImageFile = {
-  uri: string;
-  name?: string;
-  type?: string;
-};
-
-type EditSchoolTeamsType = {
-  Name: string;
-  LogoFile: ImageFile;
-};
-
-const EditSchoolTeamsInitialValues: EditSchoolTeamsType = {
-  Name: '',
-  LogoFile: {
-    uri: '',
-    name: '',
-    type: '',
-  },
+  teamId: string;
 };
 
 const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
   visible,
   onClose,
+  teamId,
 }) => {
+  const EditSchoolTeamsInitialValues: EditSchoolTeamsType = {
+    Name: '',
+    LogoFile: {
+      uri: '',
+    },
+  };
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoAsset, setPhotoAsset] = useState<any>(null);
+  const queryClient = useQueryClient();
+
   const {
     handleSubmit,
     formState: { errors },
     control,
     setValue,
+    reset,
   } = useForm<EditSchoolTeamsType>({
     defaultValues: EditSchoolTeamsInitialValues,
     resolver: zodResolver(editSchoolTeamSchema),
@@ -60,7 +54,12 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
 
   const PickImage = () => {
     launchImageLibrary(
-      { mediaType: 'photo', quality: 0.8, selectionLimit: 1 },
+      {
+        mediaType: 'photo',
+        quality: 0.8,
+        selectionLimit: 1,
+        includeBase64: false,
+      },
       response => {
         if (response.didCancel) return;
         if (response.errorCode) {
@@ -74,12 +73,11 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
         }
 
         setPhotoUrl(asset.uri);
+        setPhotoAsset(asset);
         setValue(
           'LogoFile',
           {
             uri: asset.uri,
-            name: asset.fileName ?? 'image.jpg',
-            type: asset.type ?? 'image/jpeg',
           },
           { shouldValidate: true },
         );
@@ -87,20 +85,30 @@ const EditSchoolTeamModal: React.FC<EditSchoolTeamModal> = ({
     );
   };
 
-  const { mutate: EditSchoolTeam, isPending } = useUpdateMySchoolTeams('2');
+  const { mutate: EditSchoolTeam, isPending } = useUpdateMySchoolTeams(teamId);
 
   const handleEditTeam = (payload: EditSchoolTeamsType) => {
     const formData = new FormData();
     formData.append('Name', payload.Name);
-    formData.append('LogoFile', {
-      uri: payload.LogoFile.uri,
-      name: payload.LogoFile.name ?? 'image.jpg',
-      type: payload.LogoFile.type ?? 'image/jpeg',
-    } as any);
+    if (photoAsset && photoAsset.uri) {
+      const fileExtension = photoAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        photoAsset.fileName || `school_logo_${Date.now()}.${fileExtension}`;
+
+      formData.append('LogoFile', {
+        uri: photoAsset.uri,
+        type: photoAsset.type || 'image|jpeg',
+        name: fileName,
+      });
+    }
 
     EditSchoolTeam(formData, {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['getById'] });
         onClose();
+        reset();
+        setPhotoAsset(null);
+        setPhotoUrl(null);
       },
       onError: err => {
         showErrorToast(err);
