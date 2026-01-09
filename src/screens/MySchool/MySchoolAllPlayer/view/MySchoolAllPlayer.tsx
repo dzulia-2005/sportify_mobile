@@ -12,14 +12,13 @@ const MyPlayersScreen = () => {
   const [search, setSearch] = useState('');
   const { data: school } = useGetMySchoolQuery();
   const schoolId = school?.id;
-  const { data: PLAYERS = [] } = useGetAllPlayerInMySchool(schoolId!);
-  const [players] = useState(PLAYERS);
+  const { data: PLAYERS } = useGetAllPlayerInMySchool(schoolId!);
 
   const filteredPlayers = useMemo(() => {
-    return players.filter(p =>
+    return PLAYERS?.filter(p =>
       p.firstName.toLowerCase().includes(search.toLowerCase()),
     );
-  }, [players, search]);
+  }, [PLAYERS, search]);
 
   return (
     <View style={styles.pageContainer}>

@@ -15,7 +15,6 @@ export type MySchoolStackParamList = {
 
 export const HeaderLeft = () => {
   const navigation = useNavigation();
-
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
