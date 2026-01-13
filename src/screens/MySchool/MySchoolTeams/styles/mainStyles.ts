@@ -33,23 +33,25 @@ export const styles = StyleSheet.create({
 
   CardListContainer: {
     backgroundColor: '#061325',
-    width: '110%',
+    width: '100%',
     minHeight: 600,
     borderRadius: 10,
     flexDirection: 'column',
     alignItems: 'center',
     paddingVertical: 20,
+    paddingHorizontal: 20,
+    gap: 10,
   },
 
   CardContainer: {
     backgroundColor: '#0b1b33',
-    width: '90%',
+    width: '100%',
     height: 100,
     borderRadius: 10,
-    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   CardLeftSide: {
     flexDirection: 'row',
