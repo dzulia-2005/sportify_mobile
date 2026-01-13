@@ -33,9 +33,9 @@ const MyTeamTable: React.FC<TeamDetailProp> = ({ TeamDetail, isLoading }) => {
     outputRange: [-100, 100],
   });
 
-  const imageSource = (image: string) =>
+  const imageSource = (playerImage: string) =>
     TeamDetail?.logoUrl
-      ? { uri: image }
+      ? { uri: playerImage }
       : require('../../../../shared/assets/images/icon-7797704_640.png');
 
   return (

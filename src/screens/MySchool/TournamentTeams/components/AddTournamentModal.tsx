@@ -17,16 +17,20 @@ import { tournamentSchema } from './Tournament.schema';
 import { useCreateMySchoolTournamentMutation } from '../../../../feature/mySchoolTournament/create/model/useCreateMySchoolTournamentMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps, addTournamentType } from '../types/index.type';
+import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const AddTournamentModal: React.FC<AddMatchModalProps> = ({
   visible,
   onClose,
 }) => {
+  const { data: School } = useGetMySchoolQuery();
+  const mySchoolId = School?.id;
+
   const defaultValues: addTournamentType = {
     name: '',
     startDate: '',
     endDate: '',
-    mySchoolId: '2',
+    mySchoolId: mySchoolId!,
     matchType: 0,
   };
 
@@ -200,9 +204,9 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
                     }
                   >
                     <Text style={styles.matchTypeTextSelected}>
-                      {type === 0 && '🏆 Round Robin'}
-                      {type === 1 && '👥 Single Elimination'}
-                      {type === 2 && '🎯 Double Elimination'}
+                      {type === 0 && 'Round Robin'}
+                      {type === 1 && 'Single Elimination'}
+                      {type === 2 && 'Double Elimination'}
                     </Text>
                   </TouchableOpacity>
                 ))}

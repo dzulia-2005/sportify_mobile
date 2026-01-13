@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import RenderHeader from '../components/RenderHeader';
@@ -7,12 +7,23 @@ import SearchComponent from '../components/searchComponent';
 import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useGetAllPlayerInMySchool } from '../../../../feature/mySchoolPlayer/getAllPlayerInMySchool/model/useGetAllPlayerInMySchool';
 import EmptyList from '../components/EmptyList';
+import { useFocusEffect } from '@react-navigation/native';
 
 const MyPlayersScreen = () => {
   const [search, setSearch] = useState('');
   const { data: school } = useGetMySchoolQuery();
   const schoolId = school?.id;
-  const { data: PLAYERS, isLoading } = useGetAllPlayerInMySchool(schoolId!);
+  const {
+    data: PLAYERS,
+    isLoading,
+    refetch,
+  } = useGetAllPlayerInMySchool(schoolId!);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
+  );
 
   const filteredPlayers = useMemo(() => {
     return PLAYERS?.filter(p =>
