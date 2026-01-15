@@ -1,83 +1,38 @@
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
   Text,
   ScrollView,
-  // Image,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-
-interface Standing {
-  id: string;
-  teamName: string;
-  teamLogoUrl?: string;
-  played: number;
-  wins: number;
-  draws: number;
-  losses: number;
-  goalsFor: number;
-  goalsAgainst: number;
-  points: number;
-}
-
-// Mock data
-const mockStandings: Standing[] = [
-  {
-    id: '1',
-    teamName: 'Warriors',
-    teamLogoUrl: 'https://via.placeholder.com/50',
-    played: 10,
-    wins: 7,
-    draws: 2,
-    losses: 1,
-    goalsFor: 25,
-    goalsAgainst: 10,
-    points: 23,
-  },
-  {
-    id: '2',
-    teamName: 'Eagles',
-    teamLogoUrl: 'https://via.placeholder.com/50',
-    played: 10,
-    wins: 6,
-    draws: 3,
-    losses: 1,
-    goalsFor: 22,
-    goalsAgainst: 12,
-    points: 21,
-  },
-  {
-    id: '3',
-    teamName: 'Thunder',
-    teamLogoUrl: 'https://via.placeholder.com/50',
-    played: 10,
-    wins: 5,
-    draws: 3,
-    losses: 2,
-    goalsFor: 18,
-    goalsAgainst: 14,
-    points: 18,
-  },
-];
+import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
+import { useGetAllStandingQuery } from '../../../../feature/mySchoolStanding/getAllStanding/model/useGetAllStandingQuery';
+import { GetAllStandingResponse } from '../../../../shared/api/mySchoolStanding/index.type';
 
 const TournamentStandingsScreen = () => {
-  const data = mockStandings;
+  const route = useRoute<TournamentTeamsProp>();
+  const { tournamentId } = route.params;
+  const { data: Standing } = useGetAllStandingQuery(tournamentId);
+  const data = Standing;
   const isLoading = false;
 
-  const standings: Standing[] = (data ?? []).slice().sort((a, b) => {
-    const gdA = a.goalsFor - a.goalsAgainst;
-    const gdB = b.goalsFor - b.goalsAgainst;
-    if (b.points !== a.points) return b.points - a.points;
-    if (gdB !== gdA) return gdB - gdA;
-    return b.goalsFor - a.goalsFor;
-  });
+  const standings: GetAllStandingResponse[] = (data ?? [])
+    .slice()
+    .sort((a, b) => {
+      const gdA = a.goalsFor - a.goalsAgainst;
+      const gdB = b.goalsFor - b.goalsAgainst;
+      if (b.points !== a.points) return b.points - a.points;
+      if (gdB !== gdA) return gdB - gdA;
+      return b.goalsFor - a.goalsFor;
+    });
 
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0ea5e9" />
-        <Text style={styles.loadingText}>იტვირთება...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
@@ -87,7 +42,6 @@ const TournamentStandingsScreen = () => {
       <View style={styles.content}>
         <Text style={styles.title}>Standings</Text>
 
-        {/* Table Header */}
         <View style={styles.tableHeader}>
           <Text style={[styles.headerCell, styles.rankCell]}>#</Text>
           <Text style={[styles.headerCell, styles.teamCell]}>Team</Text>
@@ -101,7 +55,6 @@ const TournamentStandingsScreen = () => {
           <Text style={[styles.headerCell, styles.statCell]}>Pts</Text>
         </View>
 
-        {/* Table Body */}
         {standings.map((team, idx) => {
           const gd = team.goalsFor - team.goalsAgainst;
           return (
@@ -113,14 +66,6 @@ const TournamentStandingsScreen = () => {
                 {idx + 1}
               </Text>
               <View style={[styles.cell, styles.teamCell, styles.teamInfo]}>
-                {/* <Image
-                  source={
-                    team.teamLogoUrl && team.teamLogoUrl.trim() !== ''
-                      ? { uri: team.teamLogoUrl }
-                    
-                  }
-                  style={styles.teamLogo}
-                /> */}
                 <Text style={styles.teamName} numberOfLines={1}>
                   {team.teamName}
                 </Text>
@@ -151,7 +96,7 @@ const TournamentStandingsScreen = () => {
 
         {standings.length === 0 && (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>სტენდინგი ჯერ ცარიელია</Text>
+            <Text style={styles.emptyText}>Standing is Empty</Text>
           </View>
         )}
       </View>

@@ -68,7 +68,7 @@ const TournamentCards: React.FC<Props> = ({ search }) => {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#0ea5e9" />
-        <Text style={styles.loadingText}>იტვირთება...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
