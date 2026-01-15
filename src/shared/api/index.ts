@@ -3,8 +3,6 @@ import type { CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import { BASE_URL } from '@env';
 
-console.log(BASE_URL, '<----');
-
 const axiosConfig: CreateAxiosDefaults = {
   baseURL: BASE_URL,
 };

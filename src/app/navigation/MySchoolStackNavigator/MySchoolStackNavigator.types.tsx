@@ -10,9 +10,14 @@ export type MySchoolStackParamList = {
   MySchoolPlayerDetailTeam: {
     playerId: string;
   };
-  MySchoolTeamsDetailScreen: undefined;
+  MySchoolTournamentTeamsDetailScreen: {
+    tournamentId: string;
+  };
   MySchoolTournamentMatches: undefined;
   MySchoolTournamentScores: undefined;
+  MySchoolTeamsDetailScreen: {
+    tournamentId: string;
+  };
 };
 
 export const HeaderLeft = () => {

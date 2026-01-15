@@ -19,6 +19,7 @@ import { TeamSchema } from './team.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddTeamModalProps, AddTeamType } from '../types/index.type';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddTeamDefaultValues: AddTeamType = {
   Name: '',
@@ -27,20 +28,28 @@ const AddTeamDefaultValues: AddTeamType = {
   },
 };
 
-const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
+const AddTeamModal: React.FC<AddTeamModalProps> = ({
+  visible,
+  onClose,
+  currId,
+}) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoAsset, setPhotoAsset] = useState<any>(null);
+  const queryClient = useQueryClient();
 
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<AddTeamType>({
     defaultValues: AddTeamDefaultValues,
     resolver: zodResolver(TeamSchema),
   });
-  //აქ უნდა ჩავაწოდო tournamendId
-  const { mutate: AddTeam, isPending } = useCreateTournamentTeamsMutation('2');
+  const { mutate: AddTeam, isPending } = useCreateTournamentTeamsMutation(
+    currId!,
+  );
   const pickImage = () => {
     launchImageLibrary(
       {
@@ -61,6 +70,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
           return;
         }
         setPhotoUri(asset.uri);
+        setPhotoAsset(asset);
         setValue('LogoFile', { uri: asset.uri }, { shouldValidate: true });
       },
     );
@@ -69,15 +79,31 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
   const handleCreateTeam = (payload: AddTeamType) => {
     const formData = new FormData();
     formData.append('Name', payload.Name);
-    formData.append('LogoFile', {
-      uri: payload.LogoFile.uri,
-    });
+    if (photoAsset && photoAsset.uri) {
+      const fileExtension = photoAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        photoAsset.uri || `school_logo_${Date.now()}.${fileExtension}`;
+      formData.append('LogoFile', {
+        uri: photoAsset.uri,
+        type: photoAsset.type || 'image/jpeg',
+        name: fileName,
+      });
+    }
+
     AddTeam(formData, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getMySchoolAllTournaments'],
+        });
         onClose();
+        reset();
+        setPhotoAsset(null);
+        setPhotoUri(null);
       },
       onError: err => {
         showErrorToast(err);
+        onClose();
+        console.log('add team err: ', err);
       },
     });
   };
@@ -142,9 +168,6 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
                   style={styles.uploadContainer}
                   activeOpacity={0.8}
                 >
-                  <View style={styles.uploadIcon}>
-                    <Text style={styles.uploadIconText}>📷</Text>
-                  </View>
                   <Text style={styles.uploadText}>Choose Team Logo</Text>
                   <Text style={styles.uploadSubtext}>
                     Tap to select an image

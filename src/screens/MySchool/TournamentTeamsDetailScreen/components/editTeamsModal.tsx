@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TeamSchema } from './team.schema';
-import { AddTeamModalProps, AddTeamType } from '../types/index.type';
+import { AddTeamType, EditTeamModalProps } from '../types/index.type';
 import { useUpdateTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/update/model/useUpdateTournamentTeamsMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
@@ -27,8 +27,13 @@ const AddTeamDefaultValues: AddTeamType = {
   },
 };
 
-const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
+const EditTeamModal: React.FC<EditTeamModalProps> = ({
+  visible,
+  onClose,
+  id,
+}) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoAsset, setPhotoAsset] = useState<any>(null);
   const {
     handleSubmit,
     control,
@@ -38,7 +43,8 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
     defaultValues: AddTeamDefaultValues,
     resolver: zodResolver(TeamSchema),
   });
-  const { mutate: EditTeam, isPending } = useUpdateTournamentTeamsMutation('2');
+
+  const { mutate: EditTeam, isPending } = useUpdateTournamentTeamsMutation(id);
   const pickImage = () => {
     launchImageLibrary(
       {
@@ -59,6 +65,7 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
           return;
         }
         setPhotoUri(asset.uri);
+        setPhotoAsset(asset);
         setValue('LogoFile', { uri: asset.uri }, { shouldValidate: true });
       },
     );
@@ -67,9 +74,16 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
   const handleEdit = (payload: AddTeamType) => {
     const formData = new FormData();
     formData.append('Name', payload.Name);
-    formData.append('LogoFile', {
-      uri: payload.LogoFile.uri,
-    });
+    if (photoAsset && photoAsset.uri) {
+      const fileExtension = photoAsset.uri.split('.').pop() || 'jpg';
+      const fileName =
+        photoAsset.uri || `school_logo_${Date.now()}.${fileExtension}`;
+      formData.append('LogoFile', {
+        uri: photoAsset.uri,
+        type: photoAsset.type || 'image/jpeg',
+        name: fileName,
+      });
+    }
     EditTeam(formData, {
       onSuccess: () => {
         onClose();
@@ -140,9 +154,6 @@ const EditTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
                   style={styles.uploadContainer}
                   activeOpacity={0.8}
                 >
-                  <View style={styles.uploadIcon}>
-                    <Text style={styles.uploadIconText}>📷</Text>
-                  </View>
                   <Text style={styles.uploadText}>Choose Team Logo</Text>
                   <Text style={styles.uploadSubtext}>
                     Tap to select an image

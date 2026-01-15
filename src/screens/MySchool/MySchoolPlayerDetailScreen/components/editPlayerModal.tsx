@@ -242,7 +242,6 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
                   style={styles.uploadContainer}
                   onPress={pickImage}
                 >
-                  <Text style={styles.uploadIcon}>📷</Text>
                   <Text style={styles.uploadText}>Choose Photo</Text>
                 </TouchableOpacity>
               ) : (

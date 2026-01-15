@@ -174,9 +174,6 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
                   style={styles.uploadContainer}
                   activeOpacity={0.8}
                 >
-                  <View style={styles.uploadIcon}>
-                    <Text style={styles.uploadIconText}>📷</Text>
-                  </View>
                   <Text style={styles.uploadText}>Choose Team Logo</Text>
                   <Text style={styles.uploadSubtext}>
                     Tap to select an image

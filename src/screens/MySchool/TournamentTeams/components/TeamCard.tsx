@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
 import { useGetMySchoolAllTournamentQuery } from '../../../../feature/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
@@ -14,21 +13,22 @@ import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
 const TeamCard: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const handlePress = () => {
-    navigation.navigate('MySchoolTeamsDetailScreen');
-  };
   const { data: School } = useGetMySchoolQuery();
   const schoolId = School?.id;
   const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
   const { mutate: deleteTournament } = useDeleteMySchoolTournamentMutation();
 
   const handleDelete = (id: string) => {
-    console.log('id aris es : ', id);
     deleteTournament(id, {
       onError: err => {
         showErrorToast(err);
-        console.log(err, 'es aris err');
       },
+    });
+  };
+
+  const handlePress = (tournamentId: string) => {
+    navigation.navigate('MySchoolTeamsDetailScreen', {
+      tournamentId: tournamentId,
     });
   };
 
@@ -38,7 +38,10 @@ const TeamCard: React.FC = () => {
       data={TournamentCards}
       ListEmptyComponent={EmptyTournament}
       renderItem={({ item }) => (
-        <TouchableOpacity onPress={handlePress} style={styles.CardContainer}>
+        <TouchableOpacity
+          onPress={() => handlePress(item.id)}
+          style={styles.CardContainer}
+        >
           <View style={styles.CardLeftSide}>
             <Text style={styles.TeamTitle}>{item.name}</Text>
           </View>
@@ -46,10 +49,6 @@ const TeamCard: React.FC = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             <TouchableOpacity>
               <EvilIcons name="external-link" color="#fff" size={30} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Feather name="edit" color="#3B82F6" size={24} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handleDelete(item.id)}>

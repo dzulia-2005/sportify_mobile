@@ -155,7 +155,6 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                   onPress={pickImage}
                   style={styles.uploadContainer}
                 >
-                  <Text style={styles.uploadIcon}>🏫</Text>
                   <Text style={styles.uploadText}>Choose School Logo</Text>
                 </TouchableOpacity>
               ) : (

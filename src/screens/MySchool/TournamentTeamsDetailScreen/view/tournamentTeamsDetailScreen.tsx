@@ -3,23 +3,17 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/index.style';
 import RenderTeam from '../components/renderTeam';
 import NoTeamsAvailable from '../components/NoTeamsAvailable';
-import { Team } from '../types/index.type';
+import { Team, TournamentTeamsProp } from '../types/index.type';
 import AddTeamModal from '../components/AddTeamsModal';
-
-const teams: Team[] = [
-  {
-    id: '1',
-    tournamentId: '100',
-    name: 'Warriors',
-    logoUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0AcwEb2Y3J8DU9y7xSn-d9Ll4G4InTbMe9Q&s',
-    matchType: 1,
-  },
-];
+import { useGetAllTeamQuery } from '../../../../feature/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
+import { useRoute } from '@react-navigation/native';
 
 const TournamentTeamsDetailScreen: React.FC = () => {
-  const renderTeam = ({ item }: { item: Team }) => <RenderTeam item={item} />;
+  const route = useRoute<TournamentTeamsProp>();
+  const { tournamentId } = route.params;
+  const { data: teams, isLoading, refetch } = useGetAllTeamQuery(tournamentId);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -33,12 +27,19 @@ const TournamentTeamsDetailScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.teamCount}>{teams.length} Teams</Text>
+        <Text style={styles.teamCount}>{teams?.length} Teams</Text>
       </View>
       <FlatList
         data={teams}
         keyExtractor={item => item.id}
-        renderItem={renderTeam}
+        renderItem={({ item }: { item: Team }) => (
+          <RenderTeam
+            item={item}
+            isLoading={isLoading}
+            id={item.id}
+            refetch={refetch}
+          />
+        )}
         ListEmptyComponent={NoTeamsAvailable}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
@@ -47,6 +48,7 @@ const TournamentTeamsDetailScreen: React.FC = () => {
         <AddTeamModal
           visible={isOpenModal}
           onClose={() => setIsOpenModal(false)}
+          currId={tournamentId}
         />
       )}
     </View>
