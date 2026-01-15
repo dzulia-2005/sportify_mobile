@@ -18,6 +18,7 @@ import { useCreateMySchoolTournamentMutation } from '../../../../feature/mySchoo
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps, addTournamentType } from '../types/index.type';
 import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddTournamentModal: React.FC<AddMatchModalProps> = ({
   visible,
@@ -25,7 +26,7 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
 }) => {
   const { data: School } = useGetMySchoolQuery();
   const mySchoolId = School?.id;
-
+  const queryClient = useQueryClient();
   const defaultValues: addTournamentType = {
     name: '',
     startDate: '',
@@ -59,6 +60,9 @@ const AddTournamentModal: React.FC<AddMatchModalProps> = ({
     CreateTournament(payload, {
       onSuccess: () => {
         onClose();
+        queryClient.invalidateQueries({
+          queryKey: ['getMySchoolAllTournaments'],
+        });
       },
       onError: err => {
         showErrorToast(err);
