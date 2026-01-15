@@ -3,8 +3,16 @@ import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/TeamsStyles';
 import { SchoolProp } from '../types/index.type';
 import NotFoundComponent from './notFoundComponent';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../../MySchoolTeams/types/index.type';
 
 const MySchoolTeams: React.FC<SchoolProp> = ({ school }) => {
+  const navigation = useNavigation<NavigationProp>();
+  const handlePress = (teamId: string) => {
+    navigation.navigate('MySchoolTeamDetailScreen', {
+      teamId,
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -16,7 +24,7 @@ const MySchoolTeams: React.FC<SchoolProp> = ({ school }) => {
         contentContainerStyle={styles.table}
         ListEmptyComponent={NotFoundComponent}
         renderItem={({ item }) => (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handlePress(item.id)}>
             <View style={styles.row}>
               <View style={styles.logoContainer}>
                 <Image
