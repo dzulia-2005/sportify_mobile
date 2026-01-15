@@ -19,7 +19,7 @@ const StageHeader: React.FC<StageHeaderProps> = ({ title, color, count }) => {
     <View style={[styles.stageHeader, colorStyles[color]]}>
       <Text style={styles.stageTrophy}>🏆</Text>
       <Text style={styles.stageTitle}>{title}</Text>
-      <Text style={styles.stageCount}>({count} მატჩი)</Text>
+      <Text style={styles.stageCount}>({count} Match)</Text>
     </View>
   );
 };

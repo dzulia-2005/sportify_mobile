@@ -13,7 +13,9 @@ export type MySchoolStackParamList = {
   MySchoolTournamentTeamsDetailScreen: {
     tournamentId: string;
   };
-  MySchoolTournamentMatches: undefined;
+  MySchoolTournamentMatches: {
+    tournamentId: string;
+  };
   MySchoolTournamentScores: undefined;
   MySchoolTeamsDetailScreen: {
     tournamentId: string;

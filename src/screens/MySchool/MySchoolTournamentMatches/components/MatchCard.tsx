@@ -8,40 +8,45 @@ import {
 } from 'react-native';
 import TeamInfo from './TeamInfo';
 import TeamSelector from './TeamSelector';
-import { Match, Team, TempScores } from '../types/index.type';
+import type {
+  MatchResponse,
+  EditMatchesPayload,
+} from '../../../../shared/api/mySchoolMatches/index.type';
+import { Team } from '../types/index.type';
 
 interface MatchCardProps {
-  match: Match;
-  isEditing: boolean;
-  tempScores: TempScores;
-  onEdit: () => void;
-  onSave: () => void;
-  onScoreChange: (field: string, value: number) => void;
-  onTeamSelect: (teamId: string, teamName: string, isTeamA: boolean) => void;
+  match: MatchResponse;
   teams: Team[];
+  editingMatchId: string | null;
+  tempScores: EditMatchesPayload;
+  setTempScores: React.Dispatch<React.SetStateAction<EditMatchesPayload>>;
+  handleEdit: (match: MatchResponse) => void;
+  handleSave: (id: string) => void;
   isFinal?: boolean;
   isSemiFinal?: boolean;
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({
-  match,
-  isEditing,
-  tempScores,
-  onEdit,
-  onSave,
-  onScoreChange,
-  onTeamSelect,
   teams,
+  match,
+  editingMatchId,
+  tempScores,
+  setTempScores,
+  handleEdit,
+  handleSave,
   isFinal = false,
   isSemiFinal = false,
 }) => {
-  const [showTeamASelector, setShowTeamASelector] = useState(false);
-  const [showTeamBSelector, setShowTeamBSelector] = useState(false);
+  const [showTeamA, setShowTeamA] = useState(false);
+  const [showTeamB, setShowTeamB] = useState(false);
+
+  const isEditing = editingMatchId === match.id;
 
   const isCompleted = match.scoreA !== undefined && match.scoreB !== undefined;
+
   const winner =
     isCompleted && match.scoreA !== match.scoreB
-      ? (match.scoreA ?? 0) > (match.scoreB ?? 0)
+      ? match.scoreA! > match.scoreB!
         ? 'home'
         : 'away'
       : null;
@@ -49,36 +54,34 @@ const MatchCard: React.FC<MatchCardProps> = ({
   return (
     <View
       style={[
-        styles.matchCard,
+        styles.card,
         isFinal && styles.finalCard,
         isSemiFinal && styles.semiFinalCard,
       ]}
     >
-      {/* Stage Badge */}
+      {/* Badge */}
       {(isFinal || isSemiFinal) && (
         <View
-          style={[
-            styles.stageBadge,
-            isFinal ? styles.finalBadge : styles.semiFinalBadge,
-          ]}
+          style={[styles.badge, isFinal ? styles.finalBadge : styles.semiBadge]}
         >
           <Text style={styles.badgeText}>
-            {isFinal ? 'ფინალი' : 'ნახევარფინალი'}
+            {isFinal ? 'Final' : 'Semi Final'}
           </Text>
         </View>
       )}
 
       {/* Teams */}
-      <View style={styles.teamsContainer}>
+      <View style={styles.teamsRow}>
         {isEditing ? (
           <>
-            <View style={styles.teamSelector}>
+            <View style={styles.teamBlock}>
               <TouchableOpacity
-                style={styles.selectButton}
-                onPress={() => setShowTeamASelector(true)}
+                style={styles.selectorBtn}
+                onPress={() => setShowTeamA(true)}
               >
-                <Text style={styles.selectButtonText}>გუნდი A</Text>
+                <Text style={styles.selectorText}>Choose Team A</Text>
               </TouchableOpacity>
+
               {tempScores.teamAId && (
                 <TeamInfo
                   logo={match.teamALogoUrl}
@@ -89,15 +92,16 @@ const MatchCard: React.FC<MatchCardProps> = ({
               )}
             </View>
 
-            <Text style={styles.vsText}>vs</Text>
+            <Text style={styles.vs}>vs</Text>
 
-            <View style={styles.teamSelector}>
+            <View style={styles.teamBlock}>
               <TouchableOpacity
-                style={styles.selectButton}
-                onPress={() => setShowTeamBSelector(true)}
+                style={styles.selectorBtn}
+                onPress={() => setShowTeamB(true)}
               >
-                <Text style={styles.selectButtonText}>გუნდი B</Text>
+                <Text style={styles.selectorText}>Choose Team B</Text>
               </TouchableOpacity>
+
               {tempScores.teamBId && (
                 <TeamInfo
                   logo={match.teamBLogoUrl}
@@ -109,25 +113,31 @@ const MatchCard: React.FC<MatchCardProps> = ({
             </View>
 
             <TeamSelector
-              visible={showTeamASelector}
-              onClose={() => setShowTeamASelector(false)}
-              onSelect={(teamId, teamName) => {
-                onTeamSelect(teamId, teamName, true);
-                setShowTeamASelector(false);
-              }}
+              visible={showTeamA}
               teams={teams}
               selectedTeamId={tempScores.teamAId}
+              onClose={() => setShowTeamA(false)}
+              onSelect={id => {
+                setTempScores(prev => ({
+                  ...prev,
+                  teamAId: id,
+                }));
+                setShowTeamA(false);
+              }}
             />
 
             <TeamSelector
-              visible={showTeamBSelector}
-              onClose={() => setShowTeamBSelector(false)}
-              onSelect={(teamId, teamName) => {
-                onTeamSelect(teamId, teamName, false);
-                setShowTeamBSelector(false);
-              }}
+              visible={showTeamB}
               teams={teams}
               selectedTeamId={tempScores.teamBId}
+              onClose={() => setShowTeamB(false)}
+              onSelect={id => {
+                setTempScores(prev => ({
+                  ...prev,
+                  teamBId: id,
+                }));
+                setShowTeamB(false);
+              }}
             />
           </>
         ) : (
@@ -138,7 +148,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
               isWinner={winner === 'home'}
               isFinal={isFinal}
             />
-            <Text style={styles.vsText}>vs</Text>
+            <Text style={styles.vs}>vs</Text>
             <TeamInfo
               logo={match.teamBLogoUrl}
               name={match.teamBName}
@@ -150,49 +160,50 @@ const MatchCard: React.FC<MatchCardProps> = ({
       </View>
 
       {/* Scores */}
-      <View style={styles.scoresContainer}>
+      <View style={styles.scoreRow}>
         {isEditing ? (
           <>
-            <View style={styles.scoreInputContainer}>
-              <Text style={styles.scoreLabel}>ქულა A</Text>
-              <TextInput
-                style={styles.scoreInput}
-                keyboardType="numeric"
-                value={String(tempScores.scoreA)}
-                onChangeText={text =>
-                  onScoreChange('scoreA', parseInt(text) || 0)
-                }
-              />
-            </View>
-            <Text style={styles.scoreColon}>:</Text>
-            <View style={styles.scoreInputContainer}>
-              <Text style={styles.scoreLabel}>ქულა B</Text>
-              <TextInput
-                style={styles.scoreInput}
-                keyboardType="numeric"
-                value={String(tempScores.scoreB)}
-                onChangeText={text =>
-                  onScoreChange('scoreB', parseInt(text) || 0)
-                }
-              />
-            </View>
-            <TouchableOpacity style={styles.saveButton} onPress={onSave}>
-              <Text style={styles.saveButtonText}>💾 შენახვა</Text>
+            <TextInput
+              style={styles.scoreInput}
+              keyboardType="numeric"
+              value={String(tempScores.scoreA ?? 0)}
+              onChangeText={v =>
+                setTempScores(prev => ({
+                  ...prev,
+                  scoreA: Number(v) || 0,
+                }))
+              }
+            />
+
+            <Text style={styles.colon}>:</Text>
+
+            <TextInput
+              style={styles.scoreInput}
+              keyboardType="numeric"
+              value={String(tempScores.scoreB ?? 0)}
+              onChangeText={v =>
+                setTempScores(prev => ({
+                  ...prev,
+                  scoreB: Number(v) || 0,
+                }))
+              }
+            />
+
+            <TouchableOpacity
+              style={styles.saveBtn}
+              onPress={() => handleSave(match.id)}
+            >
+              <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           </>
         ) : (
           <>
-            <View style={styles.scoreDisplay}>
-              <Text style={styles.scoreValue}>{match.scoreA ?? 0}</Text>
-              <Text style={styles.scoreTeamLabel}>გუნდი A</Text>
-            </View>
-            <Text style={styles.scoreColon}>:</Text>
-            <View style={styles.scoreDisplay}>
-              <Text style={styles.scoreValue}>{match.scoreB ?? 0}</Text>
-              <Text style={styles.scoreTeamLabel}>გუნდი B</Text>
-            </View>
-            <TouchableOpacity style={styles.editButton} onPress={onEdit}>
-              <Text style={styles.editButtonText}>✏️ რედაქტირება</Text>
+            <Text style={styles.scoreA}>{match.scoreA ?? 0}</Text>
+            <Text style={styles.colon}>:</Text>
+            <Text style={styles.scoreB}>{match.scoreB ?? 0}</Text>
+
+            <TouchableOpacity onPress={() => handleEdit(match)}>
+              <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
           </>
         )}
@@ -201,61 +212,69 @@ const MatchCard: React.FC<MatchCardProps> = ({
   );
 };
 
+export default MatchCard;
+
 const styles = StyleSheet.create({
-  matchCard: {
+  card: {
     backgroundColor: '#0b1830',
     borderWidth: 1,
-    borderColor: '#ffffff1a',
+    borderColor: 'rgba(255,255,255,0.1)',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 16,
+    position: 'relative',
   },
+
   finalCard: {
-    borderColor: '#fbbf2480',
-    backgroundColor: '#fbbf2408',
+    borderColor: 'rgba(251,191,36,0.5)',
+    backgroundColor: 'rgba(251,191,36,0.05)',
   },
+
   semiFinalCard: {
-    borderColor: '#a855f780',
-    backgroundColor: '#a855f708',
+    borderColor: 'rgba(168,85,247,0.5)',
+    backgroundColor: 'rgba(168,85,247,0.05)',
   },
-  stageBadge: {
+
+  badge: {
     position: 'absolute',
     top: 12,
     right: 12,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 4,
     borderRadius: 12,
     borderWidth: 1,
   },
+
   finalBadge: {
-    backgroundColor: '#fbbf2433',
-    borderColor: '#fbbf2450',
+    backgroundColor: 'rgba(251,191,36,0.2)',
+    borderColor: 'rgba(251,191,36,0.3)',
   },
-  semiFinalBadge: {
-    backgroundColor: '#a855f733',
-    borderColor: '#a855f750',
+
+  semiBadge: {
+    backgroundColor: 'rgba(168,85,247,0.2)',
+    borderColor: 'rgba(168,85,247,0.3)',
   },
+
   badgeText: {
-    color: '#fbbf24',
     fontSize: 10,
     fontWeight: 'bold',
+    color: '#fbbf24',
   },
-  teamsContainer: {
+
+  teamsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 16,
     flexWrap: 'wrap',
+    gap: 12,
+    marginBottom: 16,
   },
-  vsText: {
-    color: '#60a5fa',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  teamSelector: {
+
+  teamBlock: {
+    alignItems: 'center',
     gap: 8,
   },
-  selectButton: {
+
+  selectorBtn: {
     backgroundColor: '#112240',
     borderWidth: 1,
     borderColor: '#3b82f6',
@@ -263,72 +282,91 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
   },
-  selectButtonText: {
+
+  selectorText: {
     color: '#fff',
     fontSize: 12,
   },
-  scoresContainer: {
+
+  vs: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#60a5fa',
+  },
+
+  scoreRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 12,
     flexWrap: 'wrap',
   },
-  scoreInputContainer: {
+
+  scoreInputBlock: {
     alignItems: 'center',
     gap: 4,
   },
+
   scoreLabel: {
-    color: '#fff9',
     fontSize: 10,
+    color: '#ffffff99',
   },
+
   scoreInput: {
-    width: 50,
+    width: 48,
     backgroundColor: '#112240',
     borderWidth: 1,
     borderColor: '#3b82f6',
     color: '#fff',
     textAlign: 'center',
     borderRadius: 8,
-    paddingVertical: 8,
+    paddingVertical: 6,
     fontSize: 16,
   },
-  scoreColon: {
-    color: '#60a5fa',
+
+  colon: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#60a5fa',
   },
+
   scoreDisplay: {
     alignItems: 'center',
   },
-  scoreValue: {
+
+  scoreA: {
     color: '#4ade80',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  scoreTeamLabel: {
-    color: '#fff9',
-    fontSize: 10,
+
+  scoreB: {
+    color: '#f87171',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  saveButton: {
+
+  scoreTeam: {
+    fontSize: 10,
+    color: '#ffffff99',
+  },
+
+  saveBtn: {
     backgroundColor: '#16a34a',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
   },
-  saveButtonText: {
+
+  saveText: {
     color: '#fff',
     fontSize: 12,
     fontWeight: '600',
   },
-  editButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  editButtonText: {
+
+  editText: {
     color: '#60a5fa',
     fontSize: 12,
+    marginLeft: 8,
   },
 });
-
-export default MatchCard;

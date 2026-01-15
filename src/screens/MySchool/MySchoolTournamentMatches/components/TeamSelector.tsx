@@ -34,7 +34,7 @@ const TeamSelector: React.FC<TeamSelectorProps> = ({
     <View style={styles.modalOverlay}>
       <View style={styles.modalContent}>
         <View style={styles.modalHeader}>
-          <Text style={styles.modalTitle}>აირჩიეთ გუნდი</Text>
+          <Text style={styles.modalTitle}>Select Team</Text>
           <TouchableOpacity onPress={onClose}>
             <Text style={styles.closeButton}>✕</Text>
           </TouchableOpacity>

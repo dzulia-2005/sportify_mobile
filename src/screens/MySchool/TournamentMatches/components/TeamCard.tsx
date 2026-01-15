@@ -13,13 +13,20 @@ const TeamCard: React.FC = () => {
   const schoolId = School?.id;
   const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
   const navigation = useNavigation<NavigationProp>();
+
+  const handlePress = (tournamentId: string) => {
+    navigation.navigate('MySchoolTournamentMatches', {
+      tournamentId: tournamentId,
+    });
+  };
+
   return (
     <FlatList
       ListEmptyComponent={EmptyTournament}
       data={TournamentCards}
       renderItem={({ item }) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('MySchoolTournamentMatches')}
+          onPress={() => handlePress(item.id)}
           style={styles.CardContainer}
         >
           <View style={styles.CardLeftSide}>

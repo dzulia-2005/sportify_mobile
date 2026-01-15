@@ -29,3 +29,8 @@ export interface Tournament {
   name: string;
   matchType: number;
 }
+
+export type InfoBoxProps = {
+  matchType: number;
+  hasKnockoutStages?: boolean;
+};

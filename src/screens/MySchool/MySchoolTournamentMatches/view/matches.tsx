@@ -1,91 +1,44 @@
-import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import StageHeader from '../components/StageHeader';
 import InfoBox from '../components/InfoBox';
-import MatchCard from '../components/MatchCard';
+import React, { useState } from 'react';
+import { useGetMySchoolTournament } from '../../../../feature/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
+import { useRoute } from '@react-navigation/native';
+import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
+import { useGetAllMatchesQuery } from '../../../../feature/mySchoolMatches/getAll/model/useGetAllMatchesQuery';
+import { useEditMatchesMutation } from '../../../../feature/mySchoolMatches/edit/model/useEditMatchesMutation';
+import {
+  EditMatchesPayload,
+  MatchResponse,
+} from '../../../../shared/api/mySchoolMatches/index.type';
+import useCategorizedMatches from '../hooks/useCategorizedmatches';
+import RoundRobinStage from '../components/stages/RoundRobinStage';
+import SingleKnockoutStage from '../components/stages/SingleKnockoutStage';
+import DoubleKnockoutStage from '../components/stages/DoubleKnockoutStage';
+import { useGetAllTeamQuery } from '../../../../feature/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
 
-const mockTournament = {
-  id: '1',
-  name: 'Champions League 2024',
-  matchType: 1,
-};
+const TournamentMatchesScreen: React.FC = () => {
+  const route = useRoute<TournamentTeamsProp>();
+  const { tournamentId } = route.params;
+  const { data: tournament } = useGetMySchoolTournament(tournamentId);
+  const { data: matches } = useGetAllMatchesQuery(tournamentId);
+  const { mutate: updateMatch } = useEditMatchesMutation();
+  const { data: Teams = [] } = useGetAllTeamQuery(tournamentId);
 
-const mockTeams = [
-  { id: '1', name: 'Warriors', logoUrl: 'https://via.placeholder.com/50' },
-  { id: '2', name: 'Eagles', logoUrl: 'https://via.placeholder.com/50' },
-  { id: '3', name: 'Thunder', logoUrl: 'https://via.placeholder.com/50' },
-  { id: '4', name: 'Phoenix', logoUrl: 'https://via.placeholder.com/50' },
-];
-
-const mockMatches = [
-  {
-    id: '1',
-    teamAId: '1',
-    teamBId: '2',
-    teamAName: 'Warriors',
-    teamBName: 'Eagles',
-    teamALogoUrl: 'https://via.placeholder.com/50',
-    teamBLogoUrl: 'https://via.placeholder.com/50',
-    scoreA: 3,
-    scoreB: 1,
-    stage: 'final',
-  },
-  {
-    id: '2',
-    teamAId: '3',
-    teamBId: '4',
-    teamAName: 'Thunder',
-    teamBName: 'Phoenix',
-    teamALogoUrl: 'https://via.placeholder.com/50',
-    teamBLogoUrl: 'https://via.placeholder.com/50',
-    scoreA: 2,
-    scoreB: 2,
-    stage: 'semiFinal',
-  },
-  {
-    id: '3',
-    teamAId: '1',
-    teamBId: '3',
-    teamAName: 'Warriors',
-    teamBName: 'Thunder',
-    teamALogoUrl: 'https://via.placeholder.com/50',
-    teamBLogoUrl: 'https://via.placeholder.com/50',
-    scoreA: 1,
-    scoreB: 0,
-    stage: 'semiFinal',
-  },
-];
-
-interface TempScores {
-  scoreA: number;
-  scoreB: number;
-  teamAId: string;
-  teamBId: string;
-}
-
-interface Match {
-  id: string;
-  teamAId: string;
-  teamBId: string;
-  teamAName: string;
-  teamBName: string;
-  teamALogoUrl: string;
-  teamBLogoUrl: string;
-  scoreA?: number;
-  scoreB?: number;
-  stage: string;
-}
-
-const TournamentMatchesScreen = () => {
   const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
-  const [tempScores, setTempScores] = useState<TempScores>({
+  const [tempScores, setTempScores] = useState<EditMatchesPayload>({
     scoreA: 0,
     scoreB: 0,
     teamAId: '',
     teamBId: '',
   });
 
-  const handleEdit = (match: Match) => {
+  // const isLoading = isTournamentLoading || isMatchesLoading;
+  const matchType = tournament?.matchType ?? 0;
+
+  const { categorizedMatches, groupedMatches, hasKnockoutStages } =
+    useCategorizedMatches(matches, matchType);
+
+  const handleEdit = (match: MatchResponse) => {
     setEditingMatchId(match.id);
     setTempScores({
       scoreA: match.scoreA ?? 0,
@@ -95,29 +48,58 @@ const TournamentMatchesScreen = () => {
     });
   };
 
-  const handleSave = () => {
-    console.log('Saving:', tempScores);
+  const handleSave = (matchId: string) => {
+    updateMatch({
+      id: matchId,
+      payload: {
+        scoreA: tempScores.scoreA,
+        scoreB: tempScores.scoreB,
+        teamAId: tempScores.teamAId,
+        teamBId: tempScores.teamBId,
+      },
+    });
     setEditingMatchId(null);
   };
 
-  const handleScoreChange = (field: string, value: number) => {
-    setTempScores(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleTeamSelect = (
-    teamId: string,
-    teamName: string,
-    isTeamA: boolean,
-  ) => {
-    setTempScores(prev => ({
-      ...prev,
-      [isTeamA ? 'teamAId' : 'teamBId']: teamId,
-    }));
-  };
-
-  const categorizedMatches = {
-    final: mockMatches.filter(m => m.stage === 'final'),
-    semiFinal: mockMatches.filter(m => m.stage === 'semiFinal'),
+  const renderStage = () => {
+    switch (matchType) {
+      case 0:
+        return (
+          <RoundRobinStage
+            teams={Teams}
+            matches={matches || []}
+            editingMatchId={editingMatchId}
+            tempScores={tempScores}
+            setTempScores={setTempScores}
+            handleEdit={handleEdit}
+            handleSave={handleSave}
+          />
+        );
+      case 1:
+        return (
+          <SingleKnockoutStage
+            teams={Teams}
+            categorizedMatches={categorizedMatches}
+            editingMatchId={editingMatchId}
+            tempScores={tempScores}
+            setTempScores={setTempScores}
+            handleEdit={handleEdit}
+            handleSave={handleSave}
+          />
+        );
+      case 2:
+        return (
+          <DoubleKnockoutStage
+            teams={Teams}
+            groupedMatches={groupedMatches}
+            editingMatchId={editingMatchId}
+            tempScores={tempScores}
+            setTempScores={setTempScores}
+            handleEdit={handleEdit}
+            handleSave={handleSave}
+          />
+        );
+    }
   };
 
   return (
@@ -128,65 +110,16 @@ const TournamentMatchesScreen = () => {
           <Text style={styles.trophyIcon}>🏆</Text>
         </View>
         <View>
-          <Text style={styles.tournamentName}>{mockTournament.name}</Text>
+          <Text style={styles.tournamentName}>{tournament?.name}</Text>
           <Text style={styles.matchCount}>
-            მატჩების რაოდენობა: {mockMatches.length}
+            Number Of Matches : {matches?.length}
           </Text>
         </View>
       </View>
 
       {/* Info Box */}
-      <InfoBox matchType={mockTournament.matchType} hasKnockoutStages={true} />
-
-      {/* Finals */}
-      {categorizedMatches.final.length > 0 && (
-        <View style={styles.stageSection}>
-          <StageHeader
-            title="ფინალი"
-            color="yellow"
-            count={categorizedMatches.final.length}
-          />
-          {categorizedMatches.final.map(match => (
-            <MatchCard
-              key={match.id}
-              match={match}
-              isEditing={editingMatchId === match.id}
-              tempScores={tempScores}
-              onEdit={() => handleEdit(match)}
-              onSave={handleSave}
-              onScoreChange={handleScoreChange}
-              onTeamSelect={handleTeamSelect}
-              teams={mockTeams}
-              isFinal
-            />
-          ))}
-        </View>
-      )}
-
-      {/* Semi Finals */}
-      {categorizedMatches.semiFinal.length > 0 && (
-        <View style={styles.stageSection}>
-          <StageHeader
-            title="ნახევარფინალი"
-            color="purple"
-            count={categorizedMatches.semiFinal.length}
-          />
-          {categorizedMatches.semiFinal.map(match => (
-            <MatchCard
-              key={match.id}
-              match={match}
-              isEditing={editingMatchId === match.id}
-              tempScores={tempScores}
-              onEdit={() => handleEdit(match)}
-              onSave={handleSave}
-              onScoreChange={handleScoreChange}
-              onTeamSelect={handleTeamSelect}
-              teams={mockTeams}
-              isSemiFinal
-            />
-          ))}
-        </View>
-      )}
+      <InfoBox matchType={matchType} hasKnockoutStages={hasKnockoutStages} />
+      {renderStage()}
     </ScrollView>
   );
 };
