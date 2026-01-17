@@ -10,6 +10,12 @@ export type AddMySchoolPlayerModalProps = {
   onClose: () => void;
 };
 
+export type EditPlayerStatModalProps = {
+  visible: boolean;
+  onClose: () => void;
+  player: MySchoolPlayersResponse | undefined;
+};
+
 export type EditPlayerType = {
   firstName: string;
   lastName: string;

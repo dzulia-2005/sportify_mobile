@@ -1,16 +1,27 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/index.styles';
 import { PlayerStatProp } from '../types/index.type';
+import EditPlayerStatModal from './editPlayerStatModal';
 
 const PlayerStat: React.FC<PlayerStatProp> = ({ Player }) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Statistics</Text>
-
-      <View style={styles.row}>
-        <Text style={styles.label}>Matches Played</Text>
-        <Text style={styles.value}>{Player?.matchesPlayed}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.sectionTitle}>Statistics</Text>
+        <TouchableOpacity
+          onPress={() => setIsModalOpen(true)}
+          style={{ backgroundColor: '#007bff', padding: 10, borderRadius: 10 }}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Edit Stat</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.row}>
@@ -32,6 +43,14 @@ const PlayerStat: React.FC<PlayerStatProp> = ({ Player }) => {
         <Text style={styles.label}>Red Cards</Text>
         <Text style={styles.value}>{Player?.redCards}</Text>
       </View>
+
+      {isModalOpen && (
+        <EditPlayerStatModal
+          onClose={() => setIsModalOpen(false)}
+          visible={isModalOpen}
+          player={Player}
+        />
+      )}
     </View>
   );
 };
