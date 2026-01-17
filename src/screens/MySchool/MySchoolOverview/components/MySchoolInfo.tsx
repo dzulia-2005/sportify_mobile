@@ -14,12 +14,8 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
   const queryClient = useQueryClient();
 
   const handleDelete = async (id: string) => {
-    console.log('Starting delete for school:', id);
-
     deleteSchool(id, {
       onSuccess: async () => {
-        console.log('Delete API call successful');
-
         await queryClient.invalidateQueries({
           queryKey: ['get-mySchool'],
         });
@@ -35,20 +31,12 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
             queryKey: ['get-mySchool'],
           });
         }
-
-        console.log('Cache operations completed');
       },
       onError: error => {
         console.error('Delete error:', error);
       },
     });
   };
-
-  console.log('Rendering MySchoolInfo with school:', {
-    hasSchool: !!school,
-    id: school?.id,
-    name: school?.name,
-  });
 
   return (
     <View style={styles.InfoContainer}>
