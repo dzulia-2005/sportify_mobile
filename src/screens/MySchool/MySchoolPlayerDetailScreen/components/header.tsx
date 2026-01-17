@@ -68,10 +68,12 @@ const Header: React.FC<HeaderProp> = ({ Player, isLoading }) => {
           <Text style={styles.actionText}>Delete</Text>
         </TouchableOpacity>
       </View>
+
       {isOpenModal && (
         <EditMySchoolPlayerModal
           visible={isOpenModal}
           onClose={() => setIsOpenModal(false)}
+          Player={Player}
         />
       )}
     </View>

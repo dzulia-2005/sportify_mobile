@@ -19,15 +19,18 @@ import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
 import { useUpdateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import {
-  AddMySchoolPlayerModalProps,
+  EditMySchoolPlayerModalProps,
   EditPlayerType,
 } from '../types/index.type';
+import { useQueryClient } from '@tanstack/react-query';
 
-const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
+const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
   visible,
   onClose,
+  Player,
 }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const UpdatePlayerDefaultValues: EditPlayerType = {
     firstName: '',
     lastName: '',
@@ -40,7 +43,7 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
     parentFirstName: '',
     parentLastName: '',
     parentPhoneNumber: '',
-    teamId: '3',
+    teamId: Player?.teamId || '',
   };
 
   const pickImage = () => {
@@ -70,8 +73,10 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
     );
   };
 
-  const { mutate: editPlayer, isPending } =
-    useUpdateMySchoolPlayerMutation('3');
+  const playerId = Player?.id;
+  const { mutate: editPlayer, isPending } = useUpdateMySchoolPlayerMutation(
+    playerId!,
+  );
   const {
     handleSubmit,
     control,
@@ -99,6 +104,7 @@ const EditMySchoolPlayerModal: React.FC<AddMySchoolPlayerModalProps> = ({
 
     editPlayer(formData, {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['getSchoolById'] });
         onClose();
       },
       onError: err => {

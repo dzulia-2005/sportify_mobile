@@ -92,6 +92,7 @@ export const styles = StyleSheet.create({
   actionRow: {
     flexDirection: 'row',
     gap: 12,
+    marginTop: 10,
   },
   editBtn: {
     paddingVertical: 6,
@@ -124,5 +125,21 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+
+  statHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  editStatContainer: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 10,
+  },
+  editBtnText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

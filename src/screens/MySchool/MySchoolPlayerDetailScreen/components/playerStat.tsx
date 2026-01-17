@@ -8,19 +8,13 @@ const PlayerStat: React.FC<PlayerStatProp> = ({ Player }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <View style={styles.section}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <View style={styles.statHeader}>
         <Text style={styles.sectionTitle}>Statistics</Text>
         <TouchableOpacity
           onPress={() => setIsModalOpen(true)}
-          style={{ backgroundColor: '#007bff', padding: 10, borderRadius: 10 }}
+          style={styles.editStatContainer}
         >
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Edit Stat</Text>
+          <Text style={styles.editBtnText}>Edit Stat</Text>
         </TouchableOpacity>
       </View>
 
