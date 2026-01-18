@@ -11,19 +11,29 @@ import { Provider } from 'react-redux';
 import { Provider as AntProvider } from '@ant-design/react-native';
 import Toast from 'react-native-toast-message';
 import NavigationWrapper from './src/app/navigation/NavigationWrapper';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import MyCustomSplash from './src/shared/components/MyCustomSplash';
 
 enableScreens();
 
 function App() {
+  const [isReady, setIsReady] = useState<boolean>(false);
   const isDarkMode = useColorScheme() === 'dark';
+
   useEffect(() => {
     const init = async () => {
+      await new Promise<void>(resolve => setTimeout(resolve, 2000));
       SplashScreen.hide();
+      setIsReady(true);
     };
+
     init();
   }, []);
+
+  if (!isReady) {
+    return <MyCustomSplash />;
+  }
 
   return (
     <AntProvider>
