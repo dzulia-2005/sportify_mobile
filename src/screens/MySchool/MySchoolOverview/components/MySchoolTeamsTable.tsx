@@ -5,14 +5,20 @@ import { SchoolProp } from '../types/index.type';
 import NotFoundComponent from './notFoundComponent';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../../MySchoolTeams/types/index.type';
+import MySchoolTeamsSkeleton from './SkeletonTeams';
 
-const MySchoolTeams: React.FC<SchoolProp> = ({ school }) => {
+const MySchoolTeams: React.FC<SchoolProp> = ({ school, isLoading }) => {
   const navigation = useNavigation<NavigationProp>();
   const handlePress = (teamId: string) => {
     navigation.navigate('MySchoolTeamDetailScreen', {
       teamId,
     });
   };
+
+  if (isLoading) {
+    return <MySchoolTeamsSkeleton />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
