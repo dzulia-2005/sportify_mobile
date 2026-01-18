@@ -4,6 +4,7 @@ import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
 import { MySchoolPlayersResponse } from '../../../../shared/api/mySchoolPlayer/index.type';
 import { NavigationProp } from '../types/index.type';
+import PlayerRowSkeleton from './playerRowSkeleton';
 
 const RenderItem = ({
   item,
@@ -51,6 +52,10 @@ const RenderItem = ({
     inputRange: [0, 1],
     outputRange: [-100, 100],
   });
+
+  if (isLoading) {
+    return <PlayerRowSkeleton />;
+  }
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.row}>

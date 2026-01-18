@@ -14,6 +14,7 @@ import { NavigationProp } from '../types/index.type';
 import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useGetTeamBySchoolIdQuery } from '../../../../feature/mySchoolTeams/getTeamBySchool/model/useGetTeamBySchoolIdQuery';
 import NotFoundText from './NotFoundText';
+import TeamCardSkeleton from './mySchoolTeamCardSkeleton';
 
 const TeamCard: React.FC = () => {
   const { data: school } = useGetMySchoolQuery();
@@ -55,6 +56,10 @@ const TeamCard: React.FC = () => {
       teamId: teamId,
     });
   };
+
+  if (isLoading) {
+    return <TeamCardSkeleton />;
+  }
 
   return (
     <>

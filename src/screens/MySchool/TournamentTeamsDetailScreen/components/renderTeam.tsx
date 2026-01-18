@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/index.style';
 import { RenderTeamProps } from '../types/index.type';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,12 +9,7 @@ import { useDeleteTournamentTeamsMutation } from '../../../../feature/mySchoolTo
 import { useQueryClient } from '@tanstack/react-query';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 
-const RenderTeam: React.FC<RenderTeamProps> = ({
-  item,
-  isLoading,
-  id,
-  refetch,
-}) => {
+const RenderTeam: React.FC<RenderTeamProps> = ({ item, id }) => {
   const queryClient = useQueryClient();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { mutate: deleteTeam } = useDeleteTournamentTeamsMutation();
@@ -26,7 +21,7 @@ const RenderTeam: React.FC<RenderTeamProps> = ({
     deleteTeam(Id, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['getMySchoolAllTournaments'],
+          queryKey: ['getAllTournamentTeams'],
         });
       },
       onError: err => {
@@ -35,51 +30,10 @@ const RenderTeam: React.FC<RenderTeamProps> = ({
     });
   };
 
-  useEffect(() => {
-    refetch();
-  });
-
-  const shimmerAnimation = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isLoading) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(shimmerAnimation, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(shimmerAnimation, {
-            toValue: 0,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-        ]),
-      ).start();
-    } else {
-      shimmerAnimation.stopAnimation();
-      shimmerAnimation.setValue(0);
-    }
-  }, [isLoading, shimmerAnimation]);
-
-  const translateX = shimmerAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-100, 100],
-  });
-
   return (
     <TouchableOpacity style={styles.teamCardContainer} activeOpacity={0.7}>
       <View style={styles.teamLogoWrapper}>
-        {isLoading ? (
-          <View style={styles.skeletonContainer}>
-            <Animated.View
-              style={[styles.shimmer, { transform: [{ translateX }] }]}
-            />
-          </View>
-        ) : (
-          <Image source={imageSource} style={styles.teamLogoImage} />
-        )}
+        <Image source={imageSource} style={styles.teamLogoImage} />
       </View>
 
       <View style={styles.actionButtonsContainer}>

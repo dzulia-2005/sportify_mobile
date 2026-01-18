@@ -10,12 +10,15 @@ import EmptyTournament from './EmptyTournament';
 import { NavigationProp } from '../types/index.type';
 import { useDeleteMySchoolTournamentMutation } from '../../../../feature/mySchoolTournament/delete/model/useDeleteMySchoolTournamentMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import TournamentCardSkeleton from './TeamCardSkeleton';
 
 const TeamCard: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { data: School } = useGetMySchoolQuery();
   const schoolId = School?.id;
-  const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
+  const { data: TournamentCards, isLoading } = useGetMySchoolAllTournamentQuery(
+    schoolId!,
+  );
   const { mutate: deleteTournament } = useDeleteMySchoolTournamentMutation();
 
   const handleDelete = (id: string) => {
@@ -31,6 +34,10 @@ const TeamCard: React.FC = () => {
       tournamentId: tournamentId,
     });
   };
+
+  if (isLoading) {
+    return <TournamentCardSkeleton />;
+  }
 
   return (
     <FlatList

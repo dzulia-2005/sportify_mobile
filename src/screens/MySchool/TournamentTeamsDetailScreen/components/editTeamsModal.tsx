@@ -19,6 +19,7 @@ import { TeamSchema } from './team.schema';
 import { AddTeamType, EditTeamModalProps } from '../types/index.type';
 import { useUpdateTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/update/model/useUpdateTournamentTeamsMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddTeamDefaultValues: AddTeamType = {
   Name: '',
@@ -32,6 +33,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
   onClose,
   id,
 }) => {
+  const queryClient = useQueryClient();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [photoAsset, setPhotoAsset] = useState<any>(null);
   const {
@@ -86,6 +88,9 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
     }
     EditTeam(formData, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getAllTournamentTeams'],
+        });
         onClose();
       },
       onError: err => {

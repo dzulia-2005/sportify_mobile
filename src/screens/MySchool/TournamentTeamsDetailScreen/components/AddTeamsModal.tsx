@@ -93,7 +93,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
     AddTeam(formData, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['getMySchoolAllTournaments'],
+          queryKey: ['getAllTournamentTeams'],
         });
         onClose();
         reset();

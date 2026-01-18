@@ -7,12 +7,28 @@ import { Team, TournamentTeamsProp } from '../types/index.type';
 import AddTeamModal from '../components/AddTeamsModal';
 import { useGetAllTeamQuery } from '../../../../feature/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
 import { useRoute } from '@react-navigation/native';
+import TeamCardSkeleton from '../components/teamCardSkeleton';
 
 const TournamentTeamsDetailScreen: React.FC = () => {
   const route = useRoute<TournamentTeamsProp>();
   const { tournamentId } = route.params;
   const { data: teams, isLoading, refetch } = useGetAllTeamQuery(tournamentId);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  if (isLoading) {
+    return (
+      <FlatList
+        data={[1, 2, 3, 4]}
+        keyExtractor={(_, i) => i.toString()}
+        renderItem={() => <TeamCardSkeleton />}
+        contentContainerStyle={{
+          backgroundColor: '#0b1b33',
+          flexGrow: 1,
+          paddingVertical: 16,
+        }}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>

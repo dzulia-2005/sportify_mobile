@@ -7,11 +7,14 @@ import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/mode
 import { useGetMySchoolAllTournamentQuery } from '../../../../feature/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
 import { NavigationProp } from '../types/index.type';
 import EmptyTournament from '../../TournamentTeams/components/EmptyTournament';
+import TournamentCardSkeleton from '../../TournamentTeams/components/TeamCardSkeleton';
 
 const TeamCard: React.FC = () => {
   const { data: School } = useGetMySchoolQuery();
   const schoolId = School?.id;
-  const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
+  const { data: TournamentCards, isLoading } = useGetMySchoolAllTournamentQuery(
+    schoolId!,
+  );
   const navigation = useNavigation<NavigationProp>();
 
   const handlePress = (tournamentId: string) => {
@@ -19,6 +22,10 @@ const TeamCard: React.FC = () => {
       tournamentId: tournamentId,
     });
   };
+
+  if (isLoading) {
+    return <TournamentCardSkeleton />;
+  }
 
   return (
     <FlatList

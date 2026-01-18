@@ -8,6 +8,7 @@ import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStack
 import EmptyTournament from '../../TournamentTeams/components/EmptyTournament';
 import { useGetMySchoolAllTournamentQuery } from '../../../../feature/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
 import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import TournamentCardSkeleton from '../../TournamentTeams/components/TeamCardSkeleton';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
 
@@ -15,13 +16,19 @@ const TeamCard: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { data: School } = useGetMySchoolQuery();
   const schoolId = School?.id;
-  const { data: TournamentCards } = useGetMySchoolAllTournamentQuery(schoolId!);
+  const { data: TournamentCards, isLoading } = useGetMySchoolAllTournamentQuery(
+    schoolId!,
+  );
 
   const handlePress = (tournamentId: string) => {
     navigation.navigate('MySchoolTournamentScores', {
       tournamentId,
     });
   };
+
+  if (isLoading) {
+    return <TournamentCardSkeleton />;
+  }
 
   return (
     <FlatList
