@@ -92,14 +92,16 @@ const Inputs: React.FC = () => {
         )}
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ChangePasswordScreen')}
+      >
         <Text style={styles.forgot}>Forgot your password?</Text>
       </TouchableOpacity>
 
       <View style={styles.bottomTextContainer}>
         <Text style={styles.bottomText}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.registerText}>Registration</Text>
+          <Text style={styles.registerText}> Registration</Text>
         </TouchableOpacity>
       </View>
     </>

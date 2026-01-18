@@ -3,6 +3,7 @@ import MySchoolTabsNavigator from '../MySchoolTabsNavigator/MySchoolTabsNavigato
 import MySchoolTeamDetail from '../../../screens/MySchool/MySchoolTeamDetailScreen/index';
 import MySchoolPlayer from '../../../screens/MySchool/MySchoolPlayerDetailScreen/index';
 import MySchoolTournamentTeamsDetailScreen from '../../../screens/MySchool/TournamentTeamsDetailScreen/index';
+import ChangePasswordScreen from '../../../screens/Auth/ChangePassword/index';
 import MySchoolTournamentMatches from '../../../screens/MySchool/MySchoolTournamentMatches/index';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -68,6 +69,15 @@ const MySchoolStackNavigator = () => {
       <Stack.Screen
         name="MySchoolTournamentScores"
         component={MySchoolTournamentScores}
+        options={() => ({
+          headerTitle: '',
+          headerLeft: HeaderLeft,
+        })}
+      />
+
+      <Stack.Screen
+        name="ChangePasswordScreen"
+        component={ChangePasswordScreen}
         options={() => ({
           headerTitle: '',
           headerLeft: HeaderLeft,

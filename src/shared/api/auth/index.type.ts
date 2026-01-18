@@ -32,3 +32,8 @@ export type RefreshPayload = {
     refreshToken: string;
   };
 };
+
+export type ChangePasswordPayload = {
+  UserName: string;
+  newPassword: string;
+};

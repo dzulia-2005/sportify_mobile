@@ -4,4 +4,5 @@ export type DrawerNavigationType = {
   Register: undefined;
   MyAccount: undefined;
   MySchool: undefined;
+  ChangePasswordScreen: undefined;
 };

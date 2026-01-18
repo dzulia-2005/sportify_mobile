@@ -3,6 +3,7 @@ import { ArrowLeft } from './MySchoolStackNavigatorIcons';
 import { useCallback } from 'react';
 
 export type MySchoolStackParamList = {
+  ChangePasswordScreen: undefined;
   MySchoolTabs: undefined;
   MySchoolTeamDetailScreen: {
     teamId: string;
