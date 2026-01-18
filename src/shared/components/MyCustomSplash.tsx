@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 const MyCustomSplash: React.FC = () => {
   return (
@@ -8,7 +8,6 @@ const MyCustomSplash: React.FC = () => {
         source={require('../assets/images/sportzoneLogo.png')}
         style={style.Logo}
       />
-      <Text style={style.logoText}>Sportify</Text>
     </View>
   );
 };
@@ -25,12 +24,5 @@ const style = StyleSheet.create({
   Logo: {
     width: 280,
     height: 280,
-  },
-  logoText: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: '700',
-    letterSpacing: 1.5,
-    marginTop: 12,
   },
 });
