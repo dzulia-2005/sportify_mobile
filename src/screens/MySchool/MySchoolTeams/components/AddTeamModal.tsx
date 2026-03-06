@@ -16,10 +16,10 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { addTeamSchema } from './addTeam.schema';
-import { useCreateMySchoolTeams } from '../../../../feature/mySchoolTeams/create/model/useCreateMySchoolTeams';
+import { useCreateMySchoolTeams } from '../../../../feature/school/mySchoolTeams/create/model/useCreateMySchoolTeams';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddTeamModalProps, AddTeamType } from '../types/index.type';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const AddTeamModal: React.FC<AddTeamModalProps> = ({ visible, onClose }) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);

@@ -18,8 +18,8 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { SchoolSchema } from './School.schema';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddSchoolModalProps, SchoolDefaultTypes } from '../types/index.type';
-import { useUpdateMySchoolMutation } from '../../../../feature/mySchool/update/model/useUpdateMySchoolMutation';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useUpdateMySchoolMutation } from '../../../../feature/school/mySchool/update/model/useUpdateMySchoolMutation';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const SchoolDefaultValues: SchoolDefaultTypes = {
   Name: '',

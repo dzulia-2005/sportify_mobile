@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import InfoBox from '../components/InfoBox';
 import React, { useState } from 'react';
-import { useGetMySchoolTournament } from '../../../../feature/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
+import { useGetMySchoolTournament } from '../../../../feature/school/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
 import { useRoute } from '@react-navigation/native';
 import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
 import { useGetAllMatchesQuery } from '../../../../feature/mySchoolMatches/getAll/model/useGetAllMatchesQuery';
@@ -14,7 +14,7 @@ import useCategorizedMatches from '../hooks/useCategorizedmatches';
 import RoundRobinStage from '../components/stages/RoundRobinStage';
 import SingleKnockoutStage from '../components/stages/SingleKnockoutStage';
 import DoubleKnockoutStage from '../components/stages/DoubleKnockoutStage';
-import { useGetAllTeamQuery } from '../../../../feature/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
+import { useGetAllTeamQuery } from '../../../../feature/school/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
 
 const TournamentMatchesScreen: React.FC = () => {
   const route = useRoute<TournamentTeamsProp>();

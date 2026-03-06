@@ -4,7 +4,7 @@ import MySchoolTeams from '../components/MySchoolTeamsTable';
 import { styles } from '../styles/MainStyle';
 import MySchoolInfoContainer from '../components/MySchoolImageContainer';
 import MySchoolInfo from '../components/MySchoolInfo';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 
 const MySchoolOverview: React.FC = () => {
   const { data: school, refetch, isLoading } = useGetMySchoolQuery();

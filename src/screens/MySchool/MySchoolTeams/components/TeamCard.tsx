@@ -11,8 +11,8 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../types/index.type';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
-import { useGetTeamBySchoolIdQuery } from '../../../../feature/mySchoolTeams/getTeamBySchool/model/useGetTeamBySchoolIdQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetTeamBySchoolIdQuery } from '../../../../feature/school/mySchoolTeams/getTeamBySchool/model/useGetTeamBySchoolIdQuery';
 import NotFoundText from './NotFoundText';
 import TeamCardSkeleton from './mySchoolTeamCardSkeleton';
 

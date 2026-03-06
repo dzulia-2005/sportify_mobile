@@ -14,7 +14,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { EditPlayerStatModalProps } from '../types/index.type';
-import { useEditPlayerStatMutation } from '../../../../feature/mySchoolPlayerStat/edit/model/useEditPlayerStatMutation';
+import { useEditPlayerStatMutation } from '../../../../feature/school/mySchoolPlayerStat/edit/model/useEditPlayerStatMutation';
 import { UpdatePayload } from '../../../../shared/api/mySchoolPlayerStat/index.type';
 import { EditPlayerStatSchema } from './editPlayerStatSchema';
 import { useQueryClient } from '@tanstack/react-query';

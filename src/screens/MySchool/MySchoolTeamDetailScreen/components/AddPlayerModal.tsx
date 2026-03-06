@@ -16,10 +16,10 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { AddMySchoolPlayerSchema } from './addPlayer.schema';
-import { useCreateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
+import { useCreateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps, AddPlayerType } from '../types/index.type';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useMeQuery } from '../../../../feature/auth/me/model/useMeQuery';
 
 const AddPlayerModal: React.FC<AddMatchModalProps> = ({

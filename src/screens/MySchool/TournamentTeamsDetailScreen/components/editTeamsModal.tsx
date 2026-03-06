@@ -17,7 +17,7 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TeamSchema } from './team.schema';
 import { AddTeamType, EditTeamModalProps } from '../types/index.type';
-import { useUpdateTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/update/model/useUpdateTournamentTeamsMutation';
+import { useUpdateTournamentTeamsMutation } from '../../../../feature/school/mySchoolTournamentTeams/update/model/useUpdateTournamentTeamsMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { useQueryClient } from '@tanstack/react-query';
 

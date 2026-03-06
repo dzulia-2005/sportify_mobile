@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { editSchoolTeamSchema } from './editSchoolTeam.schema';
-import { useUpdateMySchoolTeams } from '../../../../feature/mySchoolTeams/update/model/useUpdateMySchoolTeams';
+import { useUpdateMySchoolTeams } from '../../../../feature/school/mySchoolTeams/update/model/useUpdateMySchoolTeams';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { EditSchoolTeamsType } from '../types/index.type';

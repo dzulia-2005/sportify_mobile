@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/MainStyle';
 import AddSchoolModal from './CreateMySchoolModal';
 import { SchoolProp } from '../types/index.type';
-import { useDeleteMySchoolMutation } from '../../../../feature/mySchool/delete/model/useDeleteMySchoolMutation';
+import { useDeleteMySchoolMutation } from '../../../../feature/school/mySchool/delete/model/useDeleteMySchoolMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import EditSchoolModal from './EditMySchoolModal';
 

@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { styles } from '../styles/MainStyles';
 import EditSchoolTeamModal from './EditSchoolTeamModal';
 import { TeamDetailProp, TeamDetailScreenProp } from '../types/index.type';
-import { useDeleteMySchoolTeam } from '../../../../feature/mySchoolTeams/delete/model/useDeleteMySchoolTeam';
+import { useDeleteMySchoolTeam } from '../../../../feature/school/mySchoolTeams/delete/model/useDeleteMySchoolTeam';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';

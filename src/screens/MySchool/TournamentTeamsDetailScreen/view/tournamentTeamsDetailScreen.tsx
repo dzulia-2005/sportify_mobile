@@ -5,7 +5,7 @@ import RenderTeam from '../components/renderTeam';
 import NoTeamsAvailable from '../components/NoTeamsAvailable';
 import { Team, TournamentTeamsProp } from '../types/index.type';
 import AddTeamModal from '../components/AddTeamsModal';
-import { useGetAllTeamQuery } from '../../../../feature/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
+import { useGetAllTeamQuery } from '../../../../feature/school/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
 import { useRoute } from '@react-navigation/native';
 import TeamCardSkeleton from '../components/teamCardSkeleton';
 

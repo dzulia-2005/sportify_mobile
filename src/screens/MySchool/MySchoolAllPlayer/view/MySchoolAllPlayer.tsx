@@ -4,8 +4,8 @@ import { styles } from '../styles/mainStyles';
 import RenderHeader from '../components/RenderHeader';
 import RenderItem from '../components/RenderItem';
 import SearchComponent from '../components/searchComponent';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
-import { useGetAllPlayerInMySchool } from '../../../../feature/mySchoolPlayer/getAllPlayerInMySchool/model/useGetAllPlayerInMySchool';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetAllPlayerInMySchool } from '../../../../feature/school/mySchoolPlayer/getAllPlayerInMySchool/model/useGetAllPlayerInMySchool';
 import EmptyList from '../components/EmptyList';
 import { useFocusEffect } from '@react-navigation/native';
 

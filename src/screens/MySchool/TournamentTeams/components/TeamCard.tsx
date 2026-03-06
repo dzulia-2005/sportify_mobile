@@ -4,11 +4,11 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
-import { useGetMySchoolAllTournamentQuery } from '../../../../feature/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetMySchoolAllTournamentQuery } from '../../../../feature/school/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import EmptyTournament from './EmptyTournament';
 import { NavigationProp } from '../types/index.type';
-import { useDeleteMySchoolTournamentMutation } from '../../../../feature/mySchoolTournament/delete/model/useDeleteMySchoolTournamentMutation';
+import { useDeleteMySchoolTournamentMutation } from '../../../../feature/school/mySchoolTournament/delete/model/useDeleteMySchoolTournamentMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import TournamentCardSkeleton from './TeamCardSkeleton';
 

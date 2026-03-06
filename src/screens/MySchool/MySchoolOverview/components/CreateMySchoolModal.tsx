@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SchoolSchema } from './School.schema';
-import { useCreateMySchoolMutation } from '../../../../feature/mySchool/create/model/useCreateMySchoolMutation';
+import { useCreateMySchoolMutation } from '../../../../feature/school/mySchool/create/model/useCreateMySchoolMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddSchoolModalProps, SchoolDefaultTypes } from '../types/index.type';
 

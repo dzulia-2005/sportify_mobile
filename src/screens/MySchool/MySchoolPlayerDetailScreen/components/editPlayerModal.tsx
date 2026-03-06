@@ -16,7 +16,7 @@ import { StyleSheet } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
-import { useUpdateMySchoolPlayerMutation } from '../../../../feature/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
+import { useUpdateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import {
   EditMySchoolPlayerModalProps,

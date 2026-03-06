@@ -14,10 +14,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { tournamentSchema } from './Tournament.schema';
-import { useCreateMySchoolTournamentMutation } from '../../../../feature/mySchoolTournament/create/model/useCreateMySchoolTournamentMutation';
+import { useCreateMySchoolTournamentMutation } from '../../../../feature/school/mySchoolTournament/create/model/useCreateMySchoolTournamentMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps, addTournamentType } from '../types/index.type';
-import { useGetMySchoolQuery } from '../../../../feature/mySchool/getSchool/model/useGetMySchoolQuery';
+import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useQueryClient } from '@tanstack/react-query';
 
 const AddTournamentModal: React.FC<AddMatchModalProps> = ({

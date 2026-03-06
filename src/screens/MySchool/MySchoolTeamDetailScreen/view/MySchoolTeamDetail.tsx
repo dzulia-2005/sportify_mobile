@@ -5,7 +5,7 @@ import { styles } from '../styles/MainStyles';
 import ImgContainer from '../components/ImgContainer';
 import TeamInfoContainer from '../components/TeamInfoContainer';
 import TeamTableHeader from '../components/TeamTableHeader';
-import { useGetByIdQuery } from '../../../../feature/mySchoolTeams/getById/model/useGetByIdQuery';
+import { useGetByIdQuery } from '../../../../feature/school/mySchoolTeams/getById/model/useGetByIdQuery';
 import { useRoute } from '@react-navigation/native';
 import { TeamDetailRouteProp } from '../types/index.type';
 

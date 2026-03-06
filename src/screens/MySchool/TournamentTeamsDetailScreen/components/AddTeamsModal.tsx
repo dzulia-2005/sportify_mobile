@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Controller, useForm } from 'react-hook-form';
-import { useCreateTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/create/model/useCreateTournamentTeamsMutation';
+import { useCreateTournamentTeamsMutation } from '../../../../feature/school/mySchoolTournamentTeams/create/model/useCreateTournamentTeamsMutation';
 import { TeamSchema } from './team.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';

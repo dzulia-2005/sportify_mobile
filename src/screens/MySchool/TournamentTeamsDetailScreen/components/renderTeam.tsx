@@ -5,7 +5,7 @@ import { RenderTeamProps } from '../types/index.type';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import EditTeamModal from './editTeamsModal';
-import { useDeleteTournamentTeamsMutation } from '../../../../feature/mySchoolTournamentTeams/delete/model/useDeleteTournamentTeamsMutation';
+import { useDeleteTournamentTeamsMutation } from '../../../../feature/school/mySchoolTournamentTeams/delete/model/useDeleteTournamentTeamsMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 

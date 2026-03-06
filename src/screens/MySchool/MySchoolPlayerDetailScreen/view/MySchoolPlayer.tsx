@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import Header from '../components/header';
 import { styles } from '../styles/index.styles';
 import PlayerStat from '../components/playerStat';
-import { useGetByIdQuery } from '../../../../feature/mySchoolPlayer/getById/model/useGetByIdQuery';
+import { useGetByIdQuery } from '../../../../feature/school/mySchoolPlayer/getById/model/useGetByIdQuery';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
 
