@@ -37,3 +37,14 @@ export type ChangePasswordPayload = {
   UserName: string;
   newPassword: string;
 };
+
+
+export type changePasswordPayload = {
+  email: string;
+  accessToken: string;
+  newPassword: string;
+};
+
+export type ForgotPasswordPayload = {
+  email: string;
+};

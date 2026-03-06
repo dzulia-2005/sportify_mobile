@@ -4,5 +4,6 @@ export const enum Auth_Endpoints {
   ME = '/auth/me',
   REFRESH = '/auth/refresh',
   LOGOUT = '/auth/logout',
-  CHANGEPASSWORD = '/auth/change-password',
+  ResetPassword = '/auth/reset-password',
+  forgotPassword = '/auth/forgot-password',
 }

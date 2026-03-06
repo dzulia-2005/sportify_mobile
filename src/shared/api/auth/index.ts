@@ -1,7 +1,8 @@
 import { httpClient } from '..';
 import { Auth_Endpoints } from './index.enum';
 import type {
-  ChangePasswordPayload,
+  changePasswordPayload,
+  ForgotPasswordPayload,
   LoginPayload,
   LoginResponse,
   MeResponse,
@@ -36,8 +37,10 @@ export const LogOut = () => {
   return httpClient.post(Auth_Endpoints.LOGOUT).then(res => res.data);
 };
 
-export const ChangePassword = (payload: ChangePasswordPayload) => {
-  return httpClient
-    .post(Auth_Endpoints.CHANGEPASSWORD, payload)
-    .then(res => res.data);
+export const ResetPassword = (payload: changePasswordPayload) => {
+  return httpClient.post(Auth_Endpoints.ResetPassword, payload).then((res) => res.data);
+};
+
+export const ForgotPassword = (payload: ForgotPasswordPayload) => {
+  return httpClient.post(Auth_Endpoints.forgotPassword, payload).then((res) => res.data);
 };
