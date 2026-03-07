@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import { GetStandings } from "../../../../shared/api/mySchoolStanding"
+import { GetStandings } from "../../../../../shared/api/mySchoolStanding"
+
 
 export const useGetAllStandingQuery = (tournamentId:string) => {
     return useQuery({

@@ -9,8 +9,7 @@ import CustomDrawerContent from './CustomDrawerContent';
 import MySchoolStackNavigator from './MySchoolStackNavigator/MySchoolStackNavigator';
 import { DrawerNavigationType } from './DrawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
-import ChangePasswordScreen from '../../screens/Auth/ChangePassword/index';
-import BackButton from '../../shared/components/backButton';
+
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
@@ -78,17 +77,6 @@ const AppNavigator = () => {
               options={{
                 title: 'Register',
               }}
-            />
-            <Drawer.Screen
-              name="ChangePasswordScreen"
-              component={ChangePasswordScreen}
-              options={({ navigation }) => ({
-                headerTitle: '',
-                drawerItemStyle: {
-                  display: 'none',
-                },
-                headerLeft: () => <BackButton navigation={navigation} />,
-              })}
             />
           </>
         )}

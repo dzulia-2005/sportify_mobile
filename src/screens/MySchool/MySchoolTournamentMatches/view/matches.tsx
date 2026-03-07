@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import { useGetMySchoolTournament } from '../../../../feature/school/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
 import { useRoute } from '@react-navigation/native';
 import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
-import { useGetAllMatchesQuery } from '../../../../feature/mySchoolMatches/getAll/model/useGetAllMatchesQuery';
-import { useEditMatchesMutation } from '../../../../feature/mySchoolMatches/edit/model/useEditMatchesMutation';
 import {
   EditMatchesPayload,
   MatchResponse,
@@ -15,6 +13,8 @@ import RoundRobinStage from '../components/stages/RoundRobinStage';
 import SingleKnockoutStage from '../components/stages/SingleKnockoutStage';
 import DoubleKnockoutStage from '../components/stages/DoubleKnockoutStage';
 import { useGetAllTeamQuery } from '../../../../feature/school/mySchoolTournamentTeams/getAll/model/useGetAllTeamQuery';
+import { useGetAllMatchesQuery } from '../../../../feature/school/mySchoolMatches/getAll/model/useGetAllMatchesQuery';
+import { useEditMatchesMutation } from '../../../../feature/school/mySchoolMatches/edit/model/useEditMatchesMutation';
 
 const TournamentMatchesScreen: React.FC = () => {
   const route = useRoute<TournamentTeamsProp>();

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { EditMatchesPayload } from "../../../../shared/api/mySchoolMatches/index.type";
-import { EditMatch } from "../../../../shared/api/mySchoolMatches";
+import { EditMatchesPayload } from "../../../../../shared/api/mySchoolMatches/index.type";
+import { EditMatch } from "../../../../../shared/api/mySchoolMatches";
+
 
 export const useEditMatchesMutation = () => {
     const queryClient = useQueryClient();

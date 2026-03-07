@@ -93,7 +93,6 @@ const Inputs: React.FC = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('ChangePasswordScreen')}
       >
         <Text style={styles.forgot}>Forgot your password?</Text>
       </TouchableOpacity>
