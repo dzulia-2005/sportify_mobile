@@ -15,12 +15,13 @@ import {
   Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { AddMySchoolPlayerSchema } from './addPlayer.schema';
+import { AddMySchoolPlayerSchema,type AddPlayerType } from './addPlayer.schema';
 import { useCreateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
-import { AddMatchModalProps, AddPlayerType } from '../types/index.type';
+import { AddMatchModalProps } from '../types/index.type';
 import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useMeQuery } from '../../../../feature/auth/me/model/useMeQuery';
+import DataField from './dataField';
 
 const AddPlayerModal: React.FC<AddMatchModalProps> = ({
   visible,
@@ -48,6 +49,8 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
       TeamId: teamId || '',
       MySchoolId: schoolId || '',
       UserId: userId || '',
+      Nationality:'',
+      birthDate:'',
     }),
     [teamId, schoolId, userId],
   );
@@ -115,7 +118,10 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
     formData.append('ParentLastName', payload.ParentLastName);
     formData.append('ParentPhoneNumber', payload.ParentPhoneNumber);
     formData.append('Position', payload.Position);
-
+    formData.append("Nationality",payload.Nationality);
+    if(payload.birthDate){
+      formData.append('birthDate',payload.birthDate);
+    }
     formData.append('TeamId', payload.TeamId);
     formData.append('MySchoolId', payload.MySchoolId);
     formData.append('UserId', payload.UserId);
@@ -269,6 +275,45 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
                   {errors.ProfilePictureFile.uri.message}
                 </Text>
               )}
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>
+                Nationality <Text style={styles.required}>*</Text>
+              </Text>
+              <Controller
+                name="Nationality"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={[styles.input]}
+                    placeholder="Nationality"
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
+              />
+              {errors.Nationality && (
+                <Text style={styles.errorText}>{errors.Nationality?.message}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>
+               BirthDate <Text style={styles.required}>*</Text>
+              </Text>
+                <Controller
+                  name='birthDate'
+                  control={control}
+                  render={({field:{onChange,value}})=>(
+                    <DataField
+                      value={value}
+                      onChange={onChange}
+                      error={errors.birthDate?.message}
+                    />
+                  )}
+                />
             </View>
 
             <View style={styles.inputGroup}>

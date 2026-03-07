@@ -15,6 +15,8 @@ export type AddPlayerType = {
   MySchoolId: string;
   UserId: string;
   TeamId: string;
+  birthDate: string;
+  Nationality: string;
 };
 
 export type AddMatchModalProps = {

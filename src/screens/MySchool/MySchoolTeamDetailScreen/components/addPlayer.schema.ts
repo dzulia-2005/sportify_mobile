@@ -45,4 +45,9 @@ export const AddMySchoolPlayerSchema = z.object({
   TeamId: z.string().min(1, 'Team is required'),
   MySchoolId: z.string().min(1, 'schoolId is required'),
   UserId: z.string().min(1, 'userid is required'),
+  birthDate: z.string().min(1, 'Birth date is required'),
+  Nationality:z.string().min(1,"Nationality is required")
 });
+
+
+export type AddPlayerType = z.infer<typeof AddMySchoolPlayerSchema>;
