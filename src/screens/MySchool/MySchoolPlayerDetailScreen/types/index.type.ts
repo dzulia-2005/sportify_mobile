@@ -34,6 +34,8 @@ export type EditPlayerType = {
   parentFirstName: string;
   parentLastName: string;
   parentPhoneNumber: string;
+  Nationality:string;
+  birthDate:string;
   teamId: string;
 };
 

@@ -38,9 +38,12 @@ export const UpdateMySchoolPlayerSchema = z.object({
     .max(20, 'Phone number is too long')
     .regex(/^\+?[0-9 ()-]{7,20}$/, 'Invalid phone number format'),
 
+  birthDate: z.string().min(1, 'Birth date is required'),
+  Nationality:z.string().min(1,"Nationality is required"),
   ProfilePictureFile: z.object({
     uri: z.string().min(1, 'logo is required'),
   }),
 
   teamId: z.string().min(1, 'Team is required'),
 });
+

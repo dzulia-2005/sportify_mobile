@@ -9,13 +9,13 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from 'react-native';
-import StyledInput from '../../../../shared/components/StyledInput';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { StyleSheet } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
+import { UpdateMySchoolPlayerSchema  } from './editPlayer.schema';
 import { useUpdateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import {
@@ -23,6 +23,7 @@ import {
   EditPlayerType,
 } from '../types/index.type';
 import { useQueryClient } from '@tanstack/react-query';
+import DataField from '../../MySchoolTeamDetailScreen/components/dataField';
 
 const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
   visible,
@@ -43,6 +44,8 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
     parentFirstName: '',
     parentLastName: '',
     parentPhoneNumber: '',
+    Nationality:"",
+    birthDate:"",
     teamId: Player?.teamId || '',
   };
 
@@ -96,6 +99,8 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
       name: payload.ProfilePictureFile.name ?? 'image.jpg',
       type: payload.ProfilePictureFile.type ?? 'image/jpeg',
     });
+    formData.append("Nationality",payload.Nationality);
+    formData.append("birthDate",payload.birthDate);
     formData.append('position', payload.position);
     formData.append('parentFirstName', payload.parentFirstName);
     formData.append('parentLastName', payload.parentLastName);
@@ -130,15 +135,17 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
           </View>
 
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <View>
+            <View style={styles.inputGroup}>
               <Controller
                 name="firstName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
-                    placeholder="Player First Name"
+                  <TextInput
+                    style={[styles.input]}
+                    placeholder="PlayerFirstName"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -149,15 +156,17 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
               )}
             </View>
 
-            <View>
+            <View style={styles.inputGroup}>
               <Controller
                 name="lastName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
-                    placeholder="Player Last Name"
+                  <TextInput
+                    style={[styles.input]}
+                    placeholder="PlayerLastName"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -166,15 +175,17 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
               )}
             </View>
 
-            <View>
+            <View style={styles.inputGroup}>
               <Controller
                 name="position"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
+                  <TextInput
+                    style={[styles.input]}
                     placeholder="Position"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -183,15 +194,50 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
               )}
             </View>
 
-            <View>
+            <View style={styles.inputGroup}>
+              <Controller
+                name="Nationality"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={[styles.input]}
+                    placeholder="Nationality"
+                    value={value}
+                    onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
+                  />
+                )}
+              />
+              {errors.Nationality && (
+                <Text style={styles.errorText}>{errors.Nationality?.message}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Controller
+                name="birthDate"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <DataField
+                    onChange={onChange}
+                    value={value}
+                    error={errors.birthDate?.message}
+                  />
+                )}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
               <Controller
                 name="parentFirstName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
+                  <TextInput
+                    style={[styles.input]}
                     placeholder="Parent First Name"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -202,15 +248,17 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
               )}
             </View>
 
-            <View>
+            <View style={styles.inputGroup}>
               <Controller
                 name="parentLastName"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
+                  <TextInput
+                    style={[styles.input]}
                     placeholder="Parent Last Name"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -221,15 +269,17 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
               )}
             </View>
 
-            <View>
+            <View style={styles.inputGroup}>
               <Controller
                 name="parentPhoneNumber"
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <StyledInput
+                  <TextInput
+                    style={[styles.input]}
                     placeholder="Parent Phone"
                     value={value}
                     onChangeText={onChange}
+                    placeholderTextColor="#9ca3af"
                   />
                 )}
               />
@@ -316,6 +366,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.7)',
@@ -325,6 +376,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     maxHeight: '90%',
+  },
+  input: {
+    backgroundColor: '#374151',
+    color: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
   header: {
     flexDirection: 'row',
