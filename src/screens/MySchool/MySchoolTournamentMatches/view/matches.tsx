@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import InfoBox from '../components/InfoBox';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useGetMySchoolTournament } from '../../../../feature/school/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
 import { useRoute } from '@react-navigation/native';
 import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
@@ -16,13 +16,19 @@ import { useGetAllTeamQuery } from '../../../../feature/school/mySchoolTournamen
 import { useGetAllMatchesQuery } from '../../../../feature/school/mySchoolMatches/getAll/model/useGetAllMatchesQuery';
 import { useEditMatchesMutation } from '../../../../feature/school/mySchoolMatches/edit/model/useEditMatchesMutation';
 
+type MatchType = 0 | 1 | 2;
+
 const TournamentMatchesScreen: React.FC = () => {
   const route = useRoute<TournamentTeamsProp>();
   const { tournamentId } = route.params;
-  const { data: tournament } = useGetMySchoolTournament(tournamentId);
-  const { data: matches } = useGetAllMatchesQuery(tournamentId);
+  const tournamentQuery = useGetMySchoolTournament(tournamentId);
+  const matchesQuery = useGetAllMatchesQuery(tournamentId);
   const { mutate: updateMatch } = useEditMatchesMutation();
-  const { data: Teams = [] } = useGetAllTeamQuery(tournamentId);
+  const { data: teams = [], isLoading: isTeamsLoading } =
+    useGetAllTeamQuery(tournamentId);
+
+  const { data: tournament, isLoading: isTournamentLoading } = tournamentQuery;
+  const { data: matches, isLoading: isMatchesLoading } = matchesQuery;
 
   const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
   const [tempScores, setTempScores] = useState<EditMatchesPayload>({
@@ -32,8 +38,40 @@ const TournamentMatchesScreen: React.FC = () => {
     teamBId: '',
   });
 
-  // const isLoading = isTournamentLoading || isMatchesLoading;
-  const matchType = tournament?.matchType ?? 0;
+  const isLoading = isTournamentLoading || isMatchesLoading || isTeamsLoading;
+
+  const matchType: MatchType = useMemo(() => {
+    const raw: unknown = tournament?.matchType;
+    const asNumber = Number(raw);
+
+    if (
+      Number.isFinite(asNumber) &&
+      (asNumber === 0 || asNumber === 1 || asNumber === 2)
+    ) {
+      return asNumber as MatchType;
+    }
+
+    if (typeof raw === 'string') {
+      const asString = raw.trim().toLowerCase();
+      const map: Record<string, MatchType> = {
+        roundrobin: 0,
+        round_robin: 0,
+        robin: 0,
+        singleknockout: 1,
+        single_knockout: 1,
+        single_elim: 1,
+        singleelimination: 1,
+        doubleknockout: 2,
+        double_knockout: 2,
+        double_elim: 2,
+        doubleelimination: 2,
+      };
+
+      return map[asString] ?? 0;
+    }
+
+    return 0;
+  }, [tournament?.matchType]);
 
   const { categorizedMatches, groupedMatches, hasKnockoutStages } =
     useCategorizedMatches(matches, matchType);
@@ -66,7 +104,7 @@ const TournamentMatchesScreen: React.FC = () => {
       case 0:
         return (
           <RoundRobinStage
-            teams={Teams}
+            teams={teams}
             matches={matches || []}
             editingMatchId={editingMatchId}
             tempScores={tempScores}
@@ -78,7 +116,7 @@ const TournamentMatchesScreen: React.FC = () => {
       case 1:
         return (
           <SingleKnockoutStage
-            teams={Teams}
+            teams={teams}
             categorizedMatches={categorizedMatches}
             editingMatchId={editingMatchId}
             tempScores={tempScores}
@@ -90,7 +128,7 @@ const TournamentMatchesScreen: React.FC = () => {
       case 2:
         return (
           <DoubleKnockoutStage
-            teams={Teams}
+            teams={teams}
             groupedMatches={groupedMatches}
             editingMatchId={editingMatchId}
             tempScores={tempScores}
@@ -99,12 +137,21 @@ const TournamentMatchesScreen: React.FC = () => {
             handleSave={handleSave}
           />
         );
+      default:
+        return null;
     }
   };
 
+  if (isLoading || !tournament) {
+    return (
+      <View style={[styles.container, styles.loadingContainer]}>
+        <Text style={styles.loadingText}>Loading tournament matches...</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconContainer}>
           <Text style={styles.trophyIcon}>🏆</Text>
@@ -112,12 +159,11 @@ const TournamentMatchesScreen: React.FC = () => {
         <View>
           <Text style={styles.tournamentName}>{tournament?.name}</Text>
           <Text style={styles.matchCount}>
-            Number Of Matches : {matches?.length}
+            Number Of Matches : {matches?.length ?? 0}
           </Text>
         </View>
       </View>
 
-      {/* Info Box */}
       <InfoBox matchType={matchType} hasKnockoutStages={hasKnockoutStages} />
       {renderStage()}
     </ScrollView>
@@ -156,6 +202,15 @@ const styles = StyleSheet.create({
   },
   stageSection: {
     marginBottom: 32,
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#93c5fd',
+    fontSize: 16,
+    marginTop: 60,
   },
 });
 
