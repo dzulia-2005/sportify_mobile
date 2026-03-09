@@ -6,9 +6,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../../screens/auth/register/index';
 import MyAccount from '../../screens/myAccount/index';
 import CustomDrawerContent from './customDrawerContent';
+import ForgotPassword from '../../screens/auth/forgotPassword';
 import MySchoolStackNavigator from './mySchoolStackNavigator/mySchoolStackNavigator';
 import { DrawerNavigationType } from './drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
+import ResetPassword from '../../screens/auth/resetPassword';
 
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
@@ -76,6 +78,22 @@ const AppNavigator = () => {
               component={RegisterPage}
               options={{
                 title: 'Register',
+              }}
+            />
+            <Drawer.Screen
+              name="forgotPassword"
+              component={ForgotPassword}
+              options={{
+                title:"",
+                drawerItemStyle:{display:'none'}
+              }}
+            />
+            <Drawer.Screen
+              name="resetPassword"
+              component={ResetPassword}
+              options={{
+                title:"",
+                drawerItemStyle:{display:'none'}
               }}
             />
           </>

@@ -167,7 +167,9 @@ const Inputs: React.FC = () => {
         onGoogleSuccess={completeLogin} 
       />
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={()=>navigation.navigate("forgotPassword")}
+      >
         <Text style={styles.forgot}>Forgot your password?</Text>
       </TouchableOpacity>
 
