@@ -7,6 +7,8 @@ export const SignInSuccess = async ({
   accessToken: string;
   refreshToken: string;
 }) => {
-  await AsyncStorage.setItem('accessToken', accessToken);
-  await AsyncStorage.setItem('refreshToken', refreshToken);
+  await AsyncStorage.multiSet([
+    ["accessToken",accessToken],
+    ["refreshToken",refreshToken]
+  ]);
 };

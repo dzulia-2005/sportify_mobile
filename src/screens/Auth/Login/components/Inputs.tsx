@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Linking, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
 import { styles } from '../styles/LoginStyles';
 import { useNavigation } from '@react-navigation/native';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,30 +13,56 @@ import { LoginType, NavigationProp } from '../types/login.type';
 import { LoginInitialValues } from '../utils/loginInitialValues';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import GoogleButton from './googleButton';
-import { getParam } from '../utils/getParam';
 
+const getParam = (url: string, key: string) => {
+  const qIndex = url.indexOf('?');
+  if (qIndex === -1) return null;
+
+  const query = url.slice(qIndex + 1);
+  const parts = query.split('&');
+
+  for (const p of parts) {
+    const [k, v] = p.split('=');
+    if (decodeURIComponent(k) === key) {
+      return decodeURIComponent(v ?? '');
+    }
+  }
+
+  return null;
+};
 
 const Inputs: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { mutate: Login, isPending } = useLoginMutation();
+  const dispatch = useDispatch();
+
   const {
     handleSubmit,
     control,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<LoginType>({
     defaultValues: LoginInitialValues,
     resolver: zodResolver(LoginSchema),
   });
-  const dispatch = useDispatch();
+
+  const completeLogin = async ({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  }) => {
+    dispatch(setTokens({ accessToken, refreshToken }));
+    await SignInSuccess({ accessToken, refreshToken });
+    navigation.navigate('Home');
+  };
 
   const handleLogin = (loginValues: LoginType) => {
     Login(loginValues, {
-      onSuccess: res => {
+      onSuccess: async res => {
         const { accessToken, refreshToken } = res;
-        dispatch(setTokens({ accessToken, refreshToken }));
-        SignInSuccess(res);
-        navigation.navigate('Home');
+        await completeLogin({ accessToken, refreshToken });
         reset();
       },
       onError: (err: unknown) => {
@@ -48,6 +74,8 @@ const Inputs: React.FC = () => {
 
   useEffect(() => {
     const handleDeepLink = async (url: string) => {
+      console.log('DEEPLINK URL:', url);
+
       if (!url.startsWith('sportify://oauth-success')) return;
 
       const error = getParam(url, 'error');
@@ -65,14 +93,7 @@ const Inputs: React.FC = () => {
       }
 
       try {
-        dispatch(setTokens({ accessToken, refreshToken }));
-
-        await SignInSuccess({
-          accessToken,
-          refreshToken,
-        });
-
-        navigation.navigate('Home');
+        await completeLogin({ accessToken, refreshToken });
       } catch (err) {
         console.log('Deep link login error:', err);
         showErrorToast('Failed to complete Google login');
@@ -92,7 +113,7 @@ const Inputs: React.FC = () => {
     return () => {
       subscription.remove();
     };
-  }, [dispatch, navigation]);
+  }, []);
 
   return (
     <>
@@ -106,11 +127,12 @@ const Inputs: React.FC = () => {
             style={styles.input}
             placeholder="userName"
             placeholderTextColor="#a0aec0"
+            autoCapitalize="none"
           />
         )}
       />
       {errors.userName && (
-        <Text style={styles.errorText}>{errors.userName?.message}</Text>
+        <Text style={styles.errorText}>{errors.userName.message}</Text>
       )}
 
       <Controller
@@ -124,11 +146,12 @@ const Inputs: React.FC = () => {
             placeholder="password"
             placeholderTextColor="#a0aec0"
             secureTextEntry
+            autoCapitalize="none"
           />
         )}
       />
       {errors.password && (
-        <Text style={styles.errorText}>{errors.password?.message}</Text>
+        <Text style={styles.errorText}>{errors.password.message}</Text>
       )}
 
       <TouchableOpacity
@@ -136,17 +159,14 @@ const Inputs: React.FC = () => {
         onPress={handleSubmit(handleLogin)}
         disabled={isPending}
       >
-        {isPending ? (
-          <Text style={styles.buttonText}>Logging...</Text>
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
+        <Text style={styles.buttonText}>
+          {isPending ? 'Logging...' : 'Login'}
+        </Text>
       </TouchableOpacity>
 
-      <GoogleButton/>
+      <GoogleButton onGoogleSuccess={completeLogin} />
 
-      <TouchableOpacity
-      >
+      <TouchableOpacity>
         <Text style={styles.forgot}>Forgot your password?</Text>
       </TouchableOpacity>
 
