@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Text, TextInput, TouchableOpacity, View, Linking } from 'react-native';
 import { styles } from '../styles/LoginStyles';
@@ -74,8 +75,6 @@ const Inputs: React.FC = () => {
 
   useEffect(() => {
     const handleDeepLink = async (url: string) => {
-      console.log('DEEPLINK URL:', url);
-
       if (!url.startsWith('sportify://oauth-success')) return;
 
       const error = getParam(url, 'error');
@@ -164,7 +163,9 @@ const Inputs: React.FC = () => {
         </Text>
       </TouchableOpacity>
 
-      <GoogleButton onGoogleSuccess={completeLogin} />
+      <GoogleButton
+        onGoogleSuccess={completeLogin} 
+      />
 
       <TouchableOpacity>
         <Text style={styles.forgot}>Forgot your password?</Text>
