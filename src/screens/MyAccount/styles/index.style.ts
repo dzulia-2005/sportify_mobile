@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
         fontWeight:'bold',
     },
     TextContainer:{
-        paddingVertical:5
+        paddingVertical:5,
+        marginTop:10
     }
 })
