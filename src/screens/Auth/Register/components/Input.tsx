@@ -2,7 +2,7 @@ import React from 'react';
 import { styles } from '../styles/RegisterStyles';
 import { Text, TouchableOpacity, TextInput, View } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationType } from '../../../../app/navigation/DrawerNavigator.type';
+import { DrawerNavigationType } from '../../../../app/navigation/drawerNavigator.type';
 import { useNavigation } from '@react-navigation/native';
 import { useRegisterMutation } from '../../../../feature/auth/register/model/useRegisterMutation';
 import { Controller, useForm } from 'react-hook-form';

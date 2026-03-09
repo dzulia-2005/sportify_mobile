@@ -3,7 +3,7 @@ import InfoBox from '../components/InfoBox';
 import React, { useMemo, useState } from 'react';
 import { useGetMySchoolTournament } from '../../../../feature/school/mySchoolTournament/getMySchoolTournament/model/useGetMySchoolTournament';
 import { useRoute } from '@react-navigation/native';
-import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
+import { TournamentTeamsProp } from '../../tournamentTeamsDetailScreen/types/index.type';
 import {
   EditMatchesPayload,
   MatchResponse,

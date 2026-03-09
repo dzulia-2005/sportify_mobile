@@ -1,4 +1,4 @@
-import AppNavigator from './AppNavigator';
+import AppNavigator from './appNavigator';
 
 const NavigationWrapper = () => {
   return <AppNavigator />;

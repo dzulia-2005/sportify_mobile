@@ -3,8 +3,8 @@ import { useRefreshMutation } from '../../feature/auth/refresh/model/useRefreshM
 import { useEffect } from 'react';
 import { httpClient } from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SignInSuccess } from '../../screens/Auth/Login/utils/signInSuccess';
-import { NavigationProp } from '../../screens/Auth/Login/types/login.type';
+import { SignInSuccess } from '../../screens/auth/Login/utils/signInSuccess';
+import { NavigationProp } from '../../screens/auth/login/types/login.type';
 import Toast from 'react-native-toast-message';
 
 const showErrorToast = (title: string, message: string) => {

@@ -1,13 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import HomePage from '../../screens/Home/index';
-import MatchesPage from '../../screens/Auth/Login/index';
+import HomePage from '../../screens/home/index';
+import MatchesPage from '../../screens/auth/login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import RegisterPage from '../../screens/Auth/Register/index';
-import MyAccount from '../../screens/MyAccount/index';
-import CustomDrawerContent from './CustomDrawerContent';
-import MySchoolStackNavigator from './MySchoolStackNavigator/MySchoolStackNavigator';
-import { DrawerNavigationType } from './DrawerNavigator.type';
+import RegisterPage from '../../screens/auth/register/index';
+import MyAccount from '../../screens/myAccount/index';
+import CustomDrawerContent from './customDrawerContent';
+import MySchoolStackNavigator from './mySchoolStackNavigator/mySchoolStackNavigator';
+import { DrawerNavigationType } from './drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
 
 

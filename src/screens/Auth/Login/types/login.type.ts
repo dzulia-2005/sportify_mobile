@@ -1,5 +1,5 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationType } from '../../../../app/navigation/DrawerNavigator.type';
+import { DrawerNavigationType } from '../../../../app/navigation/drawerNavigator.type';
 
 export type NavigationProp = DrawerNavigationProp<
   DrawerNavigationType,

@@ -1,11 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MySchoolOverview from '../../../screens/MySchool/MySchoolOverview';
-import MySchoolTeams from '../../../screens/MySchool/MySchoolTeams';
-import MySchoolAllPlayer from '../../../screens/MySchool/MySchoolAllPlayer';
-import TournamentTeams from '../../../screens/MySchool/TournamentTeams';
-import TournamentMatches from '../../../screens/MySchool/TournamentMatches';
-import TournamentScores from '../../../screens/MySchool/TournamentScores';
+import MySchoolOverview from '../../../screens/mySchool/mySchoolOverview';
+import MySchoolTeams from '../../../screens/mySchool/mySchoolTeams';
+import MySchoolAllPlayer from '../../../screens/mySchool/mySchoolAllPlayer';
+import TournamentTeams from '../../../screens/mySchool/tournamentTeams';
+import TournamentMatches from '../../../screens/mySchool/tournamentMatches';
+import TournamentScores from '../../../screens/mySchool/tournamentScores';
 import {
   MatchesIcon,
   ScoreIcon,

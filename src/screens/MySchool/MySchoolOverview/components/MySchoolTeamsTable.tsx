@@ -4,7 +4,7 @@ import { styles } from '../styles/TeamsStyles';
 import { SchoolProp } from '../types/index.type';
 import NotFoundComponent from './notFoundComponent';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '../../MySchoolTeams/types/index.type';
+import { NavigationProp } from '../../mySchoolTeams/types/index.type';
 import MySchoolTeamsSkeleton from './SkeletonTeams';
 
 const MySchoolTeams: React.FC<SchoolProp> = ({ school, isLoading }) => {

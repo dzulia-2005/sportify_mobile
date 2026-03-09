@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../hooks/useAuth';
-import { NavigationProp } from '../../screens/Auth/Login/types/login.type';
+import { NavigationProp } from '../../screens/auth/login/types/login.type';
 
 const ProtectedScreen = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn } = useAuth();

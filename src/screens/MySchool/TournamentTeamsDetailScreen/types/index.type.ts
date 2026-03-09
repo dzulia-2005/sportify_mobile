@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native';
-import { MySchoolStackParamList } from '../../../../app/navigation/MySchoolStackNavigator/MySchoolStackNavigator.types';
+import { MySchoolStackParamList } from '../../../../app/navigation/mySchoolStackNavigator/mySchoolStackNavigator.types';
 
 export type Team = {
   id: string;

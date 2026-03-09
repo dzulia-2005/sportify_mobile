@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeft } from './MySchoolStackNavigatorIcons';
+import { ArrowLeft } from './mySchoolStackNavigatorIcons';
 import { useCallback } from 'react';
 
 export type MySchoolStackParamList = {

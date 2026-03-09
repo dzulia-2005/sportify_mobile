@@ -2,7 +2,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { DrawerNavigationType } from '../../app/navigation/DrawerNavigator.type';
+import { DrawerNavigationType } from '../../app/navigation/drawerNavigator.type';
 
 type NavigationProp = DrawerNavigationProp<DrawerNavigationType>;
 

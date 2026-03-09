@@ -23,7 +23,7 @@ import {
   EditPlayerType,
 } from '../types/index.type';
 import { useQueryClient } from '@tanstack/react-query';
-import DataField from '../../MySchoolTeamDetailScreen/components/dataField';
+import DataField from '../../mySchoolTeamDetailScreen/components/dataField';
 
 const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
   visible,
