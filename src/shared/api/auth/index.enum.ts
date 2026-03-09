@@ -6,4 +6,5 @@ export const enum Auth_Endpoints {
   LOGOUT = '/auth/logout',
   ResetPassword = '/auth/reset-password',
   forgotPassword = '/auth/forgot-password',
+  GoogleLogin = '/auth/google',
 }

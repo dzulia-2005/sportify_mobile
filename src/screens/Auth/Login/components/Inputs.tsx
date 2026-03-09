@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Linking, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/LoginStyles';
 import { useNavigation } from '@react-navigation/native';
 import { Controller, useForm } from 'react-hook-form';
@@ -12,6 +12,9 @@ import { SignInSuccess } from '../utils/signInSuccess';
 import { LoginType, NavigationProp } from '../types/login.type';
 import { LoginInitialValues } from '../utils/loginInitialValues';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import GoogleButton from './googleButton';
+import { getParam } from '../utils/getParam';
+
 
 const Inputs: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -42,6 +45,54 @@ const Inputs: React.FC = () => {
       },
     });
   };
+
+  useEffect(() => {
+    const handleDeepLink = async (url: string) => {
+      if (!url.startsWith('sportify://oauth-success')) return;
+
+      const error = getParam(url, 'error');
+      if (error) {
+        showErrorToast(error);
+        return;
+      }
+
+      const accessToken = getParam(url, 'token');
+      const refreshToken = getParam(url, 'refreshToken');
+
+      if (!accessToken || !refreshToken) {
+        showErrorToast('Google login failed');
+        return;
+      }
+
+      try {
+        dispatch(setTokens({ accessToken, refreshToken }));
+
+        await SignInSuccess({
+          accessToken,
+          refreshToken,
+        });
+
+        navigation.navigate('Home');
+      } catch (err) {
+        console.log('Deep link login error:', err);
+        showErrorToast('Failed to complete Google login');
+      }
+    };
+
+    const subscription = Linking.addEventListener('url', ({ url }) => {
+      handleDeepLink(url);
+    });
+
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        handleDeepLink(url);
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [dispatch, navigation]);
 
   return (
     <>
@@ -91,6 +142,8 @@ const Inputs: React.FC = () => {
           <Text style={styles.buttonText}>Login</Text>
         )}
       </TouchableOpacity>
+
+      <GoogleButton/>
 
       <TouchableOpacity
       >
