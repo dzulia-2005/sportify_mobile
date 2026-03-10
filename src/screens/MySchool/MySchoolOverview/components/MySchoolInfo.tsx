@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/MainStyle';
 import AddSchoolModal from './CreateMySchoolModal';
 import { SchoolProp } from '../types/index.type';
@@ -10,10 +10,11 @@ import EditSchoolModal from './EditMySchoolModal';
 const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+
   const { mutate: deleteSchool, isPending } = useDeleteMySchoolMutation();
   const queryClient = useQueryClient();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     deleteSchool(id, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({
@@ -23,10 +24,8 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
         queryClient.setQueryData(['get-mySchool'], null);
 
         if (refetch) {
-          console.log('Calling refetch prop');
           await refetch();
         } else {
-          console.log('Manually refetching');
           await queryClient.refetchQueries({
             queryKey: ['get-mySchool'],
           });
@@ -39,45 +38,64 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
   };
 
   return (
-    <View style={styles.InfoContainer}>
-      <Text style={styles.schoolName}>{school?.name || 'No school found'}</Text>
+    <View style={styles.infoWrapper}>
+      <View style={styles.infoCard}>
+        {school && school.id ? (
+          <>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>My School</Text>
+            </View>
 
-      {school && school.id ? (
-        <>
-          <TouchableOpacity
-            onPress={() => setIsOpenModal(true)}
-            style={[styles.BaseBtn, styles.AddSchoolBtn]}
-          >
-            <Text style={styles.BtnTitle}>Create School +</Text>
-          </TouchableOpacity>
+            <Text style={styles.schoolName}>{school?.name}</Text>
 
-          <TouchableOpacity
-            onPress={() => setIsOpenEditModal(true)}
-            style={[styles.BaseBtn, styles.EditSchoolBtn]}
-          >
-            <Text style={styles.BtnTitle}>Update School</Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => handleDelete(school.id!)}
-            disabled={isPending}
-            style={[styles.BaseBtn, styles.DeleteSchoolBtn]}
-          >
-            {isPending ? (
-              <Text style={styles.BtnTitle}>Deleting...</Text>
-            ) : (
-              <Text style={styles.BtnTitle}>Delete School</Text>
-            )}
-          </TouchableOpacity>
-        </>
-      ) : (
-        <TouchableOpacity
-          onPress={() => setIsOpenModal(true)}
-          style={[styles.BaseBtn, styles.AddSchoolBtn]}
-        >
-          <Text style={styles.BtnTitle}>Create School +</Text>
-        </TouchableOpacity>
-      )}
+            <View style={styles.actionGroup}>
+              <TouchableOpacity
+                onPress={() => setIsOpenEditModal(true)}
+                style={[styles.actionButton, styles.primaryButton]}
+                activeOpacity={0.85}
+              >
+                <Text style={styles.actionButtonText}>Update School</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => handleDelete(school.id!)}
+                disabled={isPending}
+                style={[styles.actionButton, styles.dangerButton]}
+                activeOpacity={0.85}
+              >
+                {isPending ? (
+                  <View style={styles.loadingRow}>
+                    <ActivityIndicator size="small" color="#fff" />
+                    <Text style={styles.actionButtonText}> Deleting...</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.actionButtonText}>Delete School</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.emptyIconWrapper}>
+              <Text style={styles.emptyIcon}>🏫</Text>
+            </View>
+
+            <Text style={styles.emptyTitle}>No school found</Text>
+            <Text style={styles.emptyDescription}>
+              Create your school profile to manage information easily.
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => setIsOpenModal(true)}
+              style={[styles.actionButton, styles.successButton]}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.actionButtonText}>Create School +</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
 
       {isOpenModal && (
         <AddSchoolModal
@@ -85,6 +103,7 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
           onClose={() => setIsOpenModal(false)}
         />
       )}
+
       {isOpenEditModal && (
         <EditSchoolModal
           visible={isOpenEditModal}

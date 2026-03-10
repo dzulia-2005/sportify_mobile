@@ -14,8 +14,10 @@ const MySchoolImageContainer: React.FC<SchoolProp> = ({
   const shimmerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    let animation: Animated.CompositeAnimation | null = null;
+
     if (isLoading) {
-      Animated.loop(
+      animation = Animated.loop(
         Animated.sequence([
           Animated.timing(shimmerAnim, {
             toValue: 1,
@@ -28,31 +30,37 @@ const MySchoolImageContainer: React.FC<SchoolProp> = ({
             useNativeDriver: true,
           }),
         ]),
-      ).start();
+      );
+
+      animation.start();
     } else {
       shimmerAnim.stopAnimation();
       shimmerAnim.setValue(0);
     }
+
+    return () => {
+      animation?.stop();
+    };
   }, [isLoading, shimmerAnim]);
 
   const translateX = shimmerAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [-100, 100],
+    outputRange: [-120, 120],
   });
 
   return (
     <View style={styles.ImageMainContainer}>
-      <View style={styles.ImageContainer}>
-        {isLoading ? (
-          <View style={styles.skeletonContainer}>
-            <Animated.View
-              style={[styles.shimmer, { transform: [{ translateX }] }]}
-            />
-          </View>
-        ) : (
-          <Image style={styles.image} resizeMode="cover" source={imageSource} />
-        )}
-      </View>
+        <View style={styles.ImageContainer}>
+          {isLoading ? (
+            <View style={styles.skeletonContainer}>
+              <Animated.View
+                style={[styles.shimmer, { transform: [{ translateX }] }]}
+              />
+            </View>
+          ) : (
+            <Image style={styles.image} resizeMode="cover" source={imageSource} />
+          )}
+        </View>
     </View>
   );
 };
