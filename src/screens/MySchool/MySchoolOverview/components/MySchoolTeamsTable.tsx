@@ -6,6 +6,7 @@ import NotFoundComponent from './notFoundComponent';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../../mySchoolTeams/types/index.type';
 import MySchoolTeamsSkeleton from './SkeletonTeams';
+import EmptyImage from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
 
 const MySchoolTeams: React.FC<SchoolProp> = ({ school, isLoading }) => {
   const navigation = useNavigation<NavigationProp>();
@@ -34,7 +35,7 @@ const MySchoolTeams: React.FC<SchoolProp> = ({ school, isLoading }) => {
             <View style={styles.row}>
               <View style={styles.logoContainer}>
                 <Image
-                  source={{ uri: item.logoUrl }}
+                  source={item.logoUrl ? { uri: item.logoUrl } : EmptyImage}
                   style={styles.logo}
                   resizeMode="contain"
                 />

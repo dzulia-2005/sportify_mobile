@@ -16,8 +16,16 @@ const MySchoolOverview: React.FC = () => {
         refetch={refetch}
         isLoading={isLoading}
       />
-      <MySchoolInfo school={school} refetch={refetch} isLoading={isLoading} />
-      <MySchoolTeams school={school} refetch={refetch} isLoading={isLoading} />
+      <MySchoolInfo 
+        school={school} 
+        refetch={refetch} 
+        isLoading={isLoading} 
+      />
+      <MySchoolTeams 
+        school={school} 
+        refetch={refetch} 
+        isLoading={isLoading} 
+      />
     </View>
   );
 };

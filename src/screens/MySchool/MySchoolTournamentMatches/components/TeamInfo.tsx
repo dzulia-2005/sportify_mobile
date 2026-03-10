@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import EmptyImage from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
 
 interface TeamInfoProps {
   logo: string;
@@ -16,7 +17,10 @@ const TeamInfo: React.FC<TeamInfoProps> = ({
 }) => (
   <View style={[styles.teamInfoContainer, isWinner && styles.winnerContainer]}>
     <View style={styles.logoContainer}>
-      <Image source={{ uri: logo }} style={styles.teamLogo} />
+      <Image 
+        source={logo ? { uri: logo } : EmptyImage} 
+        style={styles.teamLogo} 
+      />
       {isWinner && (
         <View style={styles.winnerBadge}>
           <Text style={styles.winnerCheck}>✓</Text>

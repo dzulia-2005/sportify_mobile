@@ -34,7 +34,6 @@ const SingleKnockoutStage: React.FC<SingleKnockoutStageProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* Finals */}
       {categorizedMatches.final.length > 0 && (
         <View style={styles.stage}>
           <StageHeader
@@ -60,7 +59,6 @@ const SingleKnockoutStage: React.FC<SingleKnockoutStageProps> = ({
         </View>
       )}
 
-      {/* Semi Finals */}
       {categorizedMatches.semiFinal.length > 0 && (
         <View style={styles.stage}>
           <StageHeader
@@ -86,7 +84,6 @@ const SingleKnockoutStage: React.FC<SingleKnockoutStageProps> = ({
         </View>
       )}
 
-      {/* Quarter Finals */}
       {categorizedMatches.quarterFinal.length > 0 && (
         <View style={styles.stage}>
           <StageHeader
@@ -111,7 +108,6 @@ const SingleKnockoutStage: React.FC<SingleKnockoutStageProps> = ({
         </View>
       )}
 
-      {/* Group Stage */}
       {categorizedMatches.group.length > 0 && (
         <View style={styles.stage}>
           <StageHeader
