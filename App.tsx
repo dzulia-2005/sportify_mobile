@@ -10,7 +10,7 @@ import { store } from './src/app/store/store';
 import { Provider } from 'react-redux';
 import { Provider as AntProvider } from '@ant-design/react-native';
 import Toast from 'react-native-toast-message';
-import NavigationWrapper from './src/app/navigation/navigationWrapper';
+import NavigationWrapper from './src/app/navigation/wrapper/navigationWrapper';
 import { useEffect, useState } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import MyCustomSplash from './src/shared/components/MyCustomSplash';

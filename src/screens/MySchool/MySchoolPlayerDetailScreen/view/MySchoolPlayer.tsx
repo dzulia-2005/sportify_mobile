@@ -5,7 +5,7 @@ import { styles } from '../styles/index.styles';
 import PlayerStat from '../components/playerStat';
 import { useGetByIdQuery } from '../../../../feature/school/mySchoolPlayer/getById/model/useGetByIdQuery';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { MySchoolStackParamList } from '../../../../app/navigation/mySchoolStackNavigator/mySchoolStackNavigator.types';
+import { MySchoolStackParamList } from '../../../../app/navigation/stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator.types';
 
 type PlayerDetailProp = RouteProp<
   MySchoolStackParamList,

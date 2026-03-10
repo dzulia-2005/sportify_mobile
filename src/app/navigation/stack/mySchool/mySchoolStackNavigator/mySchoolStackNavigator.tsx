@@ -1,15 +1,15 @@
 import React from 'react';
-import MySchoolTabsNavigator from '../mySchoolTabsNavigator/MySchoolTabsNavigator';
-import MySchoolTeamDetail from '../../../screens/mySchool/mySchoolTeamDetailScreen/index';
-import MySchoolPlayer from '../../../screens/mySchool/mySchoolPlayerDetailScreen/index';
-import MySchoolTournamentTeamsDetailScreen from '../../../screens/mySchool/tournamentTeamsDetailScreen/index';
-import MySchoolTournamentMatches from '../../../screens/mySchool/mySchoolTournamentMatches/index';
+import MySchoolTabsNavigator from '../../../tabs/mySchool/mySchoolTabsNavigator/MySchoolTabsNavigator';
+import MySchoolTeamDetail from '../../../../../screens/mySchool/mySchoolTeamDetailScreen/index';
+import MySchoolPlayer from '../../../../../screens/mySchool/mySchoolPlayerDetailScreen/index';
+import MySchoolTournamentTeamsDetailScreen from '../../../../../screens/mySchool/tournamentTeamsDetailScreen/index';
+import MySchoolTournamentMatches from '../../../../../screens/mySchool/mySchoolTournamentMatches/index';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   HeaderLeft,
   MySchoolStackParamList,
 } from './mySchoolStackNavigator.types';
-import MySchoolTournamentScores from '../../../screens/mySchool/mySchoolTournamentScores';
+import MySchoolTournamentScores from '../../../../../screens/mySchool/mySchoolTournamentScores';
 
 const Stack = createStackNavigator<MySchoolStackParamList>();
 

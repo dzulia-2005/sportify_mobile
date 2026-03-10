@@ -4,10 +4,10 @@ import MatchesPage from '../../screens/auth/login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../../screens/auth/register/index';
 import MyAccount from '../../screens/myAccount/index';
-import CustomDrawerContent from './customDrawerContent';
+import CustomDrawerContent from './drawer/customDrawerContent';
 import ForgotPassword from '../../screens/auth/forgotPassword';
-import MySchoolStackNavigator from './mySchoolStackNavigator/mySchoolStackNavigator';
-import { DrawerNavigationType } from './drawerNavigator.type';
+import MySchoolStackNavigator from './stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator';
+import { DrawerNavigationType } from './drawer/drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
 
 

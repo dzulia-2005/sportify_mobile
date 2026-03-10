@@ -1,5 +1,5 @@
 import React from 'react';
-import AppNavigator from './appNavigator';
+import AppNavigator from '../appNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 
   const linking = {

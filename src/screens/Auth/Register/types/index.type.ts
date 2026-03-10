@@ -1,6 +1,6 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { DrawerNavigationType } from '../../../../app/navigation/drawerNavigator.type';
+import { DrawerNavigationType } from '../../../../app/navigation/drawer/drawerNavigator.type';
 
 type RootStackParamList = {
   Login: undefined;

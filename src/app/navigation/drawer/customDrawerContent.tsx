@@ -4,11 +4,11 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { logout } from '../../feature/auth/slices/authActions';
-import { useAppDispatch } from '../store/hooks/hook';
+import { logout } from '../../../feature/auth/slices/authActions';
+import { useAppDispatch } from '../../store/hooks/hook';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '../../screens/auth/login/types/login.type';
-import { useAuth } from '../../shared/hooks/useAuth';
+import { NavigationProp } from '../../../screens/auth/login/types/login.type';
+import { useAuth } from '../../../shared/hooks/useAuth';
 
 const CustomDrawerContent = (props: any) => {
   const navigation = useNavigation<NavigationProp>();
