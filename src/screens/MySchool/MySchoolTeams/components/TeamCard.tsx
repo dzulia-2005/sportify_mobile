@@ -15,12 +15,12 @@ import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getScho
 import { useGetTeamBySchoolIdQuery } from '../../../../feature/school/mySchoolTeams/getTeamBySchool/model/useGetTeamBySchoolIdQuery';
 import NotFoundText from './NotFoundText';
 import TeamCardSkeleton from './mySchoolTeamCardSkeleton';
+import EmptyImage from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
 
 const TeamCard: React.FC = () => {
   const { data: school } = useGetMySchoolQuery();
   const schoolId = school?.id;
   const { data: TEAMS = [], isLoading } = useGetTeamBySchoolIdQuery(schoolId!);
-
   const navigation = useNavigation<NavigationProp>();
   const shimmerAnimation = useRef(new Animated.Value(0)).current;
 
@@ -81,11 +81,7 @@ const TeamCard: React.FC = () => {
                   </View>
                 ) : (
                   <Image
-                    source={{
-                      uri: item.logoUrl
-                        ? item.logoUrl
-                        : 'https://upload.wikimedia.org/wikipedia/ka/7/78/FC_Dinamo_Tbilisi_Logo_%28v.3%29.png',
-                    }}
+                    source={item.logoUrl ? { uri: item.logoUrl } : EmptyImage}
                     style={styles.image}
                     resizeMode="contain"
                   />
