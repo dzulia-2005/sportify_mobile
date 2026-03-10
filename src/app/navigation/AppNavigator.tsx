@@ -1,4 +1,3 @@
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import HomePage from '../../screens/home/index';
 import MatchesPage from '../../screens/auth/login/index';
@@ -10,7 +9,6 @@ import ForgotPassword from '../../screens/auth/forgotPassword';
 import MySchoolStackNavigator from './mySchoolStackNavigator/mySchoolStackNavigator';
 import { DrawerNavigationType } from './drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
-import ResetPassword from '../../screens/auth/resetPassword';
 
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
@@ -18,7 +16,7 @@ const Drawer = createDrawerNavigator<DrawerNavigationType>();
 const AppNavigator = () => {
   const { accessToken } = useAuth();
   return (
-    <NavigationContainer>
+
       <Drawer.Navigator
         drawerContent={props => <CustomDrawerContent {...props} />}
         screenOptions={{
@@ -88,18 +86,9 @@ const AppNavigator = () => {
                 drawerItemStyle:{display:'none'}
               }}
             />
-            <Drawer.Screen
-              name="resetPassword"
-              component={ResetPassword}
-              options={{
-                title:"",
-                drawerItemStyle:{display:'none'}
-              }}
-            />
           </>
         )}
       </Drawer.Navigator>
-    </NavigationContainer>
   );
 };
 
