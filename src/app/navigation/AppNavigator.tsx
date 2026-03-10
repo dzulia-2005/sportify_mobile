@@ -1,9 +1,9 @@
 import React from 'react';
-import HomePage from '../../screens/home/index';
+import HomePage from '../../screens/dashboard/home/index';
 import MatchesPage from '../../screens/auth/login/index';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from '../../screens/auth/register/index';
-import MyAccount from '../../screens/myAccount/index';
+import MyAccount from '../../screens/dashboard/myAccount/index';
 import CustomDrawerContent from './drawer/customDrawerContent';
 import ForgotPassword from '../../screens/auth/forgotPassword';
 import MySchoolStackNavigator from './stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator';

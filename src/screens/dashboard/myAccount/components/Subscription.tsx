@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { styles } from '../styles/index.style'
-import { useSubscriptionQuery } from '../../../feature/billing/billing/model/subscription/useSubscriptionQuery';
+import { useSubscriptionQuery } from '../../../../feature/billing/billing/model/subscription/useSubscriptionQuery';
 import FormatPeriod from './FormatPeriod';
 
 const Subscription:React.FC = () => {
