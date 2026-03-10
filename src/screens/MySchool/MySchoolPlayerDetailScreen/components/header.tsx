@@ -42,15 +42,17 @@ const Header: React.FC<HeaderProp> = ({ Player, isLoading }) => {
 
   return (
     <View style={styles.avatarContainer}>
-      {isLoading ? (
-        <View style={styles.skeletonContainer}>
-          <Animated.View
-            style={[styles.shimmer, { transform: [{ translateX }] }]}
-          />
-        </View>
-      ) : (
-        <Image source={imageSource} style={styles.avatar} />
-      )}
+      <View style={styles.avatarWrapper}>
+        {isLoading ? (
+          <View style={styles.skeletonContainer}>
+            <Animated.View
+              style={[styles.shimmer, { transform: [{ translateX }] }]}
+            />
+          </View>
+        ) : (
+          <Image source={imageSource} style={styles.avatar} />
+        )}
+      </View>
       <Text style={styles.name}>
         {Player?.firstName} {Player?.lastName}
       </Text>

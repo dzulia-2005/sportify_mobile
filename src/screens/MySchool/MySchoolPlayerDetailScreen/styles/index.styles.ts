@@ -11,10 +11,9 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: '100%',
+    height: '100%',
     borderRadius: 60,
-    marginBottom: 12,
   },
   name: {
     fontSize: 22,
@@ -113,19 +112,28 @@ export const styles = StyleSheet.create({
   skeletonContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#e5e7eb',
+    borderRadius: 60,
     overflow: 'hidden',
+    backgroundColor: '#1f2937',
     position: 'relative',
   },
 
   shimmer: {
     position: 'absolute',
     top: 0,
-    left: 0,
+    left: -60,
     height: '100%',
-    width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    width: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
   },
+
+  avatarWrapper: {
+  width: 120,
+  height: 120,
+  borderRadius: 60,
+  overflow: 'hidden',
+  marginBottom: 12,
+},
 
   statHeader: {
     flexDirection: 'row',

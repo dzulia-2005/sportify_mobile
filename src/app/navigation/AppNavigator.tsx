@@ -41,7 +41,7 @@ const AppNavigator = () => {
               name="MyAccount"
               component={MyAccount}
               options={{
-                title: 'MyAccount',
+                title: 'My Account',
               }}
             />
 
