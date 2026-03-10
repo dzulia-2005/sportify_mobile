@@ -75,7 +75,8 @@ const AppNavigator = () => {
               name="Register"
               component={RegisterPage}
               options={{
-                title: 'Register',
+                title: '',
+                drawerItemStyle:{display:'none'}
               }}
             />
             <Drawer.Screen

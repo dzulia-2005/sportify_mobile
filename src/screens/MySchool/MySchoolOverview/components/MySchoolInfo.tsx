@@ -77,10 +77,6 @@ const MySchoolInfo: React.FC<SchoolProp> = ({ school, refetch }) => {
           </>
         ) : (
           <>
-            <View style={styles.emptyIconWrapper}>
-              <Text style={styles.emptyIcon}>🏫</Text>
-            </View>
-
             <Text style={styles.emptyTitle}>No school found</Text>
             <Text style={styles.emptyDescription}>
               Create your school profile to manage information easily.

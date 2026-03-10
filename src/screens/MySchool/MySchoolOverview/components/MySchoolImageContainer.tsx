@@ -9,7 +9,7 @@ const MySchoolImageContainer: React.FC<SchoolProp> = ({
 }) => {
   const imageSource = school?.logoUrl
     ? { uri: school.logoUrl }
-    : require('../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png');
+    : require('../../../../shared/assets/images/DefaultLogoSchool.png');
 
   const shimmerAnim = useRef(new Animated.Value(0)).current;
 

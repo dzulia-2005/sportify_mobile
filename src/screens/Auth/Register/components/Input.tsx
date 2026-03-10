@@ -1,8 +1,6 @@
 import React from 'react';
 import { styles } from '../styles/RegisterStyles';
 import { Text, TouchableOpacity, TextInput, View } from 'react-native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationType } from '../../../../app/navigation/drawerNavigator.type';
 import { useNavigation } from '@react-navigation/native';
 import { useRegisterMutation } from '../../../../feature/auth/register/model/useRegisterMutation';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,13 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterSchema } from './register.schema';
 import axios from 'axios';
 import { Toast } from '@ant-design/react-native';
+import { NavigationProps,RegisterType } from '../types/index.type';
 
-type NavigationProp = DrawerNavigationProp<DrawerNavigationType>;
-type RegisterType = {
-  userName: string;
-  password: string;
-  email: string;
-};
+
 const RegisterInitialValues: RegisterType = {
   userName: '',
   password: '',
@@ -24,7 +18,7 @@ const RegisterInitialValues: RegisterType = {
 };
 
 const Input = () => {
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NavigationProps>();
   const {
     handleSubmit,
     control,
