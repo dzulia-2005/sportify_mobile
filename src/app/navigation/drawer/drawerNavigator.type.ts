@@ -8,4 +8,5 @@ export type DrawerNavigationType = {
   ChangePasswordScreen: undefined;
   forgotPassword:undefined;
   resetPassword:undefined;
+  Tournament:undefined
 };

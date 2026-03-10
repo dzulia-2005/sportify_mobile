@@ -9,6 +9,7 @@ import ForgotPassword from '../../screens/auth/forgotPassword';
 import MySchoolStackNavigator from './stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator';
 import { DrawerNavigationType } from './drawer/drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
+import TournamentStackNavigator from './stack/tournament/tournamentStackNavigator/tournamentStackNavigator';
 
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
@@ -52,6 +53,15 @@ const AppNavigator = () => {
                 title: 'My School',
               }}
             />
+
+            <Drawer.Screen
+              name='Tournament'
+              component={TournamentStackNavigator}
+              options={{
+                title:"Tournaments"
+              }}
+            />
+
           </>
         ) : (
           <>
