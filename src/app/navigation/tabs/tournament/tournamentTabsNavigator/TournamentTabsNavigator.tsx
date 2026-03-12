@@ -1,9 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react';
-import { overViewIcon ,playerIcon,teamIcon} from './TabBarIcon';
+import { MatchesIcon, overViewIcon ,playerIcon,ScoresIcon,StatIcon,teamIcon} from './TabBarIcon';
 import OverViewScreen from "../../../../../screens/tournament/overView/index";
 import playerScreen from "../../../../../screens/tournament/players/index";
 import teamsScreen from "../../../../../screens/tournament/teams/index";
+import statScreen from "../../../../../screens/tournament/stats/index";
+import matchesScreen from "../../../../../screens/tournament/matches/index";
+import scoresScreen from "../../../../../screens/tournament/scores/index";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +53,33 @@ const TournamentTabsNavigator = () => {
             options={{
                 title:'teams',
                 tabBarIcon:teamIcon
+            }}
+        />
+
+        <Tab.Screen
+            name='stats'
+            component={statScreen}
+            options={{
+                title:'stats',
+                tabBarIcon:StatIcon
+            }}
+        />
+
+        <Tab.Screen
+            name='matches'
+            component={matchesScreen}
+            options={{
+                title:'matches',
+                tabBarIcon:MatchesIcon
+            }}
+        />
+
+        <Tab.Screen
+            name='scores'
+            component={scoresScreen}
+            options={{
+                title:'scores',
+                tabBarIcon:ScoresIcon
             }}
         />
     </Tab.Navigator>

@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   };
   return (
     <ImageBackground
-      source={require('../../../shared/assets/images/sport.jpg')}
+      source={require('../../../../shared/assets/images/sport.jpg')}
       style={styles.header}
       resizeMode="cover"
       imageStyle={styles.imageZoom}
