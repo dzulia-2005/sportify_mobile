@@ -1,0 +1,56 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  header:{
+    flexDirection:'row',
+    alignItems:'center',
+    gap:110
+  },
+  headerText:{
+    color:'#fff',
+    fontWeight:'bold'
+  },
+  addTeamBtn:{
+    backgroundColor:'#10af60',
+    padding:10,
+    borderRadius:10
+  },
+  btnText:{
+    color:"#fff",
+    fontWeight:'bold',
+  },
+  mainContainer:{
+    backgroundColor:'#0b1b33',
+    flex:1,
+    paddingVertical:20,
+    paddingHorizontal:10,
+    flexDirection:'column',
+    gap:20,
+    alignItems:"center"
+  },
+  cardTeams:{
+    backgroundColor:'#1e2939',
+    width:350,
+    height:100,
+    borderRadius:10,
+    paddingHorizontal:10,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between',
+    marginBottom:10
+  },
+  image:{
+    width:60,
+    height:60,
+    borderRadius:100
+  },
+  btnContainer:{
+    flexDirection:'row',
+    alignItems:'center'
+  },
+  rightSide:{
+    flexDirection:'row',
+    alignItems:'center',
+    gap:10
+  }
+});

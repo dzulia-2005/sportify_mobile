@@ -39,20 +39,20 @@ const TournamentTabsNavigator = () => {
         />
 
         <Tab.Screen
-            name='player'
-            component={playerScreen}
-            options={{
-                title:'player',
-                tabBarIcon:playerIcon
-            }}
-        />
-
-        <Tab.Screen
             name='teams'
             component={teamsScreen}
             options={{
                 title:'teams',
                 tabBarIcon:teamIcon
+            }}
+        />
+
+        <Tab.Screen
+            name='player'
+            component={playerScreen}
+            options={{
+                title:'player',
+                tabBarIcon:playerIcon
             }}
         />
 

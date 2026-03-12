@@ -42,6 +42,7 @@ const MyTournaments: React.FC = () => {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
+      
     </View>
   );
 };
