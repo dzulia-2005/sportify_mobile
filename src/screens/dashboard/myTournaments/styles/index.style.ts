@@ -67,5 +67,17 @@ export const styles = StyleSheet.create({
     padding:10,
     color:'#fff',
     marginBottom:20
-  }
+  },
+  skeletonImageContainer: {
+    width: 90,
+    height: 90,
+    borderRadius: 10,
+    backgroundColor: '#1f2937',
+    overflow: 'hidden',
+  },
+  shimmer: {
+    width: 40,
+    height: '100%',
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
 });

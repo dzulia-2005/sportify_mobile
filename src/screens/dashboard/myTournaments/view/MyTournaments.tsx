@@ -8,7 +8,7 @@ import { useDebounce } from "../../../../shared/hooks/useDebounce";
 
 
 const MyTournaments: React.FC = () => {
-  const {data:MyTournaments} = useGetMyTournament();
+  const {data:MyTournaments,isLoading} = useGetMyTournament();
   const [search,setSearch]=useState<string>('');
   const debounced = useDebounce(search,500);
 
@@ -35,7 +35,12 @@ const MyTournaments: React.FC = () => {
       <FlatList
         data={filteredTournaments}
         keyExtractor={(item) => item.id}
-        renderItem={({item})=><TournamentCard item={item}/>}
+        renderItem={({item})=> (
+          <TournamentCard 
+            item={item}
+            isLoading={isLoading}
+          />
+        )}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />

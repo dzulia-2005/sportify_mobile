@@ -6,9 +6,15 @@ export type TournamentTabNavigatorType = {
         tournamentId:string;
     };
     teams:{
-        tournamentId:string
+        tournamentId:string;
     };
-    player:undefined;
-    stats:undefined;
-    scores:undefined
+    player:{
+        tournamentId:string;
+    };
+    stats:{
+        tournamentId:string;
+    };
+    scores:{
+        tournamentId:string;
+    };
 }

@@ -1,3 +1,10 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
+import { TournamentTabNavigatorType } from "../tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type";
+
+export type TournamentStackParamList = {
+  TournamentTabs: NavigatorScreenParams<TournamentTabNavigatorType>;
+};
+
 export type DrawerNavigationType = {
   navigate(arg0: string): unknown;
   Home: undefined;
@@ -8,6 +15,6 @@ export type DrawerNavigationType = {
   ChangePasswordScreen: undefined;
   forgotPassword:undefined;
   resetPassword:undefined;
-  Tournament:undefined;
+  Tournament:NavigatorScreenParams<TournamentStackParamList>;
   MyTournaments:undefined;
 };
