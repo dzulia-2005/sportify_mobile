@@ -53,5 +53,19 @@ export const styles = StyleSheet.create({
     fontWeight:'bold',
     textAlign:'center',
     fontSize:16
-}
+  },
+  InputContainer:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  Input:{
+    width:300,
+    height:40,
+    backgroundColor:'#1e293b',
+    borderRadius:10,
+    padding:10,
+    color:'#fff',
+    marginBottom:20
+  }
 });

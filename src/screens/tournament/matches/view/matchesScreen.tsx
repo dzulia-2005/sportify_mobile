@@ -8,10 +8,13 @@ import { useGetByIdQuery } from '../../../../feature/tournament/tournament/model
 import { useUpdateMatchMutation } from '../../../../feature/tournament/match/update/model/useUpdateMatchMutation';
 import { EditedData, Match, Team } from '../types/match.type';
 import { GetAllTournamentResponse } from '../../../../shared/api/tournament/index.type';
+import { RouteProp } from '@react-navigation/native';
+import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
 
-type Props = {
-  tournamentId: string;
-};
+
+type MatchScreenProp = {
+  route:RouteProp<TournamentTabNavigatorType,'matches'>
+}
 
 const normalizeMatchType = (raw: unknown): 0 | 1 | 2 => {
   if (raw === null || raw === undefined) return 0;
@@ -91,7 +94,9 @@ const roundMatchCountsFromBracket = (bracketTeams: number) => {
   return counts;
 };
 
-const TournamentMatchesPage: React.FC<Props> = ({ tournamentId }) => {
+const TournamentMatchesPage: React.FC<MatchScreenProp> = ({ route }) => {
+
+  const {tournamentId} = route.params;
   const { data: matchesResponse, isLoading: matchesLoading } = useGetAllMatchesQuery(tournamentId);
   const { data: teams = [] } = useGetByTournamentId(tournamentId);
   const { data: tournament, isLoading: tournamentLoading } = useGetByIdQuery(tournamentId);

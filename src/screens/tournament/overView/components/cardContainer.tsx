@@ -2,8 +2,13 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { styles } from '../styles/overview.styles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { GetAllTournamentResponse } from '../../../../shared/api/tournament/index.type';
 
-const CardContainer = () => {
+type Prop = {
+  tournament?:GetAllTournamentResponse;
+}
+
+const CardContainer:React.FC<Prop> = ({tournament}) => {
   return (
     <View style={styles.headerCardContainer}>
     
@@ -13,7 +18,7 @@ const CardContainer = () => {
                     <Text style={styles.headerCardText}>Status</Text>
                   </View>
                   <View style={styles.headerCardBottomContainer}>
-                    <Text style={styles.headerCardBottomContainerInnerText}>hello</Text>
+                    <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.isPublic}</Text>
                   </View>
                 </View>
     
@@ -23,7 +28,7 @@ const CardContainer = () => {
                     <Text style={styles.headerCardText}>Teams</Text>
                   </View>
                   <View style={styles.headerCardBottomContainer}>
-                    <Text style={styles.headerCardBottomContainerInnerText}>hello</Text>
+                    <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.name}</Text>
                   </View>
                 </View>
     
@@ -33,7 +38,7 @@ const CardContainer = () => {
                     <Text style={styles.headerCardText}>location</Text>
                   </View>
                   <View style={styles.headerCardBottomContainer}>
-                    <Text style={styles.headerCardBottomContainerInnerText}>hello</Text>
+                    <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.location}</Text>
                   </View>
                 </View>
     

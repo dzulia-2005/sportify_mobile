@@ -7,8 +7,9 @@ import teamsScreen from "../../../../../screens/tournament/teams/index";
 import statScreen from "../../../../../screens/tournament/stats/index";
 import matchesScreen from "../../../../../screens/tournament/matches/index";
 import scoresScreen from "../../../../../screens/tournament/scores/index";
+import { TournamentTabNavigatorType } from './tournamenTabNavigator.type';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TournamentTabNavigatorType>();
 
 const TournamentTabsNavigator = () => {
   return (
