@@ -8,3 +8,14 @@ export type Prop = {
 }
 
 export type TeamsRouteProp = RouteProp<TournamentTabNavigatorType, 'teams'>;
+
+
+export type AddTeamModalProps = {
+  visible: boolean;
+  onClose: () => void;
+  tournamentId:string
+};
+
+export type HeaderProp = {
+  tournamentId:string
+}

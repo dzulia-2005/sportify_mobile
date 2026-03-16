@@ -13,13 +13,17 @@ export type CreateTeamPayload = {
     name: string;
     coach: string;
     tournamentId: string; 
-    LogoFile?: File
+    LogoFile: {
+        uri: string;
+    };
 }
 
 export type UpdateTeamPayload = {
     name: string;
     coach: string;
     tournamentId: string; 
-    LogoFile?: File;
+    LogoFile: {
+        uri: string;
+    };
 }
 

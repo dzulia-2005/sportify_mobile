@@ -12,9 +12,12 @@ const TeamsScreen:React.FC = () => {
   const route = useRoute<TeamsRouteProp>();
   const { tournamentId } = route.params;
   const {data:tournaments = [],isLoading} = useGetByTournamentId(tournamentId);
+  console.log("tournamentId is :",tournamentId)
   return (
     <View style={styles.mainContainer}>
-        <Header/>
+        <Header
+          tournamentId={tournamentId}
+        />
         <FlatList
           data={tournaments}
           keyExtractor={(item)=>item.id}
@@ -31,7 +34,6 @@ const TeamsScreen:React.FC = () => {
             />
           )}
         />
-
     </View>
   )
 }
