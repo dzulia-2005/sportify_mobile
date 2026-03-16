@@ -11,8 +11,6 @@ import { TeamsRouteProp } from '../types/teams.type';
 const TeamsScreen:React.FC = () => {
   const route = useRoute<TeamsRouteProp>();
   const { tournamentId } = route.params;
-
-
   const {data:tournaments = [],isLoading} = useGetByTournamentId(tournamentId);
   return (
     <View style={styles.mainContainer}>

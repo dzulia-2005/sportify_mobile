@@ -33,7 +33,7 @@ const TeamCard:React.FC<Prop> = ({
                         <Image
                           source={imageSource}
                           style={styles.image}
-                          resizeMode="cover" 
+                          resizeMode="cover"
                         />
                       )}
                     </View>
