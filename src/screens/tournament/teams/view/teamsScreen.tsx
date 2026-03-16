@@ -4,10 +4,8 @@ import { styles } from '../styles/teams.styles';
 import Header from '../components/header';
 import TeamCard from '../components/teamCard';
 import { useGetByTournamentId } from '../../../../feature/tournament/team/model/getByTournamentId/useGetByTournamentId';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
-
-type TeamsRouteProp = RouteProp<TournamentTabNavigatorType, 'teams'>;
+import {  useRoute } from '@react-navigation/native';
+import { TeamsRouteProp } from '../types/teams.type';
 
 
 const TeamsScreen:React.FC = () => {
@@ -15,7 +13,7 @@ const TeamsScreen:React.FC = () => {
   const { tournamentId } = route.params;
 
 
-  const {data:tournaments = []} = useGetByTournamentId(tournamentId);
+  const {data:tournaments = [],isLoading} = useGetByTournamentId(tournamentId);
   return (
     <View style={styles.mainContainer}>
         <Header/>
@@ -31,6 +29,7 @@ const TeamsScreen:React.FC = () => {
           renderItem={({item})=>(
             <TeamCard
               item={item}
+              isLoading={isLoading}
             />
           )}
         />

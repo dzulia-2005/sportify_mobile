@@ -1,23 +1,42 @@
 import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Animated, Image, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../styles/teams.styles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import imageSource from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
-import { GetTeamResponse } from '../../../../shared/api/team/index.type';
+import image from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
+import { Prop } from '../types/teams.type';
+import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
 
-type Prop = {
-  item:GetTeamResponse
-}
+const TeamCard:React.FC<Prop> = ({
+  item,
+  isLoading
+}) => {
 
-const TeamCard:React.FC<Prop> = ({item}) => {
+  const {translateX} = useShimmerAnimation(isLoading);
+  const imageSource = item.logoUrl ? {uri:item.logoUrl} : image;
+
   return (
   <View style={styles.cardTeams}>
                   <View style={styles.rightSide}>
-                    <Image 
-                      style={styles.image} 
-                      resizeMode="cover" 
-                      source={imageSource} 
-                    />
+                    <View>
+                      {isLoading ? (
+                        <View style={styles.skeletonImageContainer}>
+                                    <Animated.View
+                                      style={[
+                                        styles.shimmer,
+                                        {
+                                          transform: [{ translateX }],
+                                        },
+                                      ]}
+                                    />
+                                  </View>
+                      ):(
+                        <Image
+                          source={imageSource}
+                          style={styles.image}
+                          resizeMode="cover" 
+                        />
+                      )}
+                    </View>
                     <View>
                       <Text style={{color:'#fff',fontWeight:'bold'}}>{item.name}</Text>
                       <Text style={{color:'#fff',fontWeight:'bold'}}>{item.players.length}</Text>
