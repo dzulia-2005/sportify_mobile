@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
   },
   image:{
     width:150,
-    height:150
+    height:150,
+    borderRadius:100
   },
   headerCardContainer:{
     flexDirection:'column',

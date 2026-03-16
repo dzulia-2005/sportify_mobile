@@ -1,6 +1,6 @@
 import React from 'react'
 import { Animated, Image, View } from 'react-native'
-import imageSource from "../../../../shared/assets/images/DefaultLogoSchool.png"
+import image from "../../../../shared/assets/images/DefaultLogoSchool.png"
 import { styles } from '../styles/overview.styles';
 import CardContainer from '../components/cardContainer';
 import TournamentTimeLineContainer from '../components/tournamentTimeLineContainer';
@@ -15,6 +15,11 @@ const OverviewScreen:React.FC<overViewProp> = ({
   const {tournamentId} = route.params;
   const {data:tournament,isLoading} = useGetByIdQuery(tournamentId);
   const { translateX } = useShimmerAnimation(isLoading);
+
+  const imageSource = tournament?.tournamentLogo 
+  ? {uri:tournament.tournamentLogo} 
+  : image;
+
 
   return (
     <View style={styles.overviewContainer}>
