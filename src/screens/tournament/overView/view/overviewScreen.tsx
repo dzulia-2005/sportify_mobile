@@ -26,7 +26,6 @@ const OverviewScreen:React.FC<overViewProp> = ({
             resizeMode="cover" 
             source={imageSource} 
           />
-
             <CardContainer
               tournament={tournament}
             />

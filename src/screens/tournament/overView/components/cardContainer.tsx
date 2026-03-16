@@ -9,6 +9,7 @@ type Prop = {
 }
 
 const CardContainer:React.FC<Prop> = ({tournament}) => {
+
   return (
     <View style={styles.headerCardContainer}>
     
@@ -18,7 +19,7 @@ const CardContainer:React.FC<Prop> = ({tournament}) => {
                     <Text style={styles.headerCardText}>Status</Text>
                   </View>
                   <View style={styles.headerCardBottomContainer}>
-                    <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.isPublic}</Text>
+                    <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.isPublic === true ? "Public" : "Private"}</Text>
                   </View>
                 </View>
     
