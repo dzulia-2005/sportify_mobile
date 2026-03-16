@@ -57,6 +57,9 @@ const AppNavigator = () => {
             <Drawer.Screen
               name='MyTournaments'
               component={MyTournament}
+              options={{
+                title:'My Tournaments'
+              }}
             />
 
             <Drawer.Screen

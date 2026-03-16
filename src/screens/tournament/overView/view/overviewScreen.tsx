@@ -1,31 +1,44 @@
 import React from 'react'
-import { Image, View } from 'react-native'
+import { Animated, Image, View } from 'react-native'
 import imageSource from "../../../../shared/assets/images/DefaultLogoSchool.png"
 import { styles } from '../styles/overview.styles';
 import CardContainer from '../components/cardContainer';
 import TournamentTimeLineContainer from '../components/tournamentTimeLineContainer';
-import { RouteProp } from '@react-navigation/native';
-import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
 import { useGetByIdQuery } from '../../../../feature/tournament/tournament/model/getById/useGetByIdQuery';
+import { overViewProp } from '../types/overview.type';
+import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
 
-type overViewProp = {
-  route:RouteProp<TournamentTabNavigatorType,'overView'>
-}
 
 const OverviewScreen:React.FC<overViewProp> = ({
   route
 }) => {
   const {tournamentId} = route.params;
-  const {data:tournament} = useGetByIdQuery(tournamentId);
+  const {data:tournament,isLoading} = useGetByIdQuery(tournamentId);
+  const { translateX } = useShimmerAnimation(isLoading);
 
   return (
     <View style={styles.overviewContainer}>
         <View style={styles.header}>
-          <Image 
-            style={styles.image} 
-            resizeMode="cover" 
-            source={imageSource} 
-          />
+          <View>
+                  {isLoading ? (
+                    <View style={styles.skeletonImageContainer}>
+                      <Animated.View
+                        style={[
+                          styles.shimmer,
+                          {
+                            transform: [{ translateX }],
+                          },
+                        ]}
+                      />
+                    </View>
+                  ) : (
+                    <Image 
+                      style={styles.image} 
+                      resizeMode="cover" 
+                      source={imageSource} 
+                    />
+                  )}
+                </View>
             <CardContainer
               tournament={tournament}
             />

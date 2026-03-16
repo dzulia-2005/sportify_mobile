@@ -2,14 +2,9 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { styles } from '../styles/overview.styles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { GetAllTournamentResponse } from '../../../../shared/api/tournament/index.type';
-
-type Prop = {
-  tournament?:GetAllTournamentResponse;
-}
+import { Prop } from '../types/overview.type';
 
 const CardContainer:React.FC<Prop> = ({tournament}) => {
-
   return (
     <View style={styles.headerCardContainer}>
     
@@ -42,7 +37,6 @@ const CardContainer:React.FC<Prop> = ({tournament}) => {
                     <Text style={styles.headerCardBottomContainerInnerText}>{tournament?.location}</Text>
                   </View>
                 </View>
-    
               </View>
   )
 }
