@@ -3,10 +3,15 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../styles/teams.styles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import imageSource from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
+import { GetTeamResponse } from '../../../../shared/api/team/index.type';
 
-const TeamCard:React.FC = () => {
+type Prop = {
+  item:GetTeamResponse
+}
+
+const TeamCard:React.FC<Prop> = ({item}) => {
   return (
-    <View style={styles.cardTeams}>
+  <View style={styles.cardTeams}>
                   <View style={styles.rightSide}>
                     <Image 
                       style={styles.image} 
@@ -14,8 +19,8 @@ const TeamCard:React.FC = () => {
                       source={imageSource} 
                     />
                     <View>
-                      <Text style={{color:'#fff',fontWeight:'bold'}}>name</Text>
-                      <Text style={{color:'#fff',fontWeight:'bold'}}>members: 0</Text>
+                      <Text style={{color:'#fff',fontWeight:'bold'}}>{item.name}</Text>
+                      <Text style={{color:'#fff',fontWeight:'bold'}}>{item.players.length}</Text>
                     </View>
                   </View>
     

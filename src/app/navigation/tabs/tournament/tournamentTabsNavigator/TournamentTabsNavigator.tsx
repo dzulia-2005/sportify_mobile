@@ -8,10 +8,26 @@ import statScreen from "../../../../../screens/tournament/stats/index";
 import matchesScreen from "../../../../../screens/tournament/matches/index";
 import scoresScreen from "../../../../../screens/tournament/scores/index";
 import { TournamentTabNavigatorType } from './tournamenTabNavigator.type';
+import { RouteProp, useRoute } from '@react-navigation/native';
+
+
+type TournamentTabsParentRouteType = {
+  TournamentTabs: {
+    tournamentId: string;
+  };
+};
+
+type TournamentTabsRouteProp = RouteProp<
+  TournamentTabsParentRouteType,
+  'TournamentTabs'
+>;
 
 const Tab = createBottomTabNavigator<TournamentTabNavigatorType>();
 
 const TournamentTabsNavigator = () => {
+    const route = useRoute<TournamentTabsRouteProp>();
+    const tournamentId = route.params?.tournamentId;
+
   return (
     <Tab.Navigator
         screenOptions={{
@@ -41,6 +57,7 @@ const TournamentTabsNavigator = () => {
 
         <Tab.Screen
             name='teams'
+            initialParams={{tournamentId}}
             component={teamsScreen}
             options={{
                 title:'teams',
@@ -50,6 +67,7 @@ const TournamentTabsNavigator = () => {
 
         <Tab.Screen
             name='player'
+            initialParams={{tournamentId}}
             component={playerScreen}
             options={{
                 title:'player',
@@ -59,6 +77,7 @@ const TournamentTabsNavigator = () => {
 
         <Tab.Screen
             name='stats'
+            initialParams={{tournamentId}}
             component={statScreen}
             options={{
                 title:'stats',
@@ -68,6 +87,7 @@ const TournamentTabsNavigator = () => {
 
         <Tab.Screen
             name='matches'
+            initialParams={{tournamentId}}
             component={matchesScreen}
             options={{
                 title:'matches',
@@ -77,6 +97,7 @@ const TournamentTabsNavigator = () => {
 
         <Tab.Screen
             name='scores'
+            initialParams={{tournamentId}}
             component={scoresScreen}
             options={{
                 title:'scores',

@@ -32,10 +32,10 @@ const OverviewScreen:React.FC<overViewProp> = ({
                       />
                     </View>
                   ) : (
-                    <Image 
-                      style={styles.image} 
-                      resizeMode="cover" 
-                      source={imageSource} 
+                    <Image
+                      style={styles.image}
+                      resizeMode="cover"
+                      source={imageSource}
                     />
                   )}
                 </View>
