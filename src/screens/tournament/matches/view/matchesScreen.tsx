@@ -8,13 +8,10 @@ import { useGetByIdQuery } from '../../../../feature/tournament/tournament/model
 import { useUpdateMatchMutation } from '../../../../feature/tournament/match/update/model/useUpdateMatchMutation';
 import { EditedData, Match, Team } from '../types/match.type';
 import { GetAllTournamentResponse } from '../../../../shared/api/tournament/index.type';
-import { RouteProp } from '@react-navigation/native';
-import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
+import { TeamsRouteProp } from '../../teams/types/teams.type';
+import { useRoute } from '@react-navigation/native';
 
 
-type MatchScreenProp = {
-  route:RouteProp<TournamentTabNavigatorType,'matches'>
-}
 
 const normalizeMatchType = (raw: unknown): 0 | 1 | 2 => {
   if (raw === null || raw === undefined) return 0;
@@ -94,12 +91,26 @@ const roundMatchCountsFromBracket = (bracketTeams: number) => {
   return counts;
 };
 
-const TournamentMatchesPage: React.FC<MatchScreenProp> = ({ route }) => {
-
+const TournamentMatchesPage: React.FC = () => {
+  const route = useRoute<TeamsRouteProp>();
   const {tournamentId} = route.params;
-  const { data: matchesResponse, isLoading: matchesLoading } = useGetAllMatchesQuery(tournamentId);
+
+  const {
+    data: matchesResponse = [],
+    isLoading: matchesLoading,
+    isError: matchesError,
+    isFetched: matchesFetched,
+  } = useGetAllMatchesQuery(tournamentId);
+
   const { data: teams = [] } = useGetByTournamentId(tournamentId);
-  const { data: tournament, isLoading: tournamentLoading } = useGetByIdQuery(tournamentId);
+
+  const {
+    data: tournament,
+    isLoading: tournamentLoading,
+    isError: tournamentError,
+    isFetched: tournamentFetched,
+  } = useGetByIdQuery(tournamentId);
+
   const { mutate: updateMatchScore } = useUpdateMatchMutation();
 
   const matches = useMemo(() => {
@@ -115,7 +126,7 @@ const TournamentMatchesPage: React.FC<MatchScreenProp> = ({ route }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [editedData, setEditedData] = useState<EditedData>({
-    tournamentId: tournamentId,
+    tournamentId,
     matchId: '',
     homeTeamName: '',
     awayTeamName: '',
@@ -141,8 +152,6 @@ const TournamentMatchesPage: React.FC<MatchScreenProp> = ({ route }) => {
   };
 
   const saveChanges = () => {
-    if (!tournamentId) return;
-
     updateMatchScore(
       {
         tournamentId: editedData.tournamentId,
@@ -249,11 +258,33 @@ const TournamentMatchesPage: React.FC<MatchScreenProp> = ({ route }) => {
     return tournamentData?.teams?.length || teams.length || 0;
   }, [teams.length, tournament]);
 
-  if (!tournamentId || matchesLoading || tournamentLoading) {
+  const isInitialLoading =
+    (!matchesFetched || !tournamentFetched) && (matchesLoading || tournamentLoading);
+
+  if (!tournamentId) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>Tournament not found</Text>
+      </View>
+    );
+  }
+
+  if (isInitialLoading) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#10b981" />
         <Text style={styles.loadingText}>Matches are loading...</Text>
+      </View>
+    );
+  }
+
+  if (matchesError || tournamentError) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>Not Found</Text>
+        <Text style={styles.emptySubtitle}>
+          Failed to load tournament or matches.
+        </Text>
       </View>
     );
   }
