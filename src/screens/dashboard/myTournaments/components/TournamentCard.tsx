@@ -8,7 +8,7 @@ import { formatDate } from '../../../../shared/utils/formatDate'
 import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation'
 
 const TournamentCard:React.FC<props> = ({item,isLoading}) => {
-  const navigate = useNavigation<TournamentNavigationProp>();
+  const navigation = useNavigation<TournamentNavigationProp>();
   const {translateX} = useShimmerAnimation(isLoading);
   const imageSource = item.tournamentLogo 
     ? { uri: item.tournamentLogo }
@@ -17,14 +17,11 @@ const TournamentCard:React.FC<props> = ({item,isLoading}) => {
   const handlePress = () => {
     if(isLoading) return;
 
-    navigate.navigate('Tournament',{
-        screen:'TournamentTabs',
-        params:{
-          screen:'overView',
-          params:{
-            tournamentId:item.id
-          }
-        }
+    navigation.navigate('Tournament', {
+    screen: 'TournamentTabs',
+      params: {
+        tournamentId: item.id,
+      },
     });
   }
 

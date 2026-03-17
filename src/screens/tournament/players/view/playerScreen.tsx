@@ -3,13 +3,14 @@ import { FlatList, Text, TextInput, View } from 'react-native';
 import PlayerCard from '../components/playerCard';
 import { styles } from '../styles/player.style';
 import { useGetPlayerByTournamentID } from '../../../../feature/tournament/player/model/getPlayerByTournamentId/useGetPlayerByTournamentId';
-import { useRoute } from '@react-navigation/native';
-import { TeamsRouteProp } from '../../teams/types/teams.type';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { useDebounce } from '../../../../shared/hooks/useDebounce';
+import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
 
+type PlayerRouteProp = RouteProp<TournamentTabNavigatorType, 'player'>;
 
 const PlayerScreen:React.FC = () => {
-  const route = useRoute<TeamsRouteProp>();
+  const route = useRoute<PlayerRouteProp>();
   const {tournamentId} = route.params;
   const {data:players,isLoading} = useGetPlayerByTournamentID(tournamentId);
   const [search,setSearch] = useState<string>("");
@@ -37,7 +38,7 @@ const PlayerScreen:React.FC = () => {
           keyExtractor={(item)=>item.id}
           ListEmptyComponent={
             <View>
-              <Text style={{color:'#fff'}}>Not Found Players</Text>
+              <Text style={{color:'#6e6c6c'}}>Not Found Players</Text>
             </View>
           }
           renderItem={({item})=>(

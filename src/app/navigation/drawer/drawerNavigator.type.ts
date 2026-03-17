@@ -1,8 +1,9 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
-import { TournamentTabNavigatorType } from "../tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type";
 
 export type TournamentStackParamList = {
-  TournamentTabs: NavigatorScreenParams<TournamentTabNavigatorType>;
+  TournamentTabs: {
+    tournamentId: string;
+  };
 };
 
 export type DrawerNavigationType = {
