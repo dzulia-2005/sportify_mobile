@@ -16,6 +16,13 @@ export type AddTeamModalProps = {
   tournamentId:string
 };
 
+export type EditTeamModalProps = {
+  visible: boolean;
+  onClose: () => void;
+  tournamentId:string;
+  Id:string
+};
+
 export type HeaderProp = {
   tournamentId:string
 }
