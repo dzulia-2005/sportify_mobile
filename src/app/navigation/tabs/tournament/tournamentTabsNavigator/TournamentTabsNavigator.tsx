@@ -30,9 +30,6 @@ const TournamentTabsNavigator = () => {
   const tournamentId =
     route.params?.tournamentId ?? route.params?.params?.tournamentId;
 
-  console.log('TournamentTabs route.params => ', route.params);
-  console.log('TournamentTabs tournamentId => ', tournamentId);
-
   return (
     <Tab.Navigator
       screenOptions={{

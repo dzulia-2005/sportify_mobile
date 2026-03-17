@@ -10,15 +10,21 @@ import { TeamsRouteProp } from '../../teams/types/teams.type';
 const ScoresScreen: React.FC = () => {
   const route = useRoute<TeamsRouteProp>();
   const {tournamentId} = route.params;
-  const {data:scores } = useGetAllStanding(tournamentId);
+  const { data: standings } = useGetAllStanding(tournamentId!);
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Standings</Text>
       <Header/>
       <FlatList
-        data={scores}
+        data={standings}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <View>
+            <Text style={{color:'#646363',textAlign:'center',marginVertical:10}}>Not Found Scores</Text>
+          </View>
+        }
         renderItem={({item,index})=>(
           <RenderItem
             item={item}

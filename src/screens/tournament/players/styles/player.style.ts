@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'space-between',
-    marginBottom:5
+    marginBottom:10
   },
   image:{
     width:60,
