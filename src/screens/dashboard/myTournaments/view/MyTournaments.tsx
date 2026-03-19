@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View, FlatList, TextInput, ActivityIndicator } from "react-native";
+import { View, FlatList, TextInput, ActivityIndicator, Text } from "react-native";
 import { styles } from "../styles/index.style";
 import TournamentCard from "../components/TournamentCard";
 import AddTournamentButton from "../components/AddTournamentButton";
@@ -43,6 +43,11 @@ const MyTournaments: React.FC = () => {
       <FlatList
         data={filteredTournaments}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <View>
+            <Text style={{color:'#696868',textAlign:'center'}}>Not Found Tournaments</Text>
+          </View>
+        }
         renderItem={({item})=> (
           <TournamentCard 
             item={item}

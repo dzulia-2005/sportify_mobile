@@ -1,15 +1,19 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { styles } from '../styles/index.style'
-import { useSubscriptionQuery } from '../../../../feature/billing/billing/model/subscription/useSubscriptionQuery';
 import FormatPeriod from './FormatPeriod';
+import { SubscriptionProp } from '../types/myAccount.type';
 
-const Subscription:React.FC = () => {
-  const { data: Subscribed } = useSubscriptionQuery();
+
+
+const Subscription:React.FC<SubscriptionProp> = ({
+  Subscribed
+}) => {
 
   const startUtc: string | undefined = Subscribed?.startsAtUtc;
   const endUtc: string | undefined = Subscribed?.endsAtUtc;
   const planName: string | undefined = Subscribed?.planCode;
+
 
   return (
     <Text style={styles.TextContainer}>
