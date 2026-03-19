@@ -5,12 +5,16 @@ import { styles } from '../styles/player.style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Prop } from '../types/players.type';
 import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
+import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
 
 const PlayerCard:React.FC<Prop> = ({
   item,
   isLoading
 }) => {
   const {translateX} = useShimmerAnimation(isLoading);
+  if(isLoading){
+      return <TournamentCardSkeleton/>
+    }
   return (
     <TouchableOpacity style={styles.cardTeams}>
       <View style={styles.rightSide}>

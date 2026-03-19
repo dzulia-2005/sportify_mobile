@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native'
+import {  Image, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from '../styles/teams.styles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import image from "../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png";
 import { Prop } from '../types/teams.type';
-import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
 import { useDeleteTeamMutation } from '../../../../feature/tournament/team/model/delete/useDeleteTeamMutation';
 import {  useQueryClient } from '@tanstack/react-query';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import EditTeamModal from './EditTeamModal/editTeamModal';
+import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
 
 const TeamCard:React.FC<Prop> = ({
   item,
   isLoading
 }) => {
 
-  const {translateX} = useShimmerAnimation(isLoading);
   const imageSource = item.logoUrl ? {uri:item.logoUrl} : image;
   const queryclient = useQueryClient();
   const {mutate:DeleteTeam} = useDeleteTeamMutation();
   const [isOpenModal,setIsOpenModal] = useState(false);
+
+  if (isLoading) {
+    return <TournamentCardSkeleton />;
+  }
 
   const handleDeleteClick = (id:string) => {
     DeleteTeam(id,{
@@ -37,24 +40,11 @@ const TeamCard:React.FC<Prop> = ({
   <TouchableOpacity style={styles.cardTeams}>
                   <View style={styles.rightSide}>
                     <View>
-                      {isLoading ? (
-                        <View style={styles.skeletonImageContainer}>
-                                    <Animated.View
-                                      style={[
-                                        styles.shimmer,
-                                        {
-                                          transform: [{ translateX }],
-                                        },
-                                      ]}
-                                    />
-                                  </View>
-                      ):(
                         <Image
                           source={imageSource}
                           style={styles.image}
                           resizeMode="cover"
                         />
-                      )}
                     </View>
                     <View>
                       <Text style={{color:'#fff',fontWeight:'bold'}}>{item.name}</Text>

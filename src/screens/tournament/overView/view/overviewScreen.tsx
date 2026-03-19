@@ -7,6 +7,7 @@ import TournamentTimeLineContainer from '../components/tournamentTimeLineContain
 import { useGetByIdQuery } from '../../../../feature/tournament/tournament/model/getById/useGetByIdQuery';
 import { overViewProp } from '../types/overview.type';
 import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
+import OverviewSkeleton from '../components/overViewSkeleton';
 
 
 const OverviewScreen:React.FC<overViewProp> = ({
@@ -19,6 +20,10 @@ const OverviewScreen:React.FC<overViewProp> = ({
   const imageSource = tournament?.tournamentLogo 
   ? {uri:tournament.tournamentLogo} 
   : image;
+
+  if(isLoading){
+    return <OverviewSkeleton translateX={translateX}/>;
+  }
 
 
   return (

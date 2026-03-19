@@ -6,6 +6,7 @@ import { useGetPlayerByTournamentID } from '../../../../feature/tournament/playe
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useDebounce } from '../../../../shared/hooks/useDebounce';
 import { TournamentTabNavigatorType } from '../../../../app/navigation/tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
+import { GetAllPlayerResponse } from '../../../../shared/api/player/index.type';
 
 type PlayerRouteProp = RouteProp<TournamentTabNavigatorType, 'player'>;
 
@@ -16,12 +17,30 @@ const PlayerScreen:React.FC = () => {
   const [search,setSearch] = useState<string>("");
   const debounced = useDebounce(search,500);
 
+  const skeletonPlayers: GetAllPlayerResponse[] = Array.from(
+    { length: 5 },
+    (_, index) => ({
+      id: `skeleton-${index}`,
+      teamName: "",
+      firstName: "",
+      lastName: "",
+      position: "",
+      profilePicture: "",
+      birthDate: null,
+      yellowCards: 0,
+      redCards: 0,
+      goals: 0,
+      assists: 0,
+      tournamentId: "",
+    })
+  );
+
   const filterSearch = useMemo(()=>{
     if(!debounced) return players;
     return players?.filter((p)=>p.firstName.toLowerCase().includes(debounced.toLowerCase()))
   },[debounced,players]);
 
-  
+
   return (
     <View style={styles.container}>
         <View style={styles.header}>
@@ -34,7 +53,7 @@ const PlayerScreen:React.FC = () => {
         </View>
 
         <FlatList
-          data={filterSearch}
+          data={isLoading ? skeletonPlayers : filterSearch}
           keyExtractor={(item)=>item.id}
           ListEmptyComponent={
             <View>
