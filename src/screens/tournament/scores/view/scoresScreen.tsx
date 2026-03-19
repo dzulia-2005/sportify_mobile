@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { styles } from '../styles/scores.style';
 import Header from '../components/header';
 import RenderItem from '../components/renderItem';
@@ -10,8 +10,16 @@ import { TeamsRouteProp } from '../../teams/types/teams.type';
 const ScoresScreen: React.FC = () => {
   const route = useRoute<TeamsRouteProp>();
   const {tournamentId} = route.params;
-  const { data: standings } = useGetAllStanding(tournamentId!);
+  const { data: standings , isLoading } = useGetAllStanding(tournamentId!);
 
+
+  if(isLoading){
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#10b981" />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>

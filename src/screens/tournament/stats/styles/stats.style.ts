@@ -79,4 +79,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#2a4067',
     marginVertical: 8,
   },
+  centerContainer: {
+    flex: 1,
+    backgroundColor: '#0a1324',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  loadingText: {
+    color: '#9ca3af',
+    fontSize: 16,
+    marginTop: 12,
+  },
 });

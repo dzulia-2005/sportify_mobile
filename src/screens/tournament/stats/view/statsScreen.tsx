@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, Text, View } from 'react-native';
 import { styles } from '../styles/stats.style';
 import TabWrapper from '../components/tabWrapper';
 import Card from '../components/card';
@@ -12,14 +12,20 @@ import { useGetBestPlayerQuery } from '../../../../feature/tournament/player/mod
 const StatsScreen: React.FC = () => {
   const route = useRoute<TeamsRouteProp>();
   const {tournamentId} = route.params;
-
-  const {data:scorers = []} = useGetTopScorerQuery(tournamentId);
-  const {data:bestPlayers = []} = useGetBestPlayerQuery(tournamentId);
-
+  const {data:scorers = [],isLoading:ScorersLoading} = useGetTopScorerQuery(tournamentId);
+  const {data:bestPlayers = [],isLoading:bestPlayersLoading} = useGetBestPlayerQuery(tournamentId);
   const [activeTab, setActiveTab] = useState<'topScorers' | 'bestPlayers'>('topScorers');
   const data = activeTab === 'topScorers' ? scorers : bestPlayers;
   const title = activeTab === 'topScorers' ? 'Top Scorers' : 'Best Players';
   const label = activeTab === 'topScorers' ? 'Goal' : 'Assist';
+
+  if(ScorersLoading || bestPlayersLoading){
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#10b981" />
+      </View>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.mainContainer}>

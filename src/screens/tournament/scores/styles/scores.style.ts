@@ -48,4 +48,11 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+  centerContainer: {
+    flex: 1,
+    backgroundColor: '#0a1324',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
 });
