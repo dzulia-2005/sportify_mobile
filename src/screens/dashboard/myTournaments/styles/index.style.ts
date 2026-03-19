@@ -80,4 +80,11 @@ export const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(255,255,255,0.12)',
   },
+  centerContainer: {
+    flex: 1,
+    backgroundColor: '#0a1324',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
 });

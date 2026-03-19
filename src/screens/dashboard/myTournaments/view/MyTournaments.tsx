@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View, FlatList, TextInput } from "react-native";
+import { View, FlatList, TextInput, ActivityIndicator } from "react-native";
 import { styles } from "../styles/index.style";
 import TournamentCard from "../components/TournamentCard";
 import AddTournamentButton from "../components/AddTournamentButton";
@@ -20,6 +20,14 @@ const MyTournaments: React.FC = () => {
       );
 
   },[MyTournaments,debounced])
+
+  if(isLoading){
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#10b981" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
