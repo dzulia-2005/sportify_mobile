@@ -1,33 +1,31 @@
-import React from 'react'
-import { Image, TouchableOpacity,Text,View, Animated } from 'react-native'
-import { styles } from '../styles/index.style'
-import { useNavigation } from '@react-navigation/native'
-import { props, TournamentNavigationProp } from '../types/index.type'
-import Img from "../../../../shared/assets/images/img.png"
-import { formatDate } from '../../../../shared/utils/formatDate'
-import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation'
+import React from 'react';
+import { Image, TouchableOpacity, Text, View, Animated } from 'react-native';
+import { styles } from '../styles/index.style';
+import { useNavigation } from '@react-navigation/native';
+import { props, TournamentNavigationProp } from '../types/index.type';
+import Img from '../../../../shared/assets/images/img.png';
+import { formatDate } from '../../../../shared/utils/formatDate';
+import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
 
-const TournamentCard:React.FC<props> = ({item,isLoading}) => {
+const TournamentCard: React.FC<props> = ({ item, isLoading }) => {
   const navigation = useNavigation<TournamentNavigationProp>();
-  const {translateX} = useShimmerAnimation(isLoading);
-  const imageSource = item.tournamentLogo 
-    ? { uri: item.tournamentLogo }
-    : Img;
+  const { translateX } = useShimmerAnimation(isLoading);
+  const imageSource = item.tournamentLogo ? { uri: item.tournamentLogo } : Img;
 
   const handlePress = () => {
-    if(isLoading) return;
+    if (isLoading) return;
 
     navigation.navigate('Tournament', {
-    screen: 'TournamentTabs',
+      screen: 'TournamentTabs',
       params: {
         tournamentId: item.id,
       },
-    });
-  }
+    } as any);
+  };
 
   return (
-    <TouchableOpacity 
-      style={styles.card} 
+    <TouchableOpacity
+      style={styles.card}
       activeOpacity={0.8}
       onPress={handlePress}
     >
@@ -44,20 +42,18 @@ const TournamentCard:React.FC<props> = ({item,isLoading}) => {
             />
           </View>
         ) : (
-          <Image
-            source={imageSource}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={imageSource} style={styles.image} resizeMode="cover" />
         )}
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.info}>Teams: {item.teams.length}</Text>
-        <Text style={styles.info}>Date: {formatDate(item.startDate)} - {formatDate(item.endDate)}</Text>
+        <Text style={styles.info}>
+          Date: {formatDate(item.startDate)} - {formatDate(item.endDate)}
+        </Text>
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 export default TournamentCard;

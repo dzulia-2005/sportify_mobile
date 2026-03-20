@@ -1,8 +1,12 @@
-import { NavigatorScreenParams } from "@react-navigation/native";
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { TournamentTabNavigatorType } from '../tabs/tournament/tournamentTabsNavigator/tournamenTabNavigator.type';
 
 export type TournamentStackParamList = {
-  TournamentTabs: {
+  TournamentTabs: NavigatorScreenParams<TournamentTabNavigatorType> & {
     tournamentId: string;
+  };
+  TeamDetailScreen: {
+    teamId: string;
   };
 };
 
@@ -14,8 +18,8 @@ export type DrawerNavigationType = {
   MyAccount: undefined;
   MySchool: undefined;
   ChangePasswordScreen: undefined;
-  forgotPassword:undefined;
-  resetPassword:undefined;
-  Tournament:NavigatorScreenParams<TournamentStackParamList>;
-  MyTournaments:undefined;
+  forgotPassword: undefined;
+  resetPassword: undefined;
+  Tournament: NavigatorScreenParams<TournamentStackParamList>;
+  MyTournaments: undefined;
 };

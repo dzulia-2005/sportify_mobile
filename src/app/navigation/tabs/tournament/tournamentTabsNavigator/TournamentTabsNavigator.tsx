@@ -14,14 +14,11 @@ import TeamsScreen from '../../../../../screens/tournament/teams/index';
 import StatScreen from '../../../../../screens/tournament/stats/index';
 import MatchesScreen from '../../../../../screens/tournament/matches/index';
 import ScoresScreen from '../../../../../screens/tournament/scores/index';
-import { TournamentTabNavigatorType } from './tournamenTabNavigator.type';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { TournamentStackParamList } from '../../../stack/tournament/tournamentStackNavigator/tournamentStackNavigator';
-
-type TournamentTabsRouteProp = RouteProp<
-  TournamentStackParamList,
-  'TournamentTabs'
->;
+import {
+  TournamentTabNavigatorType,
+  TournamentTabsRouteProp,
+} from './tournamenTabNavigator.type';
+import { useRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator<TournamentTabNavigatorType>();
 
