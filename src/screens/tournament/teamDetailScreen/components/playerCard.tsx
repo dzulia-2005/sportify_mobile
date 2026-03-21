@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -9,11 +9,12 @@ import {
 import { styles } from '../styles/teamDetail.style';
 import { PlayerProp } from '../types/teamDetail.type';
 import { useDeletePlayerMutation } from '../../../../feature/tournament/player/model/delete/useDeletePlayerMutation';
+import EditPlayerModal from './editPlayerModal/editPlayerModal';
 
 const PlayerCard: React.FC<PlayerProp> = ({ item, teamId }) => {
   const { mutate: deletePlayer, isPending: playerPending } =
     useDeletePlayerMutation();
-
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const handleDelete = (id: string) => {
     deletePlayer({
       playerId: id,
@@ -21,7 +22,9 @@ const PlayerCard: React.FC<PlayerProp> = ({ item, teamId }) => {
     });
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setIsOpenModal(true);
+  };
 
   return (
     <View style={styles.playerCard}>
@@ -92,6 +95,14 @@ const PlayerCard: React.FC<PlayerProp> = ({ item, teamId }) => {
           </TouchableOpacity>
         </View>
       </View>
+      {isOpenModal && (
+        <EditPlayerModal
+          onClose={() => setIsOpenModal(false)}
+          visible={isOpenModal}
+          playerId={item.id}
+          teamId={teamId}
+        />
+      )}
     </View>
   );
 };

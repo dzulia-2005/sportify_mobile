@@ -15,6 +15,13 @@ export type AddPlayerModalProps = {
   teamId: string;
 };
 
+export type EditPlayerModalProps = {
+  visible: boolean;
+  onClose: () => void;
+  playerId: string;
+  teamId: string;
+};
+
 export type PlayerProp = {
   item: GetAllPlayerResponse;
   teamId: string;
