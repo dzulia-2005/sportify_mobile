@@ -190,4 +190,33 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
+  playerActions: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 12,
+  },
+
+  editButton: {
+    flex: 1,
+    backgroundColor: '#2563EB',
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  deleteButton: {
+    flex: 1,
+    backgroundColor: '#DC2626',
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  actionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
 });

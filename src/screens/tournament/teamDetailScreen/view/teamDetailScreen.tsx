@@ -35,7 +35,7 @@ const TeamDetailScreen: React.FC = () => {
       <FlatList
         data={teamData.players}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <PlayerCard item={item} />}
+        renderItem={({ item }) => <PlayerCard item={item} teamId={teamId} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={<HeaderListComponent teamData={teamData} />}

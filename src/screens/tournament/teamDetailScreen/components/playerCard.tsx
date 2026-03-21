@@ -1,13 +1,28 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { styles } from '../styles/teamDetail.style';
-import { GetAllPlayerResponse } from '../../../../shared/api/player/index.type';
+import { PlayerProp } from '../types/teamDetail.type';
+import { useDeletePlayerMutation } from '../../../../feature/tournament/player/model/delete/useDeletePlayerMutation';
 
-type PlayerProp = {
-  item: GetAllPlayerResponse;
-};
+const PlayerCard: React.FC<PlayerProp> = ({ item, teamId }) => {
+  const { mutate: deletePlayer, isPending: playerPending } =
+    useDeletePlayerMutation();
 
-const PlayerCard: React.FC<PlayerProp> = ({ item }) => {
+  const handleDelete = (id: string) => {
+    deletePlayer({
+      playerId: id,
+      teamId: teamId,
+    });
+  };
+
+  const handleEdit = () => {};
+
   return (
     <View style={styles.playerCard}>
       {item.profilePicture ? (
@@ -53,6 +68,28 @@ const PlayerCard: React.FC<PlayerProp> = ({ item }) => {
             <Text style={styles.smallStatValue}>{item.redCards ?? 0}</Text>
             <Text style={styles.smallStatLabel}>Red</Text>
           </View>
+        </View>
+
+        <View style={styles.playerActions}>
+          <TouchableOpacity
+            style={styles.editButton}
+            activeOpacity={0.8}
+            onPress={handleEdit}
+          >
+            <Text style={styles.actionButtonText}>Edit</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.deleteButton}
+            activeOpacity={0.8}
+            onPress={() => handleDelete(item.id)}
+          >
+            {playerPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.actionButtonText}>Delete</Text>
+            )}
+          </TouchableOpacity>
         </View>
       </View>
     </View>
