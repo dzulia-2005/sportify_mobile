@@ -21,7 +21,7 @@ const CustomDrawerContent = (props: any) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.Container}>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
@@ -40,6 +40,9 @@ const CustomDrawerContent = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  Container: {
+    flex: 1,
+  },
   bottomSection: {
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
