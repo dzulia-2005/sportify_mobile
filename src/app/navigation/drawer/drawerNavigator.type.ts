@@ -8,6 +8,10 @@ export type TournamentStackParamList = {
   TeamDetailScreen: {
     teamId: string;
   };
+  PlayerDetailScreen: {
+    playerId: string;
+    teamId: string;
+  };
 };
 
 export type DrawerNavigationType = {

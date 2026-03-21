@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import TournamentTabsNavigator from '../../../tabs/tournament/tournamentTabsNavigator/TournamentTabsNavigator';
 import TeamDetailScreen from '../../../../../screens/tournament/teamDetailScreen';
+import PlayerDetailScreen from '../../../../../screens/tournament/playerDetailScreen/index';
 import { TournamentStackParamList } from '../../../drawer/drawerNavigator.type';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -33,6 +34,25 @@ const TournamentStackNavigator = () => {
       <Stack.Screen
         name="TeamDetailScreen"
         component={TeamDetailScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          title: '',
+          headerBackTitleVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.arrowContainer}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.text}>←</Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="PlayerDetailScreen"
+        component={PlayerDetailScreen}
         options={({ navigation }) => ({
           headerShown: true,
           title: '',

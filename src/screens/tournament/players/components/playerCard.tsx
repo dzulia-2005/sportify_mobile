@@ -1,55 +1,58 @@
-import React from 'react'
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native'
-import imageSource from "../../../../shared/assets/images/icon-7797704_640.png"
+import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/player.style';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Prop } from '../types/players.type';
-import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
 import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
+import { useNavigation } from '@react-navigation/native';
+import { TournamentNavigationProp } from '../../teams/types/teams.type';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../app/store/store';
 
-const PlayerCard:React.FC<Prop> = ({
-  item,
-  isLoading
-}) => {
-  const {translateX} = useShimmerAnimation(isLoading);
-  if(isLoading){
-      return <TournamentCardSkeleton/>
-    }
+const PlayerCard: React.FC<Prop> = ({ item, isLoading }) => {
+  const navigation = useNavigation<TournamentNavigationProp>();
+  const teamId = useSelector((state: RootState) => state.team.teamId);
+  if (isLoading) {
+    return <TournamentCardSkeleton />;
+  }
+
+  const handlePress = (playerId: string) => {
+    if (!teamId) return;
+    navigation.navigate('PlayerDetailScreen', {
+      playerId: playerId,
+      teamId: teamId,
+    });
+  };
+
   return (
-    <TouchableOpacity style={styles.cardTeams}>
+    <TouchableOpacity
+      onPress={() => handlePress(item.id)}
+      style={styles.cardTeams}
+    >
       <View style={styles.rightSide}>
         <View>
-          {
-            isLoading ? (
-              <View style={styles.skeletonImageContainer}>
-                <Animated.View
-                  style={[
-                    styles.shimmer,
-                    {
-                      transform: [{ translateX }],
-                    },
-                  ]}
-                />
-              </View>
-            ):(
-              <Image 
-                style={styles.image} 
-                resizeMode="cover" 
-                source={imageSource} 
-              />
-            )
-          }
+          {item.profilePicture && (
+            <Image
+              style={styles.image}
+              resizeMode="cover"
+              source={{ uri: item.profilePicture }}
+            />
+          )}
         </View>
         <View>
-          <Text style={{color:'#fff',fontWeight:'bold',fontSize:16}}>{item.firstName} {item.lastName}</Text>
-          <Text style={{color:'#fff',fontWeight:'bold'}}>{item.position}</Text>
+          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+            {item.firstName} {item.lastName}
+          </Text>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+            {item.position}
+          </Text>
         </View>
       </View>
       <View>
-          <Icon name='chevron-right' size={30} color='#9CA3AF'/>
+        <Icon name="chevron-right" size={30} color="#9CA3AF" />
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 export default PlayerCard;

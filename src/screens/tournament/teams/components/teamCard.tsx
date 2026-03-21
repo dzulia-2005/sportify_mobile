@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/teams.styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,8 @@ import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import EditTeamModal from './EditTeamModal/editTeamModal';
 import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setTeamId } from '../../../../feature/tournament/team/slices/teamSlices';
 
 const TeamCard: React.FC<Prop> = ({ item, isLoading }) => {
   const imageSource = item.logoUrl ? { uri: item.logoUrl } : image;
@@ -17,6 +19,14 @@ const TeamCard: React.FC<Prop> = ({ item, isLoading }) => {
   const { mutate: DeleteTeam } = useDeleteTeamMutation();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const navigate = useNavigation<TournamentNavigationProp>();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (item.id) {
+      dispatch(setTeamId(item.id));
+    }
+  }, [item.id, dispatch]);
 
   if (isLoading) {
     return <TournamentCardSkeleton />;

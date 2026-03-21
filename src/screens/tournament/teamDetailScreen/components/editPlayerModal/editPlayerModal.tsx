@@ -30,6 +30,7 @@ const EditPlayerModal: React.FC<EditPlayerModalProps> = ({
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [photoAsset, setPhotoAsset] = useState<any>(null);
   const { mutate: EditPlayer, isPending } = UpdatePlayerMutation();
+
   const defaultValues: EditPlayerFormValues = {
     firstName: '',
     lastName: '',
