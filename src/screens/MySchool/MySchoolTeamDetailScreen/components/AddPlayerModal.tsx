@@ -15,13 +15,16 @@ import {
   Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { AddMySchoolPlayerSchema,type AddPlayerType } from './addPlayer.schema';
-import { useCreateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/create/model/useCreateMySchoolPlayerMutation';
+import {
+  AddMySchoolPlayerSchema,
+  type AddPlayerType,
+} from './addPlayer.schema';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddMatchModalProps } from '../types/index.type';
 import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useMeQuery } from '../../../../feature/auth/me/model/useMeQuery';
 import DataField from './dataField';
+import { CreatePlayerMutation } from '../../../../feature/tournament/player/model/create/useCreatePlayerMutation';
 
 const AddPlayerModal: React.FC<AddMatchModalProps> = ({
   visible,
@@ -49,8 +52,8 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
       TeamId: teamId || '',
       MySchoolId: schoolId || '',
       UserId: userId || '',
-      Nationality:'',
-      birthDate:'',
+      Nationality: '',
+      birthDate: '',
     }),
     [teamId, schoolId, userId],
   );
@@ -108,7 +111,7 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
     );
   };
 
-  const { mutate: CreatePlayer, isPending } = useCreateMySchoolPlayerMutation();
+  const { mutate: CreatePlayer, isPending } = CreatePlayerMutation();
 
   const handleCreatePlayer = (payload: AddPlayerType) => {
     const formData = new FormData();
@@ -118,9 +121,9 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
     formData.append('ParentLastName', payload.ParentLastName);
     formData.append('ParentPhoneNumber', payload.ParentPhoneNumber);
     formData.append('Position', payload.Position);
-    formData.append("Nationality",payload.Nationality);
-    if(payload.birthDate){
-      formData.append('birthDate',payload.birthDate);
+    formData.append('Nationality', payload.Nationality);
+    if (payload.birthDate) {
+      formData.append('birthDate', payload.birthDate);
     }
     formData.append('TeamId', payload.TeamId);
     formData.append('MySchoolId', payload.MySchoolId);
@@ -140,10 +143,10 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
 
     CreatePlayer(formData, {
       onSuccess: () => {
-        onClose();
-        reset();
+        reset(defaultValues);
         setImageAsset(null);
         setProfileImage(null);
+        onClose();
       },
       onError: err => {
         showErrorToast(err);
@@ -295,25 +298,27 @@ const AddPlayerModal: React.FC<AddMatchModalProps> = ({
                 )}
               />
               {errors.Nationality && (
-                <Text style={styles.errorText}>{errors.Nationality?.message}</Text>
+                <Text style={styles.errorText}>
+                  {errors.Nationality?.message}
+                </Text>
               )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
-               BirthDate <Text style={styles.required}>*</Text>
+                BirthDate <Text style={styles.required}>*</Text>
               </Text>
-                <Controller
-                  name='birthDate'
-                  control={control}
-                  render={({field:{onChange,value}})=>(
-                    <DataField
-                      value={value}
-                      onChange={onChange}
-                      error={errors.birthDate?.message}
-                    />
-                  )}
-                />
+              <Controller
+                name="birthDate"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <DataField
+                    value={value}
+                    onChange={onChange}
+                    error={errors.birthDate?.message}
+                  />
+                )}
+              />
             </View>
 
             <View style={styles.inputGroup}>

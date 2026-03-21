@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/teamDetail.style';
-import { GetTeamResponse } from '../../../../shared/api/team/index.type';
-
-type headerListComponentType = {
-  teamData: GetTeamResponse;
-};
+import { headerListComponentType } from '../types/teamDetail.type';
+import DefaultImage from '../../../../shared/assets/images/58-583825_team-icon-png-round-transparent-png.png';
+import AddPlayerModal from './addPlayerlModal/addPlayerModal';
 
 const HeaderListComponent: React.FC<headerListComponentType> = ({
   teamData,
 }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const handleAddPlayer = () => {
-    console.log('');
+    setIsOpenModal(true);
   };
+
   return (
     <View style={styles.headerWrapper}>
       <View style={styles.teamInfoCard}>
@@ -20,9 +21,7 @@ const HeaderListComponent: React.FC<headerListComponentType> = ({
           <Image source={{ uri: teamData.logoUrl }} style={styles.teamLogo} />
         ) : (
           <View style={styles.teamLogoFallback}>
-            <Text style={styles.teamLogoFallbackText}>
-              {teamData.name?.[0]?.toUpperCase() ?? 'T'}
-            </Text>
+            <Image source={DefaultImage} style={styles.teamLogo} />
           </View>
         )}
 
@@ -50,6 +49,14 @@ const HeaderListComponent: React.FC<headerListComponentType> = ({
       <View style={styles.sectionRow}>
         <Text style={styles.sectionTitle}>Players</Text>
       </View>
+
+      {isOpenModal && (
+        <AddPlayerModal
+          onClose={() => setIsOpenModal(false)}
+          visible={isOpenModal}
+          teamId={teamData.id}
+        />
+      )}
     </View>
   );
 };

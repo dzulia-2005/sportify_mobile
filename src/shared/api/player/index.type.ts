@@ -3,13 +3,15 @@ export type CreatePlayerPayload = {
   teamId?: string;
   lastName: string;
   position?: string;
-  profilePictureFile?: File;
-  birthDate: Date;
+  profilePictureFile: {
+    uri: string;
+  };
+  birthDate: string;
   yellowCards: number;
   redCards: number;
   goals: number;
   assists: number;
-}
+};
 
 export type GetAllPlayerResponse = {
   id: string;
@@ -39,7 +41,7 @@ export type GetPlayerResponse = {
   goals: number;
   assists: number;
   tournamentId: string;
-}
+};
 
 export type UpdatePlayerPayload = {
   firstName: string;
@@ -51,4 +53,4 @@ export type UpdatePlayerPayload = {
   redCards: number;
   goals: number;
   assists: number;
-}
+};
