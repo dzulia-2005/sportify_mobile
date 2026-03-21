@@ -18,6 +18,7 @@ export type DrawerNavigationType = {
   navigate(arg0: string): unknown;
   Home: undefined;
   AboutUs: undefined;
+  Pricing: undefined;
   Login: undefined;
   Register: undefined;
   MyAccount: undefined;

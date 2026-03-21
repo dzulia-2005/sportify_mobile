@@ -12,6 +12,7 @@ import { useAuth } from '../../shared/hooks/useAuth';
 import TournamentStackNavigator from './stack/tournament/tournamentStackNavigator/tournamentStackNavigator';
 import MyTournament from '../../screens/dashboard/myTournaments/index';
 import AboutUs from '../../screens/dashboard/aboutUs/index';
+import Pricing from '../../screens/dashboard/pricing/index';
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
@@ -94,6 +95,8 @@ const AppNavigator = () => {
               },
             }}
           />
+
+          <Drawer.Screen name="Pricing" component={Pricing} />
 
           <Drawer.Screen
             name="Login"
