@@ -13,11 +13,15 @@ import TournamentStackNavigator from './stack/tournament/tournamentStackNavigato
 import MyTournament from '../../screens/dashboard/myTournaments/index';
 import AboutUs from '../../screens/dashboard/aboutUs/index';
 import Pricing from '../../screens/dashboard/pricing/index';
+import { TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
 const AppNavigator = () => {
   const { accessToken } = useAuth();
+  const navigation = useNavigation();
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
@@ -52,6 +56,14 @@ const AppNavigator = () => {
             component={Pricing}
             options={{
               title: 'Pricing',
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{ marginLeft: 15 }}
+                >
+                  <Icon name="arrow-left" size={24} color="#fff" />
+                </TouchableOpacity>
+              ),
             }}
           />
 
