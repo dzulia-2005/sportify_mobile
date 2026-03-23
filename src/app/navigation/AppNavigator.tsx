@@ -41,6 +41,9 @@ const AppNavigator = () => {
             options={{
               title: 'Home',
               headerShown: false,
+              drawerIcon: ({ color, size }) => (
+                <Icon name="home" size={size} color={color} />
+              ),
             }}
           />
           <Drawer.Screen
@@ -48,6 +51,9 @@ const AppNavigator = () => {
             component={MyAccount}
             options={{
               title: 'My Account',
+              drawerIcon: ({ color, size }) => (
+                <Icon name="account" size={size} color={color} />
+              ),
             }}
           />
 
@@ -64,6 +70,9 @@ const AppNavigator = () => {
                   <Icon name="arrow-left" size={24} color="#fff" />
                 </TouchableOpacity>
               ),
+              drawerIcon: ({ color, size }) => (
+                <Icon name="cash" size={size} color={color} />
+              ),
             }}
           />
 
@@ -72,6 +81,9 @@ const AppNavigator = () => {
             component={MySchoolStackNavigator}
             options={{
               title: 'My School',
+              drawerIcon: ({ color, size }) => (
+                <Icon name="school" size={size} color={color} />
+              ),
             }}
           />
 
@@ -80,6 +92,9 @@ const AppNavigator = () => {
             component={MyTournament}
             options={{
               title: 'My Tournaments',
+              drawerIcon: ({ color, size }) => (
+                <Icon name="trophy" size={size} color={color} />
+              ),
             }}
           />
 
@@ -102,6 +117,9 @@ const AppNavigator = () => {
             options={{
               title: 'Home',
               headerShown: false,
+              drawerIcon: ({ color, size }) => (
+                <Icon name="home" size={size} color={color} />
+              ),
             }}
           />
 
@@ -113,6 +131,9 @@ const AppNavigator = () => {
               headerStyle: {
                 backgroundColor: '#020617',
               },
+              drawerIcon: ({ color, size }) => (
+                <Icon name="information-outline" size={size} color={color} />
+              ),
             }}
           />
 
@@ -121,6 +142,9 @@ const AppNavigator = () => {
             component={MatchesPage}
             options={{
               title: 'Login',
+              drawerIcon: ({ color, size }) => (
+                <Icon name="login" size={size} color={color} />
+              ),
             }}
           />
           <Drawer.Screen
