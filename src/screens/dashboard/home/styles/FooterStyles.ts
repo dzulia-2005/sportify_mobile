@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   footer: {
-    backgroundColor: '#0A0F24',
+    backgroundColor: '#00194C',
     alignItems: 'center',
     paddingVertical: 25,
     paddingHorizontal: 20,

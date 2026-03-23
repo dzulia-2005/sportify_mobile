@@ -1,38 +1,36 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   header: {
     height: 280,
-    justifyContent: 'flex-start', 
+    justifyContent: 'flex-start',
     paddingTop: 30,
-    overflow:'hidden'
+    overflow: 'hidden',
   },
-  imageZoom:{
-    transform: [{ scale: 2.2 }]
-  },
+
   overlay: {
     padding: 20,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   headerText: {
-    color: '#00c951',
-    fontSize: 28,
+    color: '#FFFFFF',
+    fontSize: 24,
     fontWeight: 'bold',
   },
-  darkOverlay:{
+  darkOverlay: {
     ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   bottomTextContainer: {
     alignItems: 'center',
-    marginTop:20
+    marginTop: 20,
   },
   bottomTitle: {
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
     marginBottom: 8,
   },
@@ -40,7 +38,7 @@ export const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 12,
-    width: 260,
+    width: 300,
     lineHeight: 16,
   },
-})
+});

@@ -15,10 +15,9 @@ const Header: React.FC = () => {
 
   return (
     <ImageBackground
-      source={require('../../../../shared/assets/images/sport.jpg')}
+      source={require('../../../../shared/assets/images/mainImage.png')}
       style={styles.header}
-      resizeMode="cover"
-      imageStyle={styles.imageZoom}
+      resizeMode="contain"
     >
       <View style={styles.darkOverlay} />
 
@@ -32,9 +31,15 @@ const Header: React.FC = () => {
       </View>
 
       <View style={styles.bottomTextContainer}>
-        <Text style={styles.bottomTitle}>Manage Your Tournament Online</Text>
+        <Text style={styles.bottomTitle}>
+          Everything Your Football Club Needs
+        </Text>
+        <Text style={styles.bottomTitle}>In One Place</Text>
         <Text style={styles.bottomSubtitle}>
-          Create, organize, and track tournaments easily in one place.
+          Register teams for tournaments, manage your squad
+        </Text>
+        <Text style={styles.bottomSubtitle}>
+          and follow standings and player statistics with ease
         </Text>
       </View>
     </ImageBackground>

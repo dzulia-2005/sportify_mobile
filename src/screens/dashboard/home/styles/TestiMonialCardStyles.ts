@@ -1,32 +1,31 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    headerText:{
-        paddingVertical:10,
-        fontWeight:'bold',
-        justifyContent:'center',
-        alignItems:'center'
-    },
-    HeaderSecondText:{
-        justifyContent:'center',
-        alignItems:'center',
-        color:'#fff',
-        paddingTop:5,
-        width:245
-    },
-    HeaderFirstText:{
-        fontSize:24,
-        color:'#fff'
-    },
-    CardContainer:{
-        paddingHorizontal:40,
-        paddingVertical:50
-    },
+  headerText: {
+    paddingVertical: 10,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  HeaderSecondText: {
+    color: '#A1A1A1',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  HeaderFirstText: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  CardContainer: {
+    paddingHorizontal: 40,
+    paddingVertical: 50,
+  },
   card: {
-    backgroundColor: '#1E293B',
+    backgroundColor: '#0A192F',
     padding: 24,
     borderRadius: 16,
-    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
