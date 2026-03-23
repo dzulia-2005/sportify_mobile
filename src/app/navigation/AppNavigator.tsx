@@ -48,6 +48,14 @@ const AppNavigator = () => {
           />
 
           <Drawer.Screen
+            name="Pricing"
+            component={Pricing}
+            options={{
+              title: 'Pricing',
+            }}
+          />
+
+          <Drawer.Screen
             name="MySchool"
             component={MySchoolStackNavigator}
             options={{
@@ -95,8 +103,6 @@ const AppNavigator = () => {
               },
             }}
           />
-
-          <Drawer.Screen name="Pricing" component={Pricing} />
 
           <Drawer.Screen
             name="Login"

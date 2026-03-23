@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   SafeAreaView,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useGetPlansQuery } from '../../../../feature/billing/plan/model/getPlan/useGetPlansQuery';
@@ -15,9 +16,19 @@ import { useCheckoutMutation } from '../../../../feature/billing/billing/model/c
 import { PlanResponse } from '../../../../shared/api/plan/index.type';
 import { styles } from '../styles/pricing.style';
 import { gel, order } from '../components/order';
+import { showErrorToast } from '../../../../shared/utils/showErrorToast';
+import { useSubscriptionQuery } from '../../../../feature/billing/billing/model/subscription/useSubscriptionQuery';
+
+const normalizeCode = (value: unknown) =>
+  String(value ?? '')
+    .trim()
+    .toUpperCase();
 
 const Pricing: React.FC = () => {
   const { data: plansFromApi, isLoading } = useGetPlansQuery();
+  const { data: Subscribed, isLoading: SubscribeLoading } =
+    useSubscriptionQuery();
+
   const {
     mutate: checkoutMutate,
     isPending,
@@ -27,7 +38,35 @@ const Pricing: React.FC = () => {
 
   const PLAN_UI = useMemo(() => getPlanUI(), []);
 
-  if (isLoading) {
+  const handleCheckout = (planCode: number) => {
+    checkoutMutate(
+      { planCode },
+      {
+        onSuccess: async data => {
+          const url = data?.redirectUrl;
+
+          if (!url) {
+            showErrorToast('Payment link not found');
+            return;
+          }
+
+          const supported = await Linking.canOpenURL(url);
+
+          if (!supported) {
+            showErrorToast('Cannot open payment page');
+            return;
+          }
+
+          await Linking.openURL(url);
+        },
+        onError: err => {
+          showErrorToast(err);
+        },
+      },
+    );
+  };
+
+  if (isLoading || SubscribeLoading) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#2563EB" />
@@ -49,12 +88,17 @@ const Pricing: React.FC = () => {
             cta: 'Buy',
           };
 
-          const isFree = plan.code === 'FREE';
+          const isFree = normalizeCode(plan.code) === 'FREE';
+          const isActive =
+            normalizeCode(Subscribed?.planCode) === normalizeCode(plan.code);
+
+          const mappedPlanCode = PLAN_CODE_MAP[plan.code];
 
           const isLoadingThis =
             !isFree &&
+            !isActive &&
             isPending &&
-            variables?.planCode === PLAN_CODE_MAP[plan.code];
+            variables?.planCode === mappedPlanCode;
 
           return (
             <View
@@ -103,26 +147,37 @@ const Pricing: React.FC = () => {
 
               <TouchableOpacity
                 activeOpacity={0.85}
-                disabled={!isFree && isPending}
+                disabled={isActive || !mappedPlanCode || (!isFree && isPending)}
                 onPress={() => {
-                  if (isFree) {
+                  const currentIsActive =
+                    normalizeCode(Subscribed?.planCode) ===
+                    normalizeCode(plan.code);
+
+                  if (isFree || currentIsActive) {
                     return;
                   }
 
-                  checkoutMutate({
-                    planCode: PLAN_CODE_MAP[plan.code],
-                  });
+                  if (!mappedPlanCode) {
+                    showErrorToast('Plan code is invalid');
+                    return;
+                  }
+
+                  handleCheckout(mappedPlanCode);
                 }}
                 style={[
                   styles.button,
                   ui.highlight ? styles.highlightButton : styles.defaultButton,
-                  !isFree && isPending ? styles.disabledButton : null,
+                  isActive || !mappedPlanCode || (!isFree && isPending)
+                    ? styles.disabledButton
+                    : null,
                 ]}
               >
                 {isLoadingThis ? (
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  <Text style={styles.buttonText}>{ui.cta}</Text>
+                  <Text style={styles.buttonText}>
+                    {isActive ? 'Current Plan' : ui.cta}
+                  </Text>
                 )}
               </TouchableOpacity>
 
