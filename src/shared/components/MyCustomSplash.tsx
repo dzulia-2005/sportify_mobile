@@ -5,7 +5,7 @@ const MyCustomSplash: React.FC = () => {
   return (
     <View style={style.splashContainer}>
       <Image
-        source={require('../assets/images/sportzoneLogo.png')}
+        source={require('../assets/images/sportifyLogo.png')}
         style={style.Logo}
       />
     </View>
@@ -19,7 +19,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#03152d',
+    backgroundColor: '#011942',
   },
   Logo: {
     width: 280,
