@@ -1,25 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, Alert, Linking } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Linking,
+} from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import GoogleIcon from '../../../../shared/components/googleIcon';
 import { BASE_URL } from '@env';
 import { getParam } from '../utils/getParam';
+import { translate } from '../../../../shared/lib/i18n';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 type Props = {
-  onGoogleSuccess: (tokens: { accessToken: string; refreshToken: string }) => Promise<void>;
+  onGoogleSuccess: (tokens: {
+    accessToken: string;
+    refreshToken: string;
+  }) => Promise<void>;
 };
 
 const GoogleButton: React.FC<Props> = ({ onGoogleSuccess }) => {
   const authUrl = `${BASE_URL}/auth/mobile/google`;
   const redirectUrl = 'sportify://oauth-success';
-
+  const { t } = useI18n();
 
   const parseRedirect = (url: string) => {
     if (!url.startsWith(redirectUrl)) return null;
 
     const error = getParam(url, 'error');
     if (error) {
-      Alert.alert('Error', error);
+      Alert.alert(translate('Error'), translate(error));
       return null;
     }
 
@@ -27,7 +38,7 @@ const GoogleButton: React.FC<Props> = ({ onGoogleSuccess }) => {
     const refreshToken = getParam(url, 'refreshToken');
 
     if (!accessToken || !refreshToken) {
-      Alert.alert('Error', 'Google login failed');
+      Alert.alert(translate('Error'), translate('Google login failed'));
       return null;
     }
 
@@ -59,7 +70,10 @@ const GoogleButton: React.FC<Props> = ({ onGoogleSuccess }) => {
       }
     } catch (error) {
       console.log('Google login error:', error);
-      Alert.alert('Error', 'Google login could not be started.');
+      Alert.alert(
+        translate('Error'),
+        translate('Google login could not be started.'),
+      );
     }
   };
 
@@ -70,7 +84,7 @@ const GoogleButton: React.FC<Props> = ({ onGoogleSuccess }) => {
       activeOpacity={0.85}
     >
       <GoogleIcon />
-      <Text style={styles.googleButtonText}>Login with Google</Text>
+      <Text style={styles.googleButtonText}>{t('Login with Google')}</Text>
     </TouchableOpacity>
   );
 };

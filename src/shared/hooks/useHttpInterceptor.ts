@@ -6,12 +6,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SignInSuccess } from '../../screens/auth/Login/utils/signInSuccess';
 import { NavigationProp } from '../../screens/auth/login/types/login.type';
 import Toast from 'react-native-toast-message';
+import { translate } from '../lib/i18n';
 
 const showErrorToast = (title: string, message: string) => {
   Toast.show({
     type: 'error',
-    text1: title,
-    text2: message,
+    text1: translate(title),
+    text2: translate(message),
     position: 'top',
     visibilityTime: 4000,
   });

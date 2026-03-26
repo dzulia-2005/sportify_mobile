@@ -19,6 +19,8 @@ import { SchoolSchema } from './School.schema';
 import { useCreateMySchoolMutation } from '../../../../feature/school/mySchool/create/model/useCreateMySchoolMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { AddSchoolModalProps, SchoolDefaultTypes } from '../types/index.type';
+import { translate } from '../../../../shared/lib/i18n';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const SchoolDefaultValues: SchoolDefaultTypes = {
   Name: '',
@@ -31,6 +33,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   visible,
   onClose,
 }) => {
+  const { t } = useI18n();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [photoAsset, setPhotoAsset] = useState<any>(null);
   const {
@@ -57,7 +60,10 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
         if (response.didCancel) return;
 
         if (response.errorCode) {
-          Alert.alert('Error', response.errorMessage || 'Image pick failed');
+          Alert.alert(
+            translate('Error'),
+            translate(response.errorMessage || 'Image pick failed'),
+          );
           return;
         }
 
@@ -118,7 +124,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
 
         <View style={styles.modalContent}>
           <View style={styles.header}>
-            <Text style={styles.headerText}>Create School</Text>
+            <Text style={styles.headerText}>{t('Create School')}</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
               <Text style={styles.closeIconText}>✕</Text>
             </TouchableOpacity>
@@ -127,7 +133,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>
-                School Name <Text style={styles.required}>*</Text>
+                {t('School Name')} <Text style={styles.required}>*</Text>
               </Text>
               <Controller
                 name="Name"
@@ -136,26 +142,28 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                   <TextInput
                     value={value}
                     onChangeText={onChange}
-                    placeholder="e.g. TBC School"
+                    placeholder={t('e.g. TBC School')}
                     placeholderTextColor="#9ca3af"
                     style={[styles.input]}
                   />
                 )}
               />
               {errors.Name && (
-                <Text style={styles.errorText}>{errors.Name?.message}</Text>
+                <Text style={styles.errorText}>{t(errors.Name?.message)}</Text>
               )}
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>School Logo</Text>
+              <Text style={styles.label}>{t('School Logo')}</Text>
 
               {!photoUri ? (
                 <TouchableOpacity
                   onPress={pickImage}
                   style={styles.uploadContainer}
                 >
-                  <Text style={styles.uploadText}>Choose School Logo</Text>
+                  <Text style={styles.uploadText}>
+                    {t('Choose School Logo')}
+                  </Text>
                 </TouchableOpacity>
               ) : (
                 <View style={styles.imagePreviewContainer}>
@@ -168,7 +176,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                       style={styles.changeImageBtn}
                       onPress={pickImage}
                     >
-                      <Text style={styles.btnText}>Change</Text>
+                      <Text style={styles.btnText}>{t('Change')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.removeImageBtn}
@@ -181,14 +189,14 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                         );
                       }}
                     >
-                      <Text style={styles.btnText}>Remove</Text>
+                      <Text style={styles.btnText}>{t('Remove')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               )}
               {errors.LogoFile?.uri && (
                 <Text style={styles.errorText}>
-                  {errors.LogoFile.uri.message}
+                  {t(errors.LogoFile.uri.message)}
                 </Text>
               )}
             </View>
@@ -196,7 +204,7 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
 
           <View style={styles.footer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.footerText}>Cancel</Text>
+              <Text style={styles.footerText}>{t('Cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.createButton}
@@ -204,9 +212,9 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
               disabled={isPending}
             >
               {isPending ? (
-                <Text style={styles.footerText}>Creating...</Text>
+                <Text style={styles.footerText}>{t('Creating...')}</Text>
               ) : (
-                <Text style={styles.footerText}>Create</Text>
+                <Text style={styles.footerText}>{t('Create')}</Text>
               )}
             </TouchableOpacity>
           </View>

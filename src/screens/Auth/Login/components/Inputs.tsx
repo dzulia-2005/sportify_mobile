@@ -14,6 +14,7 @@ import { LoginType, NavigationProp } from '../types/login.type';
 import { LoginInitialValues } from '../utils/loginInitialValues';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import GoogleButton from './googleButton';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const getParam = (url: string, key: string) => {
   const qIndex = url.indexOf('?');
@@ -36,6 +37,7 @@ const Inputs: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { mutate: Login, isPending } = useLoginMutation();
   const dispatch = useDispatch();
+  const { t } = useI18n();
 
   const {
     handleSubmit,
@@ -124,14 +126,14 @@ const Inputs: React.FC = () => {
             value={value}
             onChangeText={onChange}
             style={styles.input}
-            placeholder="userName"
+            placeholder={t('userName')}
             placeholderTextColor="#a0aec0"
             autoCapitalize="none"
           />
         )}
       />
       {errors.userName && (
-        <Text style={styles.errorText}>{errors.userName.message}</Text>
+        <Text style={styles.errorText}>{t(errors.userName.message)}</Text>
       )}
 
       <Controller
@@ -142,7 +144,7 @@ const Inputs: React.FC = () => {
             value={value}
             onChangeText={onChange}
             style={styles.input}
-            placeholder="password"
+            placeholder={t('password')}
             placeholderTextColor="#a0aec0"
             secureTextEntry
             autoCapitalize="none"
@@ -150,7 +152,7 @@ const Inputs: React.FC = () => {
         )}
       />
       {errors.password && (
-        <Text style={styles.errorText}>{errors.password.message}</Text>
+        <Text style={styles.errorText}>{t(errors.password.message)}</Text>
       )}
 
       <TouchableOpacity
@@ -159,24 +161,20 @@ const Inputs: React.FC = () => {
         disabled={isPending}
       >
         <Text style={styles.buttonText}>
-          {isPending ? 'Logging...' : 'Login'}
+          {isPending ? t('Logging...') : t('Login')}
         </Text>
       </TouchableOpacity>
 
-      <GoogleButton
-        onGoogleSuccess={completeLogin} 
-      />
+      <GoogleButton onGoogleSuccess={completeLogin} />
 
-      <TouchableOpacity
-        onPress={()=>navigation.navigate("forgotPassword")}
-      >
-        <Text style={styles.forgot}>Forgot your password?</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('forgotPassword')}>
+        <Text style={styles.forgot}>{t('Forgot your password?')}</Text>
       </TouchableOpacity>
 
       <View style={styles.bottomTextContainer}>
-        <Text style={styles.bottomText}>Don't have an account?</Text>
+        <Text style={styles.bottomText}>{t("Don't have an account?")}</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.registerText}> Registration</Text>
+          <Text style={styles.registerText}> {t('Registration')}</Text>
         </TouchableOpacity>
       </View>
     </>

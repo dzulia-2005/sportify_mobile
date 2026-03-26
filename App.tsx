@@ -14,6 +14,7 @@ import NavigationWrapper from './src/app/navigation/wrapper/navigationWrapper';
 import { useEffect, useState } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import MyCustomSplash from './src/shared/components/MyCustomSplash';
+import { I18nProvider } from './src/shared/lib/i18n/I18nProvider';
 
 enableScreens();
 
@@ -37,16 +38,18 @@ function App() {
 
   return (
     <AntProvider>
-      <Provider store={store}>
-        <QueryProvider>
-          <SafeAreaProvider>
-            <StatusBar
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            />
-            <NavigationWrapper />
-          </SafeAreaProvider>
-        </QueryProvider>
-      </Provider>
+      <I18nProvider>
+        <Provider store={store}>
+          <QueryProvider>
+            <SafeAreaProvider>
+              <StatusBar
+                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              />
+              <NavigationWrapper />
+            </SafeAreaProvider>
+          </QueryProvider>
+        </Provider>
+      </I18nProvider>
       <Toast />
     </AntProvider>
   );

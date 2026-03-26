@@ -10,10 +10,12 @@ import {
 import { useForgotPasswordMutation } from '../../../../feature/auth/forgotPassword/model/useForgotPassword';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import Toast from 'react-native-toast-message';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const ForgotPassword: React.FC = () => {
   const { mutate: forgotPassword, isPending } = useForgotPasswordMutation();
   const [email, setEmail] = useState('');
+  const { t } = useI18n();
 
   const handleForgotPassword = () => {
     if (!email.trim()) {
@@ -27,8 +29,8 @@ const ForgotPassword: React.FC = () => {
         onSuccess: (res: any) => {
           Toast.show({
             type: 'success',
-            text1: res?.message ?? 'Reset link sent successfully!',
-            text2: 'Please check your email.',
+            text1: t(res?.message ?? 'Reset link sent successfully!'),
+            text2: t('Please check your email.'),
           });
         },
         onError: (err: any) => {
@@ -44,11 +46,11 @@ const ForgotPassword: React.FC = () => {
     <View style={styles.forgotPassContainer}>
       <StatusBar barStyle="light-content" />
       <Text style={styles.title}>Sportify</Text>
-      <Text style={styles.subtitle}>Reset your password</Text>
+      <Text style={styles.subtitle}>{t('Reset your password')}</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t('Email')}
         placeholderTextColor="#a0aec0"
         autoCapitalize="none"
         keyboardType="email-address"
@@ -62,7 +64,7 @@ const ForgotPassword: React.FC = () => {
         disabled={isPending}
       >
         <Text style={styles.buttonText}>
-          {isPending ? 'Sending...' : 'Send Reset Link'}
+          {isPending ? t('Sending...') : t('Send Reset Link')}
         </Text>
       </TouchableOpacity>
     </View>

@@ -14,10 +14,13 @@ import {
   MySchoolTeamsIcon,
   SchoolIcon,
 } from './TabBarIcon';
+import { useI18n } from '../../../../../shared/lib/i18n/I18nProvider';
 
 const Tab = createBottomTabNavigator();
 
 const TabsNavigator = () => {
+  const { t } = useI18n();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -40,7 +43,7 @@ const TabsNavigator = () => {
         name="MySchoolOverview"
         component={MySchoolOverview}
         options={{
-          title: 'School',
+          title: t('School'),
           tabBarIcon: SchoolIcon,
         }}
       />
@@ -49,7 +52,7 @@ const TabsNavigator = () => {
         name="MySchoolTeams"
         component={MySchoolTeams}
         options={{
-          title: 'Teams',
+          title: t('Teams'),
           tabBarIcon: MySchoolTeamsIcon,
         }}
       />
@@ -58,7 +61,7 @@ const TabsNavigator = () => {
         name="MySchoolAllPlayer"
         component={MySchoolAllPlayer}
         options={{
-          title: 'Players',
+          title: t('Players'),
           tabBarIcon: MySchoolAllPlayerIcon,
         }}
       />
@@ -67,7 +70,7 @@ const TabsNavigator = () => {
         name="TournamentTeams"
         component={TournamentTeams}
         options={{
-          title: 'TournamentTeam',
+          title: t('TournamentTeam'),
           tabBarIcon: TournamentTeamIcon,
         }}
       />
@@ -76,7 +79,7 @@ const TabsNavigator = () => {
         name="TournamentMatches"
         component={TournamentMatches}
         options={{
-          title: 'Matches',
+          title: t('Matches'),
           tabBarIcon: MatchesIcon,
         }}
       />
@@ -85,7 +88,7 @@ const TabsNavigator = () => {
         name="TournamentScores"
         component={TournamentScores}
         options={{
-          title: 'Scores',
+          title: t('Scores'),
           tabBarIcon: ScoreIcon,
         }}
       />

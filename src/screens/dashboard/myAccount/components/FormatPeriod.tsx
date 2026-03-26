@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { formatPackagePeriod } from '../utils/formatPackagePeriod';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 type FormatPeriodProp = {
   startUtc: string | undefined;
@@ -13,10 +14,14 @@ const FormatPeriod: React.FC<FormatPeriodProp> = ({
   endUtc,
   planName,
 }) => {
+  const { t } = useI18n();
+
   if (!startUtc || !endUtc) {
     return (
       <View style={styles.inactiveContainer}>
-        <Text style={styles.inactiveText}>You do not have an active package.</Text>
+        <Text style={styles.inactiveText}>
+          {t('You do not have an active package.')}
+        </Text>
       </View>
     );
   }
@@ -28,7 +33,7 @@ const FormatPeriod: React.FC<FormatPeriodProp> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.planName}>{planName ?? 'Subscription'}</Text>
+      <Text style={styles.planName}>{planName ?? t('Subscription')}</Text>
 
       <View style={styles.statusRow}>
         <View
@@ -39,7 +44,9 @@ const FormatPeriod: React.FC<FormatPeriodProp> = ({
         />
 
         <Text style={styles.statusText}>
-          {isExpired ? 'The package has expired.' : 'The package is active.'}
+          {isExpired
+            ? t('The package has expired.')
+            : t('The package is active.')}
         </Text>
 
         {!isExpired && leftLabel ? (
@@ -51,12 +58,12 @@ const FormatPeriod: React.FC<FormatPeriodProp> = ({
 
       <View style={styles.infoWrapper}>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Activated: </Text>
+          <Text style={styles.label}>{t('Activated:')} </Text>
           <Text style={styles.value}>{startText}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Expires: </Text>
+          <Text style={styles.label}>{t('Expires:')} </Text>
           <Text style={styles.value}>{endText}</Text>
         </View>
       </View>

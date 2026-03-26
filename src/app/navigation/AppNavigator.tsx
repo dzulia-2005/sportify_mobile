@@ -16,12 +16,14 @@ import Pricing from '../../screens/dashboard/pricing/index';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useI18n } from '../../shared/lib/i18n/I18nProvider';
 
 const Drawer = createDrawerNavigator<DrawerNavigationType>();
 
 const AppNavigator = () => {
   const { accessToken } = useAuth();
   const navigation = useNavigation();
+  const { t } = useI18n();
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
@@ -39,7 +41,7 @@ const AppNavigator = () => {
             name="Home"
             component={HomePage}
             options={{
-              title: 'Home',
+              title: t('Home'),
               headerShown: false,
               drawerIcon: ({ color, size }) => (
                 <Icon name="home" size={size} color={color} />
@@ -50,7 +52,7 @@ const AppNavigator = () => {
             name="MyAccount"
             component={MyAccount}
             options={{
-              title: 'My Account',
+              title: t('My Account'),
               drawerIcon: ({ color, size }) => (
                 <Icon name="account" size={size} color={color} />
               ),
@@ -61,7 +63,7 @@ const AppNavigator = () => {
             name="Pricing"
             component={Pricing}
             options={{
-              title: 'Pricing',
+              title: t('Pricing'),
               headerLeft: () => (
                 <TouchableOpacity
                   onPress={() => navigation.goBack()}
@@ -80,7 +82,7 @@ const AppNavigator = () => {
             name="MySchool"
             component={MySchoolStackNavigator}
             options={{
-              title: 'My School',
+              title: t('My School'),
               drawerIcon: ({ color, size }) => (
                 <Icon name="school" size={size} color={color} />
               ),
@@ -91,7 +93,7 @@ const AppNavigator = () => {
             name="MyTournaments"
             component={MyTournament}
             options={{
-              title: 'My Tournaments',
+              title: t('My Tournaments'),
               drawerIcon: ({ color, size }) => (
                 <Icon name="trophy" size={size} color={color} />
               ),
@@ -102,7 +104,7 @@ const AppNavigator = () => {
             name="Tournament"
             component={TournamentStackNavigator}
             options={{
-              title: 'Tournaments',
+              title: t('Tournaments'),
               drawerItemStyle: {
                 display: 'none',
               },
@@ -115,7 +117,7 @@ const AppNavigator = () => {
             name="Home"
             component={HomePage}
             options={{
-              title: 'Home',
+              title: t('Home'),
               headerShown: false,
               drawerIcon: ({ color, size }) => (
                 <Icon name="home" size={size} color={color} />
@@ -127,7 +129,7 @@ const AppNavigator = () => {
             name="AboutUs"
             component={AboutUs}
             options={{
-              title: 'About us',
+              title: t('About us'),
               headerStyle: {
                 backgroundColor: '#020617',
               },
@@ -141,7 +143,7 @@ const AppNavigator = () => {
             name="Login"
             component={MatchesPage}
             options={{
-              title: 'Login',
+              title: t('Login'),
               drawerIcon: ({ color, size }) => (
                 <Icon name="login" size={size} color={color} />
               ),

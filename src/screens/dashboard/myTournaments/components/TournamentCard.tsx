@@ -6,9 +6,11 @@ import { props, TournamentNavigationProp } from '../types/index.type';
 import Img from '../../../../shared/assets/images/img.png';
 import { formatDate } from '../../../../shared/utils/formatDate';
 import { useShimmerAnimation } from '../../../../shared/hooks/useShimmerAnimation';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const TournamentCard: React.FC<props> = ({ item, isLoading }) => {
   const navigation = useNavigation<TournamentNavigationProp>();
+  const { t } = useI18n();
   const { translateX } = useShimmerAnimation(isLoading);
   const imageSource = item.tournamentLogo ? { uri: item.tournamentLogo } : Img;
 
@@ -47,9 +49,11 @@ const TournamentCard: React.FC<props> = ({ item, isLoading }) => {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.info}>Teams: {item.teams.length}</Text>
         <Text style={styles.info}>
-          Date: {formatDate(item.startDate)} - {formatDate(item.endDate)}
+          {t('Teams:')} {item.teams.length}
+        </Text>
+        <Text style={styles.info}>
+          {t('Date:')} {formatDate(item.startDate)} - {formatDate(item.endDate)}
         </Text>
       </View>
     </TouchableOpacity>

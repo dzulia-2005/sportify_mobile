@@ -18,6 +18,7 @@ import { styles } from '../styles/pricing.style';
 import { gel, order } from '../components/order';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import { useSubscriptionQuery } from '../../../../feature/billing/billing/model/subscription/useSubscriptionQuery';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const normalizeCode = (value: unknown) =>
   String(value ?? '')
@@ -25,6 +26,7 @@ const normalizeCode = (value: unknown) =>
     .toUpperCase();
 
 const Pricing: React.FC = () => {
+  const { t } = useI18n();
   const { data: plansFromApi, isLoading } = useGetPlansQuery();
   const { data: Subscribed, isLoading: SubscribeLoading } =
     useSubscriptionQuery();
@@ -137,11 +139,13 @@ const Pricing: React.FC = () => {
 
               <View style={styles.priceRow}>
                 <Text style={styles.priceText}>
-                  {isFree ? 'Free' : gel(plan.price)}
+                  {isFree ? t('Free') : gel(plan.price)}
                 </Text>
 
                 <Text style={styles.durationText}>
-                  {isFree ? '/ forever' : `/ ${plan.durationDays} days`}
+                  {isFree
+                    ? t('/ forever')
+                    : `/ ${plan.durationDays} ${t('days')}`}
                 </Text>
               </View>
 
@@ -176,7 +180,7 @@ const Pricing: React.FC = () => {
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
                   <Text style={styles.buttonText}>
-                    {isActive ? 'Current Plan' : ui.cta}
+                    {isActive ? t('Current Plan') : t(ui.cta)}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -189,7 +193,7 @@ const Pricing: React.FC = () => {
 
               <View style={styles.divider} />
 
-              <Text style={styles.includedTitle}>Included</Text>
+              <Text style={styles.includedTitle}>{t('Included')}</Text>
 
               <View style={styles.featuresWrapper}>
                 {ui.features.map(feature => (
@@ -200,7 +204,7 @@ const Pricing: React.FC = () => {
                       color="#38BDF8"
                       style={styles.featureDot}
                     />
-                    <Text style={styles.featureText}>{feature}</Text>
+                    <Text style={styles.featureText}>{t(feature)}</Text>
                   </View>
                 ))}
               </View>

@@ -19,11 +19,13 @@ import {
   TournamentTabsRouteProp,
 } from './tournamenTabNavigator.type';
 import { useRoute } from '@react-navigation/native';
+import { useI18n } from '../../../../../shared/lib/i18n/I18nProvider';
 
 const Tab = createBottomTabNavigator<TournamentTabNavigatorType>();
 
 const TournamentTabsNavigator = () => {
   const route = useRoute<TournamentTabsRouteProp>();
+  const { t } = useI18n();
   const tournamentId =
     route.params?.tournamentId ?? route.params?.params?.tournamentId;
 
@@ -50,7 +52,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={OverViewScreen}
         options={{
-          title: 'overview',
+          title: t('overview'),
           tabBarIcon: overViewIcon,
         }}
       />
@@ -60,7 +62,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={TeamsScreen}
         options={{
-          title: 'teams',
+          title: t('teams'),
           tabBarIcon: teamIcon,
         }}
       />
@@ -70,7 +72,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={PlayerScreen}
         options={{
-          title: 'player',
+          title: t('player'),
           tabBarIcon: playerIcon,
         }}
       />
@@ -80,7 +82,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={StatScreen}
         options={{
-          title: 'stats',
+          title: t('stats'),
           tabBarIcon: StatIcon,
         }}
       />
@@ -90,7 +92,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={MatchesScreen}
         options={{
-          title: 'matches',
+          title: t('matches'),
           tabBarIcon: MatchesIcon,
         }}
       />
@@ -100,7 +102,7 @@ const TournamentTabsNavigator = () => {
         initialParams={{ tournamentId }}
         component={ScoresScreen}
         options={{
-          title: 'scores',
+          title: t('scores'),
           tabBarIcon: ScoresIcon,
         }}
       />

@@ -1,5 +1,6 @@
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import { translate } from '../lib/i18n';
 
 export const showErrorToast = (error: unknown) => {
   let message = 'An unexpected error occurred';
@@ -29,8 +30,8 @@ export const showErrorToast = (error: unknown) => {
 
   Toast.show({
     type: 'error',
-    text1: 'Error',
-    text2: message,
+    text1: translate('Error'),
+    text2: translate(message),
     position: 'top',
     visibilityTime: 3000,
     topOffset: 50,

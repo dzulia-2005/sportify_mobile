@@ -8,8 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterSchema } from './register.schema';
 import axios from 'axios';
 import { Toast } from '@ant-design/react-native';
-import { NavigationProps,RegisterType } from '../types/index.type';
-
+import { NavigationProps, RegisterType } from '../types/index.type';
+import { translate } from '../../../../shared/lib/i18n';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const RegisterInitialValues: RegisterType = {
   userName: '',
@@ -19,6 +20,7 @@ const RegisterInitialValues: RegisterType = {
 
 const Input = () => {
   const navigation = useNavigation<NavigationProps>();
+  const { t } = useI18n();
   const {
     handleSubmit,
     control,
@@ -38,14 +40,22 @@ const Input = () => {
         if (axios.isAxiosError(err)) {
           const status = err.response?.status;
           if (status === 400) {
-            Toast.fail('Invalid registration data. Please check your inputs.');
+            Toast.fail(
+              translate('Invalid registration data. Please check your inputs.'),
+            );
           } else if (status === 409) {
-            Toast.fail('User already exists with this email or username.');
+            Toast.fail(
+              translate('User already exists with this email or username.'),
+            );
           } else {
-            Toast.fail('An unexpected error occurred. Please try again.');
+            Toast.fail(
+              translate('An unexpected error occurred. Please try again.'),
+            );
           }
         } else {
-          Toast.fail('An unexpected error occurred. Please try again.');
+          Toast.fail(
+            translate('An unexpected error occurred. Please try again.'),
+          );
         }
       },
     });
@@ -60,14 +70,14 @@ const Input = () => {
           <TextInput
             value={value}
             onChangeText={onChange}
-            placeholder="Enter UserName"
+            placeholder={t('Enter UserName')}
             style={styles.input}
             placeholderTextColor="#a0aec0"
           />
         )}
       />
       {errors.userName && (
-        <Text style={styles.errorText}>{errors.userName?.message}</Text>
+        <Text style={styles.errorText}>{t(errors.userName?.message)}</Text>
       )}
 
       <Controller
@@ -77,14 +87,14 @@ const Input = () => {
           <TextInput
             onChangeText={onChange}
             value={value}
-            placeholder="Enter Email"
+            placeholder={t('Enter Email')}
             style={styles.input}
             placeholderTextColor="#a0aec0"
           />
         )}
       />
       {errors.email && (
-        <Text style={styles.errorText}>{errors.email?.message}</Text>
+        <Text style={styles.errorText}>{t(errors.email?.message)}</Text>
       )}
 
       <Controller
@@ -94,14 +104,14 @@ const Input = () => {
           <TextInput
             value={value}
             onChangeText={onChange}
-            placeholder="Enter Password"
+            placeholder={t('Enter Password')}
             style={styles.input}
             placeholderTextColor="#a0aec0"
           />
         )}
       />
       {errors.password && (
-        <Text style={styles.errorText}>{errors.password?.message}</Text>
+        <Text style={styles.errorText}>{t(errors.password?.message)}</Text>
       )}
 
       <TouchableOpacity
@@ -109,19 +119,19 @@ const Input = () => {
         onPress={handleSubmit(handleRegister)}
       >
         {isPending ? (
-          <Text style={styles.buttonText}>Signing up...</Text>
+          <Text style={styles.buttonText}>{t('Signing up...')}</Text>
         ) : (
-          <Text style={styles.buttonText}>Sign up</Text>
+          <Text style={styles.buttonText}>{t('Sign up')}</Text>
         )}
       </TouchableOpacity>
 
       <View style={styles.haveAccount}>
-        <Text style={styles.AccountText}>Have you Account?</Text>
+        <Text style={styles.AccountText}>{t('Have you Account?')}</Text>
         <TouchableOpacity
           style={styles.haveAccount}
           onPress={() => navigation.navigate('Login')}
         >
-          <Text style={styles.LoginText}> LogIn</Text>
+          <Text style={styles.LoginText}> {t('Login')}</Text>
         </TouchableOpacity>
       </View>
     </>

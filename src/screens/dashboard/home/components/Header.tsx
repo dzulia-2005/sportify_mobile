@@ -3,9 +3,11 @@ import React from 'react';
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from '../styles/HeaderStyles';
+import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 
 const Header: React.FC = () => {
   const navigation = useNavigation();
+  const { t } = useI18n();
 
   const openDrawer = () => {
     navigation.dispatch({
@@ -32,14 +34,14 @@ const Header: React.FC = () => {
 
       <View style={styles.bottomTextContainer}>
         <Text style={styles.bottomTitle}>
-          Everything Your Football Club Needs
+          {t('Everything Your Football Club Needs')}
         </Text>
-        <Text style={styles.bottomTitle}>In One Place</Text>
+        <Text style={styles.bottomTitle}>{t('In One Place')}</Text>
         <Text style={styles.bottomSubtitle}>
-          Register teams for tournaments, manage your squad
+          {t('Register teams for tournaments, manage your squad')}
         </Text>
         <Text style={styles.bottomSubtitle}>
-          and follow standings and player statistics with ease
+          {t('and follow standings and player statistics with ease')}
         </Text>
       </View>
     </ImageBackground>
