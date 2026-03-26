@@ -74,7 +74,7 @@ const TournamentStackNavigator = () => {
 
 export default TournamentStackNavigator;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   arrowContainer: {
     marginLeft: 16,
     marginTop: -80,

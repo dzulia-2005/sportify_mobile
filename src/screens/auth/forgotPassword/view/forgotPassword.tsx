@@ -11,11 +11,14 @@ import { useForgotPasswordMutation } from '../../../../feature/auth/forgotPasswo
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import Toast from 'react-native-toast-message';
 import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProps } from '../../register/types/index.type';
 
 const ForgotPassword: React.FC = () => {
   const { mutate: forgotPassword, isPending } = useForgotPasswordMutation();
   const [email, setEmail] = useState('');
   const { t } = useI18n();
+  const navigation = useNavigation<NavigationProps>();
 
   const handleForgotPassword = () => {
     if (!email.trim()) {
@@ -67,6 +70,12 @@ const ForgotPassword: React.FC = () => {
           {isPending ? t('Sending...') : t('Send Reset Link')}
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.haveAccount}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.LoginText}>Back Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -116,5 +125,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     fontWeight: '600',
+  },
+  haveAccount: {
+    flexDirection: 'row',
+    paddingTop: 20,
+  },
+  AccountText: {
+    color: '#fff',
+  },
+  LoginText: {
+    color: '#00b4d8',
+    fontWeight: '600',
+  },
+  AccountFirstText: {
+    color: '#a0aec0',
   },
 });
