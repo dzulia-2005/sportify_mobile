@@ -5,10 +5,10 @@ import { styles } from '../styles/mainStyles';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MySchoolStackParamList } from '../../../../app/navigation/stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator.types';
-import EmptyTournament from '../../tournamentTeams/components/EmptyTournament';
+import EmptyTournament from '../../TournamentTeams/components/EmptyTournament';
 import { useGetMySchoolAllTournamentQuery } from '../../../../feature/school/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
 import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
-import TournamentCardSkeleton from '../../tournamentTeams/components/TeamCardSkeleton';
+import TournamentCardSkeleton from '../../TournamentTeams/components/TeamCardSkeleton';
 
 type NavigationProp = StackNavigationProp<MySchoolStackParamList>;
 

@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetMySchoolQuery } from '../../../../feature/school/mySchool/getSchool/model/useGetMySchoolQuery';
 import { useGetMySchoolAllTournamentQuery } from '../../../../feature/school/mySchoolTournament/getAllTournamentMySchool/model/useGetMySchoolAllTournamentQuery';
 import { NavigationProp } from '../types/index.type';
-import EmptyTournament from '../../tournamentTeams/components/EmptyTournament';
-import TournamentCardSkeleton from '../../tournamentTeams/components/TeamCardSkeleton';
+import EmptyTournament from '../../TournamentTeams/components/EmptyTournament';
+import TournamentCardSkeleton from '../../TournamentTeams/components/TeamCardSkeleton';
 
 const TeamCard: React.FC = () => {
   const { data: School } = useGetMySchoolQuery();

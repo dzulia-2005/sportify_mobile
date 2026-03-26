@@ -18,7 +18,7 @@ import { showErrorToast } from '../../../../../shared/utils/showErrorToast';
 import { styles } from '../../../teams/styles/addTeamModal';
 import { addPlayerSchema, AddPlayerFormValues } from './schema';
 import { AddPlayerModalProps } from '../../types/teamDetail.type';
-import DataField from '../../../../mySchool/mySchoolTeamDetailScreen/components/dataField';
+import DataField from '../../../../MySchool/MySchoolTeamDetailScreen/components/dataField';
 import { CreatePlayerMutation } from '../../../../../feature/tournament/player/model/create/useCreatePlayerMutation';
 
 const AddPlayerModal: React.FC<AddPlayerModalProps> = ({

@@ -7,7 +7,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { logout } from '../../../feature/auth/slices/authActions';
 import { useAppDispatch } from '../../store/hooks/hook';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '../../../screens/auth/login/types/login.type';
+import { NavigationProp } from '../../../screens/Auth/Login/types/login.type';
 import { useAuth } from '../../../shared/hooks/useAuth';
 import {
   languageLabels,

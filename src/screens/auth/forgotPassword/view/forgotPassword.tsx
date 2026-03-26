@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useForgotPasswordMutation } from '../../../../feature/auth/forgotPassword/model/useForgotPassword';
+import { useForgotPasswordMutation } from '../../../../feature/auth/ForgotPassword/model/useForgotPassword';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import Toast from 'react-native-toast-message';
 import { useI18n } from '../../../../shared/lib/i18n/I18nProvider';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../register/types/index.type';
+import { NavigationProps } from '../../Register/types/index.type';
 
 const ForgotPassword: React.FC = () => {
   const { mutate: forgotPassword, isPending } = useForgotPasswordMutation();

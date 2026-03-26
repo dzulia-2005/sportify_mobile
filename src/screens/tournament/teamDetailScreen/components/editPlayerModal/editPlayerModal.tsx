@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { styles } from '../../../teams/styles/addTeamModal';
-import DataField from '../../../../mySchool/mySchoolTeamDetailScreen/components/dataField';
+import DataField from '../../../../MySchool/MySchoolTeamDetailScreen/components/dataField';
 import { EditPlayerFormValues, EditPlayerSchema } from './schema';
 import { EditPlayerModalProps } from '../../types/teamDetail.type';
 import { UpdatePlayerMutation } from '../../../../../feature/tournament/player/model/update/useUpdatePlayerMutation';

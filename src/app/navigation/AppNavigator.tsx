@@ -1,11 +1,11 @@
 import React from 'react';
 import HomePage from '../../screens/dashboard/home/index';
-import MatchesPage from '../../screens/auth/login/index';
+import LoginPage from '../../screens/Auth/Login';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import RegisterPage from '../../screens/auth/register/index';
+import RegisterPage from '../../screens/Auth/Register';
 import MyAccount from '../../screens/dashboard/myAccount/index';
 import CustomDrawerContent from './drawer/customDrawerContent';
-import ForgotPassword from '../../screens/auth/forgotPassword';
+import ForgotPassword from '../../screens/Auth/forgotPassword';
 import MySchoolStackNavigator from './stack/mySchool/mySchoolStackNavigator/mySchoolStackNavigator';
 import { DrawerNavigationType } from './drawer/drawerNavigator.type';
 import { useAuth } from '../../shared/hooks/useAuth';
@@ -141,7 +141,7 @@ const AppNavigator = () => {
 
           <Drawer.Screen
             name="Login"
-            component={MatchesPage}
+            component={LoginPage}
             options={{
               title: t('Login'),
               drawerIcon: ({ color, size }) => (

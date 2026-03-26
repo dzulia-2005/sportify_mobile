@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { TournamentTeamsProp } from '../../tournamentTeamsDetailScreen/types/index.type';
+import { TournamentTeamsProp } from '../../TournamentTeamsDetailScreen/types/index.type';
 
 import { GetAllStandingResponse } from '../../../../shared/api/mySchoolStanding/index.type';
 import { useGetAllStandingQuery } from '../../../../feature/school/mySchoolStanding/getAllStanding/model/useGetAllStandingQuery';

@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/player.style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Prop } from '../types/players.type';
-import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
+import TournamentCardSkeleton from '../../../MySchool/TournamentTeams/components/TeamCardSkeleton';
 import { useNavigation } from '@react-navigation/native';
 import { TournamentNavigationProp } from '../../teams/types/teams.type';
 import { useSelector } from 'react-redux';

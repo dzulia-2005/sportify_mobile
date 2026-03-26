@@ -1,1 +1,1 @@
-export {default} from "./view//forgotPassword";
+export { default } from './view/forgotPassword';

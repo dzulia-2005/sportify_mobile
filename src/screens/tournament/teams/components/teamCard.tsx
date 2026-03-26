@@ -8,7 +8,7 @@ import { useDeleteTeamMutation } from '../../../../feature/tournament/team/model
 import { useQueryClient } from '@tanstack/react-query';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import EditTeamModal from './EditTeamModal/editTeamModal';
-import TournamentCardSkeleton from '../../../mySchool/tournamentTeams/components/TeamCardSkeleton';
+import TournamentCardSkeleton from '../../../MySchool/TournamentTeams/components/TeamCardSkeleton';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setTeamId } from '../../../../feature/tournament/team/slices/teamSlices';

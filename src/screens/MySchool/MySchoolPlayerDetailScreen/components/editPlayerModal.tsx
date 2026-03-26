@@ -15,7 +15,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { StyleSheet } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UpdateMySchoolPlayerSchema  } from './editPlayer.schema';
+import { UpdateMySchoolPlayerSchema } from './editPlayer.schema';
 import { useUpdateMySchoolPlayerMutation } from '../../../../feature/school/mySchoolPlayer/update/model/useUpdateMySchoolPlayerMutation';
 import { showErrorToast } from '../../../../shared/utils/showErrorToast';
 import {
@@ -23,7 +23,7 @@ import {
   EditPlayerType,
 } from '../types/index.type';
 import { useQueryClient } from '@tanstack/react-query';
-import DataField from '../../mySchoolTeamDetailScreen/components/dataField';
+import DataField from '../../MySchoolTeamDetailScreen/components/dataField';
 
 const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
   visible,
@@ -44,8 +44,8 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
     parentFirstName: '',
     parentLastName: '',
     parentPhoneNumber: '',
-    Nationality:"",
-    birthDate:"",
+    Nationality: '',
+    birthDate: '',
     teamId: Player?.teamId || '',
   };
 
@@ -99,8 +99,8 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
       name: payload.ProfilePictureFile.name ?? 'image.jpg',
       type: payload.ProfilePictureFile.type ?? 'image/jpeg',
     });
-    formData.append("Nationality",payload.Nationality);
-    formData.append("birthDate",payload.birthDate);
+    formData.append('Nationality', payload.Nationality);
+    formData.append('birthDate', payload.birthDate);
     formData.append('position', payload.position);
     formData.append('parentFirstName', payload.parentFirstName);
     formData.append('parentLastName', payload.parentLastName);
@@ -209,7 +209,9 @@ const EditMySchoolPlayerModal: React.FC<EditMySchoolPlayerModalProps> = ({
                 )}
               />
               {errors.Nationality && (
-                <Text style={styles.errorText}>{errors.Nationality?.message}</Text>
+                <Text style={styles.errorText}>
+                  {errors.Nationality?.message}
+                </Text>
               )}
             </View>
 
@@ -366,7 +368,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  
+
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.7)',
